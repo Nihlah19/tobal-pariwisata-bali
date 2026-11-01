@@ -8,6 +8,37 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { recommendPackage } from './lib/recommender.js';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Helper pemuat fallback .env lokal jika dijalankan di Node langsung
+function ensureEnvLoaded() {
+  if (process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY)) {
+    return;
+  }
+  try {
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf8');
+      for (const line of content.split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx > 0) {
+          const k = trimmed.slice(0, eqIdx).trim();
+          let v = trimmed.slice(eqIdx + 1).trim();
+          if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1);
+          }
+          if (!process.env[k]) {
+            process.env[k] = v;
+          }
+        }
+      }
+    }
+  } catch {}
+}
+ensureEnvLoaded();
 
 // Rate Limiter: Maksimal 30 permintaan rekomendasi / jam / pengguna
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
@@ -28,6 +59,9 @@ function checkRateLimit(userId) {
 }
 
 export default async function handler(req, res) {
+  // Pastikan variabel environment termutakhir terbaca
+  ensureEnvLoaded();
+
   // Security & CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -69,10 +103,29 @@ export default async function handler(req, res) {
       });
     }
 
-    // Inisialisasi Supabase client di serverless function
-    const supabase = createClient(supabaseUrl, supabaseKey, {
+    // Inisialisasi Supabase client di serverless function:
+    // Jika tidak memiliki SERVICE_ROLE_KEY rahasia (menggunakan anon / publishable key),
+    // kita teruskan Authorization header Bearer token pengguna ke Supabase client.
+    // Ini mengizinkan PostgreSQL Row Level Security (RLS) beroperasi atas nama auth.uid() = user.id.
+    const isServiceRole = Boolean(
+      process.env.SUPABASE_SERVICE_ROLE_KEY &&
+      !process.env.SUPABASE_SERVICE_ROLE_KEY.startsWith('sb_publishable_') &&
+      process.env.SUPABASE_SERVICE_ROLE_KEY !== process.env.VITE_SUPABASE_ANON_KEY
+    );
+
+    const clientOptions = {
       auth: { persistSession: false }
-    });
+    };
+
+    if (!isServiceRole && token) {
+      clientOptions.global = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey, clientOptions);
 
     // Verifikasi JWT ke Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.getUser(token);
@@ -175,7 +228,7 @@ export default async function handler(req, res) {
     if (createTripError) {
       console.error('[Recommend API] Gagal membuat trip:', createTripError);
       return res.status(500).json({
-        error: 'Gagal menyimpan paket petualangan ke database.'
+        error: `Gagal menyimpan paket petualangan ke database (${createTripError.message}).`
       });
     }
 
@@ -196,7 +249,7 @@ export default async function handler(req, res) {
       // Bersihkan trip yang gagal dibuat
       await supabase.from('trips').delete().eq('id', newTrip.id);
       return res.status(500).json({
-        error: 'Gagal menyimpan rincian tempat petualangan.'
+        error: `Gagal menyimpan rincian tempat petualangan (${insertItemsError.message}).`
       });
     }
 

@@ -13,6 +13,37 @@ import {
   buildClosedChoicePrompt,
   matchArticleFromPrediction
 } from './lib/cultureCatalog.js';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Helper pemuat fallback .env lokal jika dijalankan di Node langsung
+function ensureEnvLoaded() {
+  if (process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY)) {
+    return;
+  }
+  try {
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf8');
+      for (const line of content.split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx > 0) {
+          const k = trimmed.slice(0, eqIdx).trim();
+          let v = trimmed.slice(eqIdx + 1).trim();
+          if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1);
+          }
+          if (!process.env[k]) {
+            process.env[k] = v;
+          }
+        }
+      }
+    }
+  } catch {}
+}
+ensureEnvLoaded();
 
 // ==============================================================================
 // 1. IN-MEMORY RATE LIMITER (10 permintaan / jam / pengguna)
@@ -99,6 +130,9 @@ async function readRequestBody(req) {
 // 3. MAIN SERVERLESS HANDLER
 // ==============================================================================
 export default async function handler(req, res) {
+  // Pastikan variabel environment termutakhir terbaca
+  ensureEnvLoaded();
+
   // Security & CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
