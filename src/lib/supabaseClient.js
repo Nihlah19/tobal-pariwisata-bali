@@ -14,7 +14,15 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+export const isSupabaseConfigured = Boolean(
+  supabaseUrl &&
+  supabaseAnonKey &&
+  !supabaseUrl.includes('placeholder') &&
+  !supabaseAnonKey.includes('placeholder')
+);
+
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key'
 );
+

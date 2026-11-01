@@ -2,18 +2,19 @@
  * Auth Helper — Tour Penjelajah Bali
  * Wrapper Supabase Auth untuk multi-page vanilla JS.
  */
-import { supabase } from './supabaseClient.js';
+import { supabase, isSupabaseConfigured } from './supabaseClient.js';
 
 /**
  * Dapatkan user aktif saat ini.
  */
 export async function getCurrentUser() {
+  if (!isSupabaseConfigured) return null;
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error || !user) return null;
     return user;
   } catch (err) {
-    console.error('[Auth] Error getting user:', err);
+    console.warn('[Auth] Supabase belum aktif atau offline:', err.message);
     return null;
   }
 }
@@ -22,12 +23,13 @@ export async function getCurrentUser() {
  * Dapatkan session aktif saat ini (termasuk access_token).
  */
 export async function getSession() {
+  if (!isSupabaseConfigured) return null;
   try {
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error || !session) return null;
     return session;
   } catch (err) {
-    console.error('[Auth] Error getting session:', err);
+    console.warn('[Auth] Session belum aktif atau offline:', err.message);
     return null;
   }
 }
