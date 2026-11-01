@@ -34,29 +34,92 @@
 
       <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center max-w-3xl mx-auto animate-fade-in">
-          <span class="badge-daun mb-4 inline-flex">
-            <span id="hero-badge-icon" class="mr-1"></span>
-            Bali Digifest 2026
-          </span>
-          <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-tanah-gelap leading-tight mb-6">
-            Jelajahi Bali<br class="hidden sm:block" />
-            <span class="text-daun">Seutuhnya</span>
+          
+          <!-- Badge Header -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-daun/10 text-daun border border-daun/20 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-4 backdrop-blur-sm shadow-sm">
+            <i class="fa-solid fa-sparkles text-padi-dark"></i>
+            <span>Bali Digifest 2026 · AI Smart Travel Guide</span>
+          </div>
+
+          <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-tanah-gelap leading-tight mb-5 tracking-tight">
+            Jelajahi Bali <span class="text-daun relative inline-block">Seutuhnya<svg class="absolute -bottom-2 left-0 w-full h-3 text-padi/50" viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0,8 Q50,0 100,8" stroke="currentColor" stroke-width="4" fill="none"/></svg></span>
           </h1>
-          <p class="font-body text-lg sm:text-xl text-tanah/80 leading-relaxed mb-8 max-w-2xl mx-auto">
-            Bali bukan hanya Kuta dan Seminyak. AI kami merekomendasikan
-            <strong class="text-tanah-gelap">paket petualangan</strong> unik —
-            3 destinasi tersembunyi + 1 kuliner lokal — agar Anda menjelajahi
-            budaya, alam, dan rasa yang sesungguhnya.
+
+          <p class="font-body text-base sm:text-lg text-tanah/90 leading-relaxed max-w-2xl mx-auto mb-2">
+            Bali bukan hanya pantai viral di selatan. AI kami merekomendasikan <strong class="text-tanah-gelap">paket petualangan personal</strong> — 3 destinasi tersembunyi + 1 kuliner lokal legendaris — agar Anda menyelami alam, kearifan budaya, dan rasa yang sesungguhnya.
           </p>
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/src/pages/masuk.html" class="btn-primer text-base" id="hero-cta">
-              Mulai Petualangan
+          <p class="font-body text-xs sm:text-sm text-tanah/70 italic max-w-xl mx-auto mb-8">
+            AI-curated sustainable adventures: 3 hidden gems + 1 authentic culinary stop honoring Balinese heritage.
+          </p>
+
+          <!-- Tombol CTA Utama -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
+            <a href="/src/pages/masuk.html" class="w-full sm:w-auto btn-primer text-base !py-3.5 !px-8 flex items-center justify-center gap-2.5 shadow-organik-lg" id="hero-cta">
+              <i class="fa-solid fa-compass text-krem"></i>
+              <span>Mulai Petualangan</span>
             </a>
-            <a href="/src/pages/kenali-budaya.html" class="btn-sekunder text-base flex items-center gap-2">
+            <a href="/src/pages/kenali-budaya.html" class="w-full sm:w-auto btn-sekunder text-base !py-3.5 !px-7 flex items-center justify-center gap-2.5 shadow-sm">
               <i class="fa-solid fa-camera-retro text-daun"></i>
               <span>Kenali Budaya (AI)</span>
             </a>
           </div>
+
+          <!-- Pratinjau Formula 3+1 (Featured Preview Cards) -->
+          <div class="mt-12 pt-8 border-t border-pasir/60">
+            <span class="text-xs uppercase font-semibold text-tanah/70 tracking-wider block mb-4">
+              Formula Cerdas 3 Wisata Tersembunyi + 1 Kuliner Lokal
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-left">
+              
+              <!-- Preview 1 -->
+              <div class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-daun/40 transition-all">
+                <div class="flex items-center justify-between text-xs mb-2">
+                  <span class="badge-daun text-[11px] py-0.5 px-2">Wisata 1 · Alam</span>
+                  <span class="text-tanah/60 font-medium">Buleleng</span>
+                </div>
+                <h4 class="font-heading font-bold text-tanah-gelap text-sm sm:text-base leading-snug">Air Terjun Sekumpul</h4>
+                <p class="text-xs text-tanah/70 mt-1 line-clamp-2">Tujuh air terjun tersembunyi di lembah asri Bali Utara yang megah dan tenang.</p>
+              </div>
+
+              <!-- Preview 2 -->
+              <div class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-daun/40 transition-all">
+                <div class="flex items-center justify-between text-xs mb-2">
+                  <span class="badge-daun text-[11px] py-0.5 px-2">Wisata 2 · Budaya</span>
+                  <span class="text-tanah/60 font-medium">Buleleng</span>
+                </div>
+                <h4 class="font-heading font-bold text-tanah-gelap text-sm sm:text-base leading-snug">Desa Adat Pedawa</h4>
+                <p class="text-xs text-tanah/70 mt-1 line-clamp-2">Desa purba Bali Aga dengan arsitektur rumah tradisional Bandung Rangki.</p>
+              </div>
+
+              <!-- Preview 3 -->
+              <div class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-padi/60 transition-all">
+                <div class="flex items-center justify-between text-xs mb-2">
+                  <span class="badge-padi text-[11px] py-0.5 px-2">Kuliner · Tradisi</span>
+                  <span class="text-tanah/60 font-medium">Tabanan</span>
+                </div>
+                <h4 class="font-heading font-bold text-tanah-gelap text-sm sm:text-base leading-snug">Warung Entil Pupuan</h4>
+                <p class="text-xs text-tanah/70 mt-1 line-clamp-2">Lontong khas berbalut daun entil alami dengan bumbu rempah warisan leluhur.</p>
+              </div>
+
+            </div>
+
+            <!-- Shortcut Chips untuk Akses Cepat di Ponsel -->
+            <div class="flex items-center justify-center gap-2 flex-wrap pt-5">
+              <a href="/src/pages/budaya.html" class="badge-daun hover:bg-daun hover:text-white transition-all text-xs py-1.5 px-3 flex items-center gap-1.5">
+                <i class="fa-solid fa-landmark text-xs"></i>
+                <span>Ensiklopedia Budaya</span>
+              </a>
+              <a href="/src/pages/kamus.html" class="badge-daun hover:bg-daun hover:text-white transition-all text-xs py-1.5 px-3 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-xs"></i>
+                <span>Kamus Basa Bali</span>
+              </a>
+              <a href="/src/pages/lencana.html" class="badge-padi hover:bg-padi hover:text-tanah-gelap transition-all text-xs py-1.5 px-3 flex items-center gap-1.5">
+                <i class="fa-solid fa-award text-xs"></i>
+                <span>Galeri Lencana</span>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -70,53 +133,151 @@
     </section>
 
     <!-- Cara Kerja -->
-    <section id="cara-kerja" class="py-16 sm:py-24 bg-krem">
+    <section id="cara-kerja" class="py-16 sm:py-20 bg-krem">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12 animate-fade-in">
-          <h2 class="font-heading text-3xl sm:text-4xl font-bold text-tanah-gelap mb-4">
+          <span class="badge-daun mb-2 inline-flex">Alur Mudah</span>
+          <h2 class="font-heading text-3xl sm:text-4xl font-bold text-tanah-gelap mb-3">
             Bagaimana Cara Kerjanya?
           </h2>
-          <p class="font-body text-tanah/70 max-w-xl mx-auto">
-            Tiga langkah sederhana menuju petualangan Bali yang autentik.
+          <p class="font-body text-sm sm:text-base text-tanah/70 max-w-xl mx-auto">
+            Tiga langkah terpadu menuju petualangan Bali yang bermakna dan berkesan.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           <!-- Langkah 1 -->
-          <div class="card-organik text-center animate-slide-up" style="animation-delay: 0.1s">
+          <div class="card-organik text-center animate-slide-up relative p-6 sm:p-8" style="animation-delay: 0.1s">
+            <span class="absolute top-4 right-4 text-xs font-mono font-bold text-daun/40">01</span>
             <div class="w-16 h-16 rounded-2xl bg-daun/10 text-daun flex items-center justify-center mx-auto mb-5 shadow-sm">
               <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
             </div>
-            <h3 class="font-heading text-xl font-semibold mb-3">AI Merekomendasikan</h3>
-            <p class="font-body text-sm text-tanah/70">
-              Jawab beberapa pertanyaan tentang minat Anda, lalu AI kami menyusun
-              <strong>paket petualangan</strong> yang sesuai karakter Anda.
+            <h3 class="font-heading text-xl font-bold text-tanah-gelap mb-2">AI Merekomendasikan</h3>
+            <p class="font-body text-xs sm:text-sm text-tanah/75 leading-relaxed">
+              Pilih minat dan wilayah yang Anda sukai. Sistem AI kami menyusun
+              <strong>paket petualangan 3+1</strong> yang seimbang dan autentik.
             </p>
           </div>
 
           <!-- Langkah 2 -->
-          <div class="card-organik text-center animate-slide-up" style="animation-delay: 0.25s">
+          <div class="card-organik text-center animate-slide-up relative p-6 sm:p-8" style="animation-delay: 0.25s">
+            <span class="absolute top-4 right-4 text-xs font-mono font-bold text-lumut/40">02</span>
             <div class="w-16 h-16 rounded-2xl bg-lumut/10 text-lumut flex items-center justify-center mx-auto mb-5 shadow-sm">
               <i class="fa-solid fa-map-location-dot text-2xl"></i>
             </div>
-            <h3 class="font-heading text-xl font-semibold mb-3">Jelajahi & Tandai</h3>
-            <p class="font-body text-sm text-tanah/70">
-              Kunjungi destinasi di paket Anda, tandai "Selesai Jelajah",
-              dan tulis ulasan singkat.
+            <h3 class="font-heading text-xl font-bold text-tanah-gelap mb-2">Jelajahi & Beri Ulasan</h3>
+            <p class="font-body text-xs sm:text-sm text-tanah/75 leading-relaxed">
+              Ikuti jalur setapak gamifikasi ala Duolingo, tandai "Selesai Jelajah",
+              dan bagikan ulasan serta tips kearifan lokal.
             </p>
           </div>
 
           <!-- Langkah 3 -->
-          <div class="card-organik text-center animate-slide-up" style="animation-delay: 0.4s">
+          <div class="card-organik text-center animate-slide-up relative p-6 sm:p-8" style="animation-delay: 0.4s">
+            <span class="absolute top-4 right-4 text-xs font-mono font-bold text-padi-dark/40">03</span>
             <div class="w-16 h-16 rounded-2xl bg-padi/15 text-padi-dark flex items-center justify-center mx-auto mb-5 shadow-sm">
               <i class="fa-solid fa-award text-2xl"></i>
             </div>
-            <h3 class="font-heading text-xl font-semibold mb-3">Raih Lencana</h3>
-            <p class="font-body text-sm text-tanah/70">
-              Selesaikan semua tempat dalam satu paket untuk mendapatkan
-              <strong>lencana eksklusif</strong>. Kumpulkan semuanya!
+            <h3 class="font-heading text-xl font-bold text-tanah-gelap mb-2">Raih Lencana Tradisi</h3>
+            <p class="font-body text-xs sm:text-sm text-tanah/75 leading-relaxed">
+              Tuntaskan paket untuk membuka lencana eksklusif (*Penjelajah Pemula*, *Utara*, *Pencari Budaya*) sebagai bukti kontribusi Anda.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seksi 4 Fitur Unggulan Pariwisata Cerdas -->
+    <section class="py-16 sm:py-20 bg-white border-y border-pasir/60">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
+          <span class="badge-padi mb-2 inline-flex">Ekosistem Lengkap</span>
+          <h2 class="font-heading text-3xl sm:text-4xl font-bold text-tanah-gelap mb-3">
+            Inovasi Pariwisata Budaya Dewata
+          </h2>
+          <p class="font-body text-sm sm:text-base text-tanah/70 max-w-xl mx-auto">
+            Empat pilar teknologi yang dirancang menghubungkan wisatawan dengan kearifan lokal Bali secara santun dan berkelanjutan.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <!-- Fitur 1 -->
+          <a href="/src/pages/kenali-budaya.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-daun/10 text-daun flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-camera-retro text-xl"></i>
+              </div>
+              <h3 class="font-heading text-lg font-bold text-tanah-gelap group-hover:text-daun transition-colors">
+                AI Vision Budaya
+              </h3>
+              <p class="font-body text-xs text-tanah/75 leading-relaxed">
+                Identifikasi sesaji canang, busana adat pura, tarian, dan arsitektur dari foto ponsel dengan taksonomi anti-halusinasi.
+              </p>
+            </div>
+            <div class="pt-4 mt-3 border-t border-pasir/40 text-xs font-semibold text-daun flex items-center justify-between">
+              <span>Coba Kenali Foto</span>
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </div>
+          </a>
+
+          <!-- Fitur 2 -->
+          <a href="/src/pages/petualangan.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-lumut/10 text-lumut flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-route text-xl"></i>
+              </div>
+              <h3 class="font-heading text-lg font-bold text-tanah-gelap group-hover:text-daun transition-colors">
+                Jalur Gamifikasi
+              </h3>
+              <p class="font-body text-xs text-tanah/75 leading-relaxed">
+                Alur petualangan interaktif ala Duolingo dengan checkpoint visual, catatan budaya, dan integrasi ulasan nyata.
+              </p>
+            </div>
+            <div class="pt-4 mt-3 border-t border-pasir/40 text-xs font-semibold text-daun flex items-center justify-between">
+              <span>Buka Jalur Saya</span>
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </div>
+          </a>
+
+          <!-- Fitur 3 -->
+          <a href="/src/pages/kamus.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-book-open text-xl"></i>
+              </div>
+              <h3 class="font-heading text-lg font-bold text-tanah-gelap group-hover:text-daun transition-colors">
+                Kamus Basa Bali
+              </h3>
+              <p class="font-body text-xs text-tanah/75 leading-relaxed">
+                Pahami etika bertutur kata (*Anggah-Ungguhing*) 4 tingkatan bahasa (Alus Singgih, Sor, Madya, Andap) + audio lafal.
+              </p>
+            </div>
+            <div class="pt-4 mt-3 border-t border-pasir/40 text-xs font-semibold text-daun flex items-center justify-between">
+              <span>Cari Kosakata</span>
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </div>
+          </a>
+
+          <!-- Fitur 4 -->
+          <a href="/src/pages/budaya.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-landmark text-xl"></i>
+              </div>
+              <h3 class="font-heading text-lg font-bold text-tanah-gelap group-hover:text-daun transition-colors">
+                Ensiklopedia Budaya
+              </h3>
+              <p class="font-body text-xs text-tanah/75 leading-relaxed">
+                Artikel gaya majalah editorial: panduan sakral masuk pura, filosofi canang harian, dan sistem irigasi subak terdaftar UNESCO.
+              </p>
+            </div>
+            <div class="pt-4 mt-3 border-t border-pasir/40 text-xs font-semibold text-daun flex items-center justify-between">
+              <span>Baca Majalah Budaya</span>
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </div>
+          </a>
+
         </div>
       </div>
     </section>
