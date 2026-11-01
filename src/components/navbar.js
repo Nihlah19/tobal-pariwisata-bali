@@ -52,26 +52,15 @@ export async function renderNavbar(selector) {
         <div class="flex items-center justify-between h-20">
           
           <!-- Logo Brand dengan Maskot Bara -->
-          <a href="/" class="flex items-center gap-3 group shrink-0" aria-label="Beranda Tour Penjelajah Bali">
-            <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-300 via-orange-200 to-emerald-100 border-2 border-amber-300 shadow-sm flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:rotate-3">
-              <img src="/images/mascot-barong-head.png" alt="Bara Maskot" class="w-9 h-9 object-contain">
-              <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-daun rounded-full border-2 border-white"></span>
+          <a href="/" class="flex items-center gap-3 group shrink-0" aria-label="Beranda Tobal">
+            <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-300 via-orange-200 to-emerald-100 border-2 border-amber-300 shadow-sm flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:rotate-3">
+              <img src="/images/mascot-barong-head.png" alt="Bara Maskot" class="w-8 h-8 sm:w-9 sm:h-9 object-contain">
+              <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-daun rounded-full border-2 border-white"></span>
             </div>
             
-            <div class="flex flex-col">
-              <div class="flex items-center gap-1.5">
-                <span class="font-heading font-extrabold text-lg sm:text-xl text-tanah-gelap tracking-tight leading-none group-hover:text-daun transition-colors">
-                  Penjelajah Bali
-                </span>
-                <span class="hidden md:inline-block text-[9px] font-black uppercase tracking-widest bg-daun/10 text-daun px-1.5 py-0.5 rounded-md">
-                  TOBAL
-                </span>
-              </div>
-              <span class="text-[10px] sm:text-[11px] font-bold text-terakota tracking-wide uppercase mt-1 flex items-center gap-1">
-                <i class="fa-solid fa-spa text-[9px] text-padi-dark"></i>
-                <span>Kawan Wisata Budaya</span>
-              </span>
-            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl text-tanah-gelap tracking-tight leading-none group-hover:text-daun transition-colors">
+              Tobal
+            </span>
           </a>
 
           <!-- Desktop Navigation: Modern Island / Capsule Dock -->
