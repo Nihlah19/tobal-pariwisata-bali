@@ -29,6 +29,7 @@ import {
   TINGKAT_STYLE_MAP,
   FALLBACK_DICTIONARY
 } from '../lib/dictionary.js';
+import { getGrammarRules } from '../lib/grammar.js';
 
 // State global halaman kamus
 const state = {
@@ -75,6 +76,7 @@ async function init() {
 
   // Load data awal
   await performSearch();
+  await renderGrammarSection();
 
   // Jika ada ID atau kata spesifik di URL, buka modal detailnya
   if (initialId || (initialQ && state.results.length === 1)) {
@@ -749,6 +751,58 @@ function openWordModal(word) {
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+}
+
+async function renderGrammarSection() {
+  const container = document.getElementById('grammar-entries-area');
+  if (!container) return;
+
+  try {
+    const rules = await getGrammarRules();
+    if (!rules || rules.length === 0) {
+      container.innerHTML = '<p class="text-xs text-tanah/50 italic py-4">Materi tata bahasa sedang dipersiapkan...</p>';
+      return;
+    }
+
+    container.innerHTML = rules.map(rule => `
+      <div class="card-organik p-5 bg-white border border-pasir/80 space-y-3 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pasir/40 pb-2.5">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-daun/10 text-daun flex items-center justify-center font-bold text-xs">
+              ${rule.urutan || 1}
+            </span>
+            <h3 class="font-heading font-bold text-base text-tanah-gelap">${rule.judul}</h3>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-daun bg-daun/10 px-2.5 py-0.5 rounded-full border border-daun/20 self-start sm:self-auto">
+            ${rule.kategori}
+          </span>
+        </div>
+        <p class="text-xs text-tanah leading-relaxed">${rule.ringkasan}</p>
+        ${rule.pola_rumus ? `
+          <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/50 font-mono text-xs text-amber-900 flex items-center gap-2">
+            <i class="fa-solid fa-cube text-amber-600 text-xs"></i>
+            <span><strong>Pola Rumus:</strong> ${rule.pola_rumus}</span>
+          </div>
+        ` : ''}
+        ${Array.isArray(rule.contoh_kalimat) && rule.contoh_kalimat.length > 0 ? `
+          <div class="space-y-1.5 pt-1">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-tanah/70 block">Contoh Penggunaan:</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+              ${rule.contoh_kalimat.map(c => `
+                <div class="p-2.5 rounded-xl bg-krem/40 border border-pasir/60">
+                  <p class="font-bold text-tanah-gelap">"${c.bali}"</p>
+                  <p class="text-tanah/70 text-[11px] mt-0.5">${c.indonesia}</p>
+                  ${c.catatan ? `<p class="text-[10px] text-terakota mt-0.5 italic">Catatan: ${c.catatan}</p>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `).join('');
+  } catch (err) {
+    console.warn('[Grammar Error]:', err.message);
+  }
 }
 
 function closeWordModal() {

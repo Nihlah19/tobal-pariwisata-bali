@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Admin Dashboard — Tobal Pariwisata & Budaya Bali</title>
+  <meta name="description" content="Panel Super Admin Tobal untuk mengelola artikel blog budaya, kamus kosakata, tata bahasa Bali, serta konfigurasi database Supabase dan API key Gemini." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Font Awesome 6 Free Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Direct CSS MIME Type fix -->
+  <link rel="stylesheet" href="/src/styles/main.css?direct" />
+  <style>
+    /* Admin specific sleek accents */
+    .admin-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.125rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #786C5E;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(226, 219, 205, 0.8);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .admin-tab-btn:hover {
+      background: #FFFFFF;
+      color: #C05621;
+      border-color: #C05621;
+      transform: translateY(-1px);
+    }
+    .admin-tab-btn.active {
+      background: #C05621;
+      color: #FFFFFF;
+      border-color: #C05621;
+      box-shadow: 0 4px 12px rgba(192, 86, 33, 0.25);
+    }
+    .badge-status-green {
+      background: rgba(46, 125, 50, 0.12);
+      color: #2E7D32;
+      border: 1px solid rgba(46, 125, 50, 0.25);
+    }
+    .badge-status-amber {
+      background: rgba(217, 119, 6, 0.12);
+      color: #B45309;
+      border: 1px solid rgba(217, 119, 6, 0.25);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-[#FBF9F5] text-teks font-body antialiased">
+
+  <!-- ======================================================================== -->
+  <!-- ADMIN HEADER DOCK                                                       -->
+  <!-- ======================================================================== -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-pasir px-4 sm:px-8 py-3.5 shadow-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Brand & Admin Title -->
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-terakota to-amber-500 p-0.5 shadow-sm group-hover:scale-105 transition-transform">
+            <img src="/images/mascot-barong.png" alt="Bara Si Barong" class="w-full h-full object-contain filter drop-shadow-xs" />
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-heading font-black text-xl text-tanah-gelap tracking-tight">Tobal</span>
+              <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-amber-300">
+                Super Admin
+              </span>
+            </div>
+            <p class="text-[11px] text-tanah/70 -mt-0.5 font-medium">Panel Pengendali Konten & Konfigurasi</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <div id="live-db-indicator" class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold badge-status-green">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="live-db-text">Supabase Aktif</span>
+        </div>
+
+        <a href="/src/pages/budaya.html" target="_blank" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-tanah hover:text-terakota hover:bg-pasir/40 transition-colors">
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          <span>Lihat Web Publik</span>
+        </a>
+
+        <button id="btn-admin-logout" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-tanah/5 hover:bg-red-50 text-tanah hover:text-red-600 text-xs font-semibold border border-pasir transition-all cursor-pointer">
+          <i class="fa-solid fa-lock text-xs"></i>
+          <span>Kunci Sesi</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ======================================================================== -->
+  <!-- MAIN ADMIN CONTAINER                                                    -->
+  <!-- ======================================================================== -->
+  <main class="flex-1 py-8 px-4 sm:px-8 max-w-7xl mx-auto w-full space-y-8">
+
+    <!-- TAB NAVIGATION BAR -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-pasir/60">
+      <button class="admin-tab-btn active" data-tab="overview">
+        <i class="fa-solid fa-chart-pie text-sm"></i>
+        <span>Ringkasan</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="culture">
+        <i class="fa-solid fa-newspaper text-sm"></i>
+        <span>Ensiklopedia Budaya (Blog)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="dictionary">
+        <i class="fa-solid fa-book-bookmark text-sm"></i>
+        <span>Kamus Bahasa Bali</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="grammar">
+        <i class="fa-solid fa-feather-pointed text-sm"></i>
+        <span>Tata Bahasa Bali</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="settings">
+        <i class="fa-solid fa-sliders text-sm"></i>
+        <span>Konfigurasi DB & AI Gemini</span>
+      </button>
+    </div>
+
+    <!-- ====================================================================== -->
+    <!-- TAB 1: OVERVIEW & RINGKASAN                                             -->
+    <!-- ====================================================================== -->
+    <section id="section-overview" class="admin-section space-y-8 animate-fade-in">
+      
+      <!-- Welcome Banner -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#2A1E17] via-[#3E2C22] to-[#4A2D1B] text-white p-6 sm:p-8 shadow-md">
+        <div class="relative z-10 max-w-2xl space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-semibold border border-amber-400/30">
+            <i class="fa-solid fa-crown text-xs"></i>
+            <span>Pusat Kendali Pariwisata & Edukasi Dewata</span>
+          </div>
+          <h1 class="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-amber-100">
+            Rahajeng Rahina, Super Admin Tobal!
+          </h1>
+          <p class="text-white/80 text-sm sm:text-base leading-relaxed">
+            Kelola seluruh konten ensiklopedia budaya bergaya blog majalah, perbendaharaan kamus KBBI Bali, kaidah tata bahasa (*Sor Singgih*), serta atur perpindahan database Supabase baru jika kuota lama telah terisi penuh.
+          </p>
+        </div>
+        <div class="absolute -right-6 -bottom-8 w-44 h-44 opacity-25 pointer-events-none transform rotate-12">
+          <img src="/images/mascot-barong.png" alt="Bara Decor" class="w-full h-full object-contain filter invert" />
+        </div>
+      </div>
+
+      <!-- Stat Cards Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        
+        <div class="card-organik p-5 border border-pasir/80 bg-white shadow-xs">
+          <div class="flex items-center justify-between text-terakota mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-tanah/70">Artikel Budaya</span>
+            <div class="w-9 h-9 rounded-xl bg-terakota/10 flex items-center justify-center">
+              <i class="fa-solid fa-newspaper text-terakota"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black font-heading text-tanah-gelap" id="stat-culture-count">--</div>
+          <p class="text-xs text-tanah/60 mt-1">Artikel blog terpublikasi</p>
+        </div>
+
+        <div class="card-organik p-5 border border-pasir/80 bg-white shadow-xs">
+          <div class="flex items-center justify-between text-amber-600 mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-tanah/70">Kosakata Kamus</span>
+            <div class="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center">
+              <i class="fa-solid fa-book-bookmark text-amber-600"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black font-heading text-tanah-gelap" id="stat-dict-count">--</div>
+          <p class="text-xs text-tanah/60 mt-1">Entri kosakata aktif</p>
+        </div>
+
+        <div class="card-organik p-5 border border-pasir/80 bg-white shadow-xs">
+          <div class="flex items-center justify-between text-daun mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-tanah/70">Tata Bahasa Bali</span>
+            <div class="w-9 h-9 rounded-xl bg-daun/10 flex items-center justify-center">
+              <i class="fa-solid fa-feather-pointed text-daun"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black font-heading text-tanah-gelap" id="stat-grammar-count">--</div>
+          <p class="text-xs text-tanah/60 mt-1">Kaidah & Sor Singgih</p>
+        </div>
+
+        <div class="card-organik p-5 border border-pasir/80 bg-white shadow-xs">
+          <div class="flex items-center justify-between text-indigo-600 mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-tanah/70">Destinasi Wisata</span>
+            <div class="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center">
+              <i class="fa-solid fa-map-location-dot text-indigo-600"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black font-heading text-tanah-gelap" id="stat-places-count">--</div>
+          <p class="text-xs text-tanah/60 mt-1">Katalog tempat di 9 kab/kota</p>
+        </div>
+
+      </div>
+
+      <!-- Quick Status Panels -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Supabase Health Card -->
+        <div class="card-organik p-6 bg-white border border-pasir space-y-4">
+          <div class="flex items-center justify-between border-b border-pasir/50 pb-3">
+            <h3 class="font-heading font-bold text-base text-tanah-gelap flex items-center gap-2">
+              <i class="fa-solid fa-database text-emerald-600"></i>
+              <span>Status Database Supabase</span>
+            </h3>
+            <span class="badge-status-green text-xs px-2.5 py-0.5 rounded-full font-semibold">Tersambung</span>
+          </div>
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between py-1 border-b border-pasir/30">
+              <span class="text-tanah/70">Instance URL:</span>
+              <span id="overview-supabase-url" class="font-mono font-semibold text-tanah-gelap text-right truncate max-w-[240px]">Memuat...</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-pasir/30">
+              <span class="text-tanah/70">Anon/Publishable Key:</span>
+              <span id="overview-supabase-key" class="font-mono font-semibold text-tanah-gelap">Memuat...</span>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-tanah/70">Status Database Lama Penuh:</span>
+              <span class="text-amber-700 font-medium">Bisa ganti DB baru kapan saja di tab Konfigurasi</span>
+            </div>
+          </div>
+          <button class="w-full py-2.5 rounded-xl bg-pasir/30 hover:bg-pasir/70 text-tanah font-semibold text-xs transition-colors flex items-center justify-center gap-1.5" onclick="window.switchTab('settings')">
+            <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+            <span>Buka Switcher Database Supabase Baru</span>
+          </button>
+        </div>
+
+        <!-- Gemini AI Health Card -->
+        <div class="card-organik p-6 bg-white border border-pasir space-y-4">
+          <div class="flex items-center justify-between border-b border-pasir/50 pb-3">
+            <h3 class="font-heading font-bold text-base text-tanah-gelap flex items-center gap-2">
+              <i class="fa-solid fa-brain text-purple-600"></i>
+              <span>Status Google Gemini Vision AI</span>
+            </h3>
+            <span id="overview-gemini-badge" class="badge-status-green text-xs px-2.5 py-0.5 rounded-full font-semibold">Siap</span>
+          </div>
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between py-1 border-b border-pasir/30">
+              <span class="text-tanah/70">Model Aktif:</span>
+              <span id="overview-gemini-model" class="font-mono font-semibold text-purple-700">gemini-2.5-flash</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-pasir/30">
+              <span class="text-tanah/70">API Key Terpasang:</span>
+              <span id="overview-gemini-key" class="font-mono font-semibold text-tanah-gelap">Memuat...</span>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-tanah/70">Fungsi AI:</span>
+              <span class="text-tanah/80">Kenali Budaya Foto (Vision) + Content Recommender</span>
+            </div>
+          </div>
+          <button class="w-full py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5" onclick="window.switchTab('settings')">
+            <i class="fa-solid fa-key text-xs"></i>
+            <span>Ubah API Key & Model Gemini</span>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- TAB 2: ENSIKLOPEDIA BUDAYA (BLOG / CMS STUDIO)                         -->
+    <!-- ====================================================================== -->
+    <section id="section-culture" class="admin-section hidden space-y-6">
+      
+      <!-- Action Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-pasir">
+        <div>
+          <h2 class="font-heading font-bold text-xl sm:text-2xl text-tanah-gelap flex items-center gap-2">
+            <i class="fa-solid fa-newspaper text-terakota"></i>
+            <span>Studio Artikel Budaya (Blog/CMS)</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-tanah/70 mt-1">
+            Tulis dan publikasikan ulasan kebudayaan Bali bergaya majalah editorial dengan live markdown preview.
+          </p>
+        </div>
+        <button id="btn-create-culture" class="btn-terakota text-sm py-2.5 px-4 rounded-2xl flex items-center gap-2 cursor-pointer shadow-sm">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Tulis Artikel Baru</span>
+        </button>
+      </div>
+
+      <!-- Search & Filter Bar -->
+      <div class="bg-white p-4 rounded-2xl border border-pasir flex flex-col md:flex-row items-stretch md:items-center gap-3">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/50 text-xs"></i>
+          <input type="text" id="filter-culture-search" class="w-full pl-9 pr-4 py-2 bg-krem/40 rounded-xl border border-pasir text-xs focus:ring-2 focus:ring-terakota/20 focus:border-terakota outline-hidden" placeholder="Cari artikel berdasarkan judul, ringkasan, atau tag..." />
+        </div>
+        <select id="filter-culture-category" class="bg-krem/40 rounded-xl border border-pasir px-3 py-2 text-xs text-tanah font-medium focus:ring-2 focus:ring-terakota/20 focus:border-terakota outline-hidden">
+          <option value="semua">Semua Kategori Budaya</option>
+          <option value="etika">Etika & Tata Krama</option>
+          <option value="upacara">Upacara & Ritual</option>
+          <option value="tradisi">Tradisi & Subak</option>
+          <option value="tari">Seni Tari</option>
+          <option value="kuliner">Kuliner Tradisional</option>
+          <option value="kerajinan">Kriya & Tenun</option>
+          <option value="arsitektur">Arsitektur</option>
+        </select>
+      </div>
+
+      <!-- Articles Grid/List -->
+      <div id="admin-culture-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered dynamically via admin.js -->
+      </div>
+
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- TAB 3: KAMUS BAHASA BALI (DICTIONARY MANAGER)                           -->
+    <!-- ====================================================================== -->
+    <section id="section-dictionary" class="admin-section hidden space-y-6">
+      
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-pasir">
+        <div>
+          <h2 class="font-heading font-bold text-xl sm:text-2xl text-tanah-gelap flex items-center gap-2">
+            <i class="fa-solid fa-book-bookmark text-amber-600"></i>
+            <span>Kelola Kamus Bahasa Bali</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-tanah/70 mt-1">
+            Input kosakata baru, tingkat bahasa (*Alus Singgih, Alus Sor, Andap*), kelas kata, dan contoh kalimat.
+          </p>
+        </div>
+        <button id="btn-create-word" class="btn-padi text-sm py-2.5 px-4 rounded-2xl flex items-center gap-2 cursor-pointer shadow-sm">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Tambah Kosakata Baru</span>
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white p-4 rounded-2xl border border-pasir flex flex-col md:flex-row items-stretch md:items-center gap-3">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/50 text-xs"></i>
+          <input type="text" id="filter-dict-search" class="w-full pl-9 pr-4 py-2 bg-krem/40 rounded-xl border border-pasir text-xs focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600 outline-hidden" placeholder="Cari kata Bali atau terjemahan Indonesia..." />
+        </div>
+        <select id="filter-dict-level" class="bg-krem/40 rounded-xl border border-pasir px-3 py-2 text-xs text-tanah font-medium focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600 outline-hidden">
+          <option value="semua">Semua Tingkatan Bahasa</option>
+          <option value="alus singgih">Alus Singgih (ASI)</option>
+          <option value="alus sor">Alus Sor (ASO)</option>
+          <option value="alus madya">Alus Madya (AMA)</option>
+          <option value="andap/kasar">Andap / Kasar</option>
+          <option value="umum">Umum</option>
+        </select>
+      </div>
+
+      <!-- Dictionary Table Container -->
+      <div class="bg-white rounded-3xl border border-pasir overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-krem/60 border-b border-pasir text-tanah-gelap font-heading font-bold uppercase tracking-wider text-[11px]">
+              <tr>
+                <th class="py-3 px-4">Kata Bali</th>
+                <th class="py-3 px-4">Arti Indonesia</th>
+                <th class="py-3 px-4">Tingkatan</th>
+                <th class="py-3 px-4">Kelas</th>
+                <th class="py-3 px-4">Contoh Kalimat</th>
+                <th class="py-3 px-4 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="admin-dict-table-body" class="divide-y divide-pasir/40">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- TAB 4: TATA BAHASA BALI (BALINESE GRAMMAR)                              -->
+    <!-- ====================================================================== -->
+    <section id="section-grammar" class="admin-section hidden space-y-6">
+      
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-pasir">
+        <div>
+          <h2 class="font-heading font-bold text-xl sm:text-2xl text-tanah-gelap flex items-center gap-2">
+            <i class="fa-solid fa-feather-pointed text-daun"></i>
+            <span>Kelola Tata Bahasa Bali (Grammar)</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-tanah/70 mt-1">
+            Aturan *Sor Singgih*, pronomina, pembentukan kata kerja (*Kruna Polah*), dan pola kalimat.
+          </p>
+        </div>
+        <button id="btn-create-grammar" class="btn-daun text-sm py-2.5 px-4 rounded-2xl flex items-center gap-2 cursor-pointer shadow-sm">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Tambah Tata Bahasa Baru</span>
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white p-4 rounded-2xl border border-pasir flex flex-col md:flex-row items-stretch md:items-center gap-3">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/50 text-xs"></i>
+          <input type="text" id="filter-grammar-search" class="w-full pl-9 pr-4 py-2 bg-krem/40 rounded-xl border border-pasir text-xs focus:ring-2 focus:ring-daun/20 focus:border-daun outline-hidden" placeholder="Cari materi tata bahasa..." />
+        </div>
+        <select id="filter-grammar-category" class="bg-krem/40 rounded-xl border border-pasir px-3 py-2 text-xs text-tanah font-medium focus:ring-2 focus:ring-daun/20 focus:border-daun outline-hidden">
+          <option value="semua">Semua Kategori</option>
+          <option value="sor-singgih">Sor Singgih (Tingkatan Bahasa)</option>
+          <option value="pronomina">Pronomina (Kata Ganti Orang)</option>
+          <option value="afiksasi">Afiksasi (Kruna Polah)</option>
+          <option value="sintaksis">Sintaksis (Pola Kalimat SPO)</option>
+          <option value="tata-krama">Tata Krama Bertutur</option>
+        </select>
+      </div>
+
+      <!-- Grammar Rules List -->
+      <div id="admin-grammar-list" class="space-y-4">
+        <!-- Rendered via JS -->
+      </div>
+
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- TAB 5: KONFIGURASI SUPER ADMIN (DATABASE & GEMINI AI)                    -->
+    <!-- ====================================================================== -->
+    <section id="section-settings" class="admin-section hidden space-y-8">
+      
+      <!-- Top Title -->
+      <div class="bg-white p-6 rounded-3xl border border-pasir space-y-1">
+        <h2 class="font-heading font-bold text-xl sm:text-2xl text-tanah-gelap flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-tanah-gelap"></i>
+          <span>Konfigurasi Super Admin</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-tanah/70">
+          Atur koneksi instance database Supabase baru (bila kuota gratis lama telah penuh) dan update Google Gemini AI API key langsung dari dashboard ini.
+        </p>
+      </div>
+
+      <!-- 1. SUPABASE MULTI-DB SWITCHER -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-pasir space-y-6 shadow-xs">
+        <div class="flex items-center gap-3 border-b border-pasir/60 pb-4">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-server"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-tanah-gelap">Database Supabase Baru (Database Switcher)</h3>
+            <p class="text-xs text-tanah/70">Jika database lama sudah penuh kuotanya, Anda dapat menghubungkan project Supabase baru di sini.</p>
+          </div>
+        </div>
+
+        <form id="form-supabase-config" class="space-y-4 max-w-2xl">
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              Project URL Supabase Baru
+            </label>
+            <div class="relative">
+              <i class="fa-solid fa-link absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/40 text-xs"></i>
+              <input type="url" id="cfg-supabase-url" required class="w-full pl-9 pr-4 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-hidden" placeholder="https://xxxxxxxxxxxxxxxxxxxx.supabase.co" />
+            </div>
+            <p class="text-[11px] text-tanah/60 mt-1">Dapatkan di: Supabase Dashboard &gt; Project Settings &gt; API &gt; Project URL</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              Publishable / Anon Public Key Baru
+            </label>
+            <div class="relative">
+              <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/40 text-xs"></i>
+              <input type="text" id="cfg-supabase-anon" required class="w-full pl-9 pr-4 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-hidden" placeholder="sb_publishable_... atau eyJhbGciOi..." />
+            </div>
+            <p class="text-[11px] text-tanah/60 mt-1">Key publik yang digunakan frontend untuk otentikasi dan pembacaan data.</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              Service Role Secret Key (Opsional / Direkomendasikan untuk Admin)
+            </label>
+            <div class="relative">
+              <i class="fa-solid fa-shield-halved absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/40 text-xs"></i>
+              <input type="password" id="cfg-supabase-service" class="w-full pl-9 pr-4 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-hidden" placeholder="eyJhbGciOi... (Opsional - jika dikosongkan akan memakai anon key)" />
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="button" id="btn-test-supabase" class="px-4 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition-colors flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-bolt text-xs"></i>
+              <span>Uji Koneksi Database Baru</span>
+            </button>
+            <button type="submit" id="btn-save-supabase" class="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-floppy-disk text-xs"></i>
+              <span>Terapkan & Simpan Database Baru</span>
+            </button>
+          </div>
+          <div id="test-supabase-feedback" class="text-xs p-3 rounded-xl hidden"></div>
+        </form>
+
+        <!-- DDL Helper if database is completely new -->
+        <div class="mt-6 p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs space-y-2">
+          <div class="flex items-center gap-2 font-bold text-amber-900">
+            <i class="fa-solid fa-circle-info text-amber-600"></i>
+            <span>Panduan Mempersiapkan Database Baru:</span>
+          </div>
+          <p class="text-amber-800 leading-relaxed">
+            Jika instance Supabase Anda baru dibuat dan masih kosong, buka menu <strong>SQL Editor</strong> di dashboard Supabase Anda, lalu jalankan file skema SQL yang ada di direktori project:
+            <code class="bg-amber-100 px-1.5 py-0.5 rounded text-amber-950 font-mono">supabase/schema.sql</code>, 
+            <code class="bg-amber-100 px-1.5 py-0.5 rounded text-amber-950 font-mono">supabase/migrations/002_dictionary.sql</code>, dan
+            <code class="bg-amber-100 px-1.5 py-0.5 rounded text-amber-950 font-mono">supabase/migrations/004_grammar.sql</code>.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. GEMINI AI API CONFIGURATION -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-pasir space-y-6 shadow-xs">
+        <div class="flex items-center gap-3 border-b border-pasir/60 pb-4">
+          <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-tanah-gelap">Konfigurasi Google Gemini Vision AI</h3>
+            <p class="text-xs text-tanah/70">Atur kunci API model AI Vision Gemini untuk fitur 'Kenali Budaya' dari foto dan inferensi rekomendasi.</p>
+          </div>
+        </div>
+
+        <form id="form-gemini-config" class="space-y-4 max-w-2xl">
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              Google Gemini API Key
+            </label>
+            <div class="relative">
+              <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/40 text-xs"></i>
+              <input type="password" id="cfg-gemini-key" required class="w-full pl-9 pr-4 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 outline-hidden" placeholder="AIzaSy..." />
+            </div>
+            <p class="text-[11px] text-tanah/60 mt-1">Dapatkan key gratis di Google AI Studio (aistudio.google.com).</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              Model Gemini yang Digunakan
+            </label>
+            <select id="cfg-gemini-model" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap font-medium focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 outline-hidden">
+              <option value="gemini-2.5-flash">gemini-2.5-flash (Direkomendasikan - Sangat Cepat & Vision Multimodal)</option>
+              <option value="gemini-1.5-flash">gemini-1.5-flash (Stabil & Efisien Kuota)</option>
+              <option value="gemini-1.5-pro">gemini-1.5-pro (Penalaran Kompleks)</option>
+            </select>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="button" id="btn-test-gemini" class="px-4 py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 text-xs font-bold border border-purple-200 transition-colors flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+              <span>Uji API Key Gemini</span>
+            </button>
+            <button type="submit" id="btn-save-gemini" class="px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-floppy-disk text-xs"></i>
+              <span>Simpan Konfigurasi Gemini</span>
+            </button>
+          </div>
+          <div id="test-gemini-feedback" class="text-xs p-3 rounded-xl hidden"></div>
+        </form>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ======================================================================== -->
+  <!-- MODAL: BLOG / CULTURE ARTICLE STUDIO                                     -->
+  <!-- ======================================================================== -->
+  <div id="modal-culture" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-pasir shadow-2xl space-y-6 p-6 sm:p-8 animate-fade-in">
+      <div class="flex items-center justify-between border-b border-pasir/60 pb-4">
+        <h3 id="modal-culture-title" class="font-heading font-bold text-xl text-tanah-gelap flex items-center gap-2">
+          <i class="fa-solid fa-pen-nib text-terakota"></i>
+          <span>Tulis Artikel Ensiklopedia Budaya</span>
+        </h3>
+        <button type="button" class="btn-close-modal text-tanah/50 hover:text-tanah text-lg p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="form-culture-article" class="space-y-5 text-xs">
+        <input type="hidden" id="culture-form-id" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Judul Artikel Budaya *</label>
+            <input type="text" id="culture-form-judul" required class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-terakota outline-hidden" placeholder="Contoh: Filosofi Canang Sari: Makna Persembahan Suci..." />
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Slug URL (Opsional / Otomatis)</label>
+            <input type="text" id="culture-form-slug" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:border-terakota outline-hidden" placeholder="filosofi-canang-sari" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Kategori Kebudayaan *</label>
+            <select id="culture-form-kategori" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-terakota outline-hidden">
+              <option value="etika">Etika & Tata Krama</option>
+              <option value="upacara">Upacara & Ritual</option>
+              <option value="tradisi">Tradisi & Subak</option>
+              <option value="tari">Seni Tari</option>
+              <option value="kuliner">Kuliner Tradisional</option>
+              <option value="kerajinan">Kriya & Tenun</option>
+              <option value="arsitektur">Arsitektur</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Wilayah Spesifik</label>
+            <input type="text" id="culture-form-wilayah" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-terakota outline-hidden" placeholder="Seluruh Bali, Karangasem, Gianyar..." value="Seluruh Bali" />
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Nama Alternatif (Pisah Koma)</label>
+            <input type="text" id="culture-form-alternatif" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-terakota outline-hidden" placeholder="Banten Canang, Persembahan Harian..." />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">URL Cover Gambar</label>
+          <input type="url" id="culture-form-gambar" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-terakota outline-hidden" placeholder="https://images.unsplash.com/..." />
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">Ringkasan / Excerpt Singkat (2-3 kalimat) *</label>
+          <textarea id="culture-form-ringkasan" required rows="2" class="w-full px-3 py-2 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-terakota outline-hidden" placeholder="Penjelasan singkat intisari kebudayaan..."></textarea>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="font-bold text-tanah-gelap">Isi Artikel Lengkap (Format Markdown / Heading / List / Etika) *</label>
+            <span class="text-[11px] text-terakota font-semibold cursor-pointer" id="btn-insert-culture-template">
+              <i class="fa-solid fa-code text-[10px]"></i> Sisipkan Template Format Majalah
+            </span>
+          </div>
+          <textarea id="culture-form-markdown" required rows="9" class="w-full px-3 py-2 bg-krem/30 rounded-xl border border-pasir font-mono text-xs text-tanah-gelap focus:border-terakota outline-hidden" placeholder="## Bab 1: Sejarah dan Makna&#10;&#10;Isi tulisan lengkap...&#10;&#10;### Pantangan Pengunjung:&#10;- Wajib berpakaian adat&#10;- Dilarang melangkahi sesaji"></textarea>
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <input type="checkbox" id="culture-form-diterbitkan" checked class="w-4 h-4 rounded text-terakota focus:ring-terakota" />
+          <label for="culture-form-diterbitkan" class="text-xs font-semibold text-tanah-gelap">
+            Terbitkan ke Ensiklopedia Budaya Publik (Aktifkan untuk pembaca umum)
+          </label>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-pasir/60">
+          <button type="button" class="btn-close-modal px-4 py-2.5 rounded-xl bg-tanah/10 hover:bg-tanah/20 text-tanah font-semibold cursor-pointer">
+            Batal
+          </button>
+          <button type="submit" class="btn-terakota px-6 py-2.5 rounded-xl font-bold cursor-pointer">
+            Simpan Artikel Budaya
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================== -->
+  <!-- MODAL: DICTIONARY WORD EDITOR                                            -->
+  <!-- ======================================================================== -->
+  <div id="modal-dict" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-pasir shadow-2xl space-y-6 p-6 sm:p-8 animate-fade-in">
+      <div class="flex items-center justify-between border-b border-pasir/60 pb-4">
+        <h3 id="modal-dict-title" class="font-heading font-bold text-xl text-tanah-gelap flex items-center gap-2">
+          <i class="fa-solid fa-book-open-reader text-amber-600"></i>
+          <span>Kelola Kosakata Kamus</span>
+        </h3>
+        <button type="button" class="btn-close-modal text-tanah/50 hover:text-tanah text-lg p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="form-dict-word" class="space-y-4 text-xs">
+        <input type="hidden" id="dict-form-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Kata / Frasa Bahasa Bali *</label>
+            <input type="text" id="dict-form-kata" required class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Contoh: Matur suksma, Ngajeng..." />
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Tingkatan Bahasa (Sor Singgih) *</label>
+            <select id="dict-form-tingkat" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden">
+              <option value="alus madya">Alus Madya (AMA - Sopan Harian)</option>
+              <option value="alus singgih">Alus Singgih (ASI - Menghormati Lawan)</option>
+              <option value="alus sor">Alus Sor (ASO - Merendahkan Diri)</option>
+              <option value="andap/kasar">Andap / Kasar (Akrab/Sebaya)</option>
+              <option value="umum">Umum (Netral)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Arti Bahasa Indonesia *</label>
+            <input type="text" id="dict-form-arti-id" required class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Contoh: Terima kasih banyak..." />
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Arti Bahasa Inggris (Opsional)</label>
+            <input type="text" id="dict-form-arti-en" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Thank you very much..." />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Kelas Kata *</label>
+            <select id="dict-form-kelas" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden">
+              <option value="p">Partikel / Ungkapan (p)</option>
+              <option value="v">Verba / Kata Kerja (v)</option>
+              <option value="n">Nomina / Kata Benda (n)</option>
+              <option value="adj">Adjektiva / Kata Sifat (adj)</option>
+              <option value="pron">Pronomina / Kata Ganti (pron)</option>
+              <option value="num">Numeralia / Bilangan (num)</option>
+              <option value="adv">Adverbia / Keterangan (adv)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Padanan Tingkat Lain (Pisah Koma)</label>
+            <input type="text" id="dict-form-padanan" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Andap: Suksma, Alus Singgih: Suksmayang..." />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">Contoh Penggunaan Kalimat Bali</label>
+          <input type="text" id="dict-form-contoh-bali" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Matur suksma antuk wantuan ragane." />
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">Terjemahan Contoh Kalimat</label>
+          <input type="text" id="dict-form-contoh-id" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Terima kasih banyak atas bantuan Anda." />
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">Catatan Etika & Pelafalan</label>
+          <textarea id="dict-form-catatan" rows="2" class="w-full px-3 py-2 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-amber-600 outline-hidden" placeholder="Ungkapan paling sopan dan aman diucapkan wisatawan..."></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-pasir/60">
+          <button type="button" class="btn-close-modal px-4 py-2.5 rounded-xl bg-tanah/10 hover:bg-tanah/20 text-tanah font-semibold cursor-pointer">
+            Batal
+          </button>
+          <button type="submit" class="btn-padi px-6 py-2.5 rounded-xl font-bold cursor-pointer">
+            Simpan Kosakata
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================== -->
+  <!-- MODAL: GRAMMAR EDITOR                                                    -->
+  <!-- ======================================================================== -->
+  <div id="modal-grammar" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-pasir shadow-2xl space-y-6 p-6 sm:p-8 animate-fade-in">
+      <div class="flex items-center justify-between border-b border-pasir/60 pb-4">
+        <h3 id="modal-grammar-title" class="font-heading font-bold text-xl text-tanah-gelap flex items-center gap-2">
+          <i class="fa-solid fa-feather text-daun"></i>
+          <span>Kelola Aturan Tata Bahasa Bali</span>
+        </h3>
+        <button type="button" class="btn-close-modal text-tanah/50 hover:text-tanah text-lg p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="form-grammar-rule" class="space-y-4 text-xs">
+        <input type="hidden" id="grammar-form-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Judul Topik Tata Bahasa *</label>
+            <input type="text" id="grammar-form-judul" required class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-daun outline-hidden" placeholder="Contoh: Kruna Polah (Nasalisasi Kata Kerja)..." />
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Kategori Tata Bahasa *</label>
+            <select id="grammar-form-kategori" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-daun outline-hidden">
+              <option value="sor-singgih">Sor Singgih (Tingkatan Bahasa)</option>
+              <option value="pronomina">Pronomina (Kata Ganti Orang)</option>
+              <option value="afiksasi">Afiksasi (Pembentukan Kata/Kruna Polah)</option>
+              <option value="sintaksis">Sintaksis (Pola Kalimat SPOK)</option>
+              <option value="tata-krama">Tata Krama & Etika Bertutur</option>
+              <option value="kosakata-khusus">Kosakata Kontekstual Khusus</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Tingkatan Sasaran</label>
+            <input type="text" id="grammar-form-tingkat" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-daun outline-hidden" placeholder="semua tingkatan, alus madya, umum..." value="semua tingkatan" />
+          </div>
+          <div>
+            <label class="block font-bold text-tanah-gelap mb-1">Rumus / Pola Kalimat Ringkas</label>
+            <input type="text" id="grammar-form-pola" class="w-full px-3.5 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:border-daun outline-hidden" placeholder="Contoh: Anusuara (m-, n-, ny-) + Kruna Lingga" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">Ringkasan Materi *</label>
+          <textarea id="grammar-form-ringkasan" required rows="2" class="w-full px-3 py-2 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap focus:border-daun outline-hidden" placeholder="Penjelasan singkat aturan tata bahasa..."></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-tanah-gelap mb-1">Penjelasan Kaidah Lengkap (Markdown) *</label>
+          <textarea id="grammar-form-penjelasan" required rows="6" class="w-full px-3 py-2 bg-krem/30 rounded-xl border border-pasir font-mono text-xs text-tanah-gelap focus:border-daun outline-hidden" placeholder="## Aturan Perubahan Konsonan&#10;- b, p -> m- (baca -> maca)&#10;- d, t -> n- (tulis -> nulis)"></textarea>
+        </div>
+
+        <!-- Examples builder -->
+        <div class="space-y-2 pt-2 border-t border-pasir/60">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-tanah-gelap">Daftar Contoh Kalimat Berpasangan</label>
+            <button type="button" id="btn-add-grammar-example" class="text-daun hover:text-daun/80 font-bold text-xs flex items-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-plus text-[10px]"></i> Tambah Baris Contoh
+            </button>
+          </div>
+          <div id="grammar-examples-container" class="space-y-2.5">
+            <!-- Dynamic rows of examples -->
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-pasir/60">
+          <button type="button" class="btn-close-modal px-4 py-2.5 rounded-xl bg-tanah/10 hover:bg-tanah/20 text-tanah font-semibold cursor-pointer">
+            Batal
+          </button>
+          <button type="submit" class="btn-daun px-6 py-2.5 rounded-xl font-bold cursor-pointer">
+            Simpan Tata Bahasa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================== -->
+  <!-- ADMIN GATE (PASSKEY AUTH MODAL)                                          -->
+  <!-- ======================================================================== -->
+  <div id="admin-gate-overlay" class="fixed inset-0 z-50 bg-[#2A1E17]/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full border border-pasir p-8 text-center space-y-6 shadow-2xl animate-fade-in">
+      <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-terakota to-amber-500 p-1 mx-auto shadow-md">
+        <img src="/images/mascot-barong.png" alt="Bara" class="w-full h-full object-contain filter drop-shadow-xs" />
+      </div>
+      <div>
+        <h2 class="font-heading font-black text-2xl text-tanah-gelap tracking-tight">Portal Super Admin Tobal</h2>
+        <p class="text-xs text-tanah/70 mt-1 leading-relaxed">
+          Silakan masukkan Passkey Super Admin untuk membuka akses pengeditan blog budaya, kamus, tata bahasa, dan switcher database.
+        </p>
+      </div>
+      <form id="form-admin-gate" class="space-y-4">
+        <div>
+          <label class="sr-only" for="input-admin-passkey">Passkey Super Admin</label>
+          <div class="relative">
+            <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-tanah/40"></i>
+            <input type="password" id="input-admin-passkey" required autofocus class="w-full pl-10 pr-4 py-3 bg-krem/40 rounded-2xl border border-pasir text-sm text-center font-mono font-bold tracking-widest text-tanah-gelap focus:border-terakota focus:ring-2 focus:ring-terakota/20 outline-hidden" placeholder="Masukkan Passkey..." />
+          </div>
+          <p class="text-[11px] text-tanah/60 mt-2">Passkey bawaan: <code class="font-bold text-terakota bg-terakota/10 px-1.5 py-0.5 rounded">tobal2026</code></p>
+        </div>
+        <div id="admin-gate-error" class="hidden text-xs text-red-600 font-semibold bg-red-50 p-2.5 rounded-xl border border-red-200"></div>
+        <button type="submit" class="w-full py-3 rounded-2xl btn-terakota font-bold text-sm shadow-md cursor-pointer flex items-center justify-center gap-2">
+          <i class="fa-solid fa-shield-halved text-xs"></i>
+          <span>Buka Panel Super Admin</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm"></div>
+
+  <!-- Admin Controller Script -->
+  <script type="module" src="/src/pages/admin.js"></script>
+</body>
+</html>

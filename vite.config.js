@@ -73,6 +73,34 @@ function apiDevServerPlugin() {
           res.end(JSON.stringify({ error: 'Internal Server Error', details: err.message }));
         }
       });
+
+      server.middlewares.use('/api/admin/config', async (req, res) => {
+        try {
+          loadEnvToProcess();
+          const { default: handler } = await import('./api/admin-config.js');
+          setupPolyfills(res);
+          await handler(req, res);
+        } catch (err) {
+          console.error('[Vite Dev API Error /api/admin/config]:', err);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Internal Server Error', details: err.message }));
+        }
+      });
+
+      server.middlewares.use('/api/admin/content', async (req, res) => {
+        try {
+          loadEnvToProcess();
+          const { default: handler } = await import('./api/admin-content.js');
+          setupPolyfills(res);
+          await handler(req, res);
+        } catch (err) {
+          console.error('[Vite Dev API Error /api/admin/content]:', err);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Internal Server Error', details: err.message }));
+        }
+      });
     }
   };
 }
@@ -94,6 +122,7 @@ export default defineConfig({
         kamus: resolve(__dirname, 'src/pages/kamus.html'),
         budaya: resolve(__dirname, 'src/pages/budaya.html'),
         kenaliBudaya: resolve(__dirname, 'src/pages/kenali-budaya.html'),
+        admin: resolve(__dirname, 'src/pages/admin.html'),
       },
     },
   },
