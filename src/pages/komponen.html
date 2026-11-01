@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Komponen UI — Tour Penjelajah Bali</title>
+  <meta name="description" content="Halaman galeri komponen UI design system Tour Penjelajah Bali." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <main class="flex-1 py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+
+      <h1 class="font-heading text-4xl font-bold text-tanah-gelap mb-2">
+        Design System
+      </h1>
+      <p class="font-body text-tanah/70 mb-12">
+        Galeri komponen UI bertema Natural untuk Tour Penjelajah Bali.
+      </p>
+
+      <!-- ==================== TOMBOL ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Tombol
+        </h2>
+        <div class="flex flex-wrap items-center gap-4 mb-6">
+          <button class="btn-primer">Tombol Primer</button>
+          <button class="btn-sekunder">Tombol Sekunder</button>
+          <button class="btn-ghost">Tombol Ghost</button>
+        </div>
+        <div class="flex flex-wrap items-center gap-4">
+          <button class="btn-primer" disabled>Primer Nonaktif</button>
+          <button class="btn-sekunder" disabled>Sekunder Nonaktif</button>
+        </div>
+      </section>
+
+      <!-- ==================== BADGE ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Badge / Chip
+        </h2>
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="badge-daun">Alam</span>
+          <span class="badge-padi">Budaya</span>
+          <span class="badge-laut">Pantai</span>
+          <span class="badge-tanah">Kuliner</span>
+        </div>
+      </section>
+
+      <!-- ==================== CARD ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Card Organik
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="card-organik">
+            <div class="w-full h-40 rounded-2xl bg-gradient-to-br from-lumut/20 to-daun/10 mb-4 flex items-center justify-center">
+              <span class="text-4xl">🌿</span>
+            </div>
+            <h3 class="font-heading text-lg font-semibold mb-2">Tegallalang</h3>
+            <p class="font-body text-sm text-tanah/70 mb-4">
+              Sawah terasering hijau di jantung Ubud. [PERLU DIVERIFIKASI]
+            </p>
+            <div class="flex items-center gap-2">
+              <span class="badge-daun text-xs">Alam</span>
+              <span class="badge-tanah text-xs">Gianyar</span>
+            </div>
+          </div>
+          <div class="card-organik">
+            <div class="w-full h-40 rounded-2xl bg-gradient-to-br from-laut/15 to-laut/5 mb-4 flex items-center justify-center">
+              <span class="text-4xl">🏖️</span>
+            </div>
+            <h3 class="font-heading text-lg font-semibold mb-2">Amed</h3>
+            <p class="font-body text-sm text-tanah/70 mb-4">
+              Pantai tenang di timur Bali, surganya penyelam. [PERLU DIVERIFIKASI]
+            </p>
+            <div class="flex items-center gap-2">
+              <span class="badge-laut text-xs">Pantai</span>
+              <span class="badge-tanah text-xs">Karangasem</span>
+            </div>
+          </div>
+          <div class="card-organik">
+            <div class="w-full h-40 rounded-2xl bg-gradient-to-br from-padi/15 to-padi/5 mb-4 flex items-center justify-center">
+              <span class="text-4xl">🍛</span>
+            </div>
+            <h3 class="font-heading text-lg font-semibold mb-2">Babi Guling Bu Oka</h3>
+            <p class="font-body text-sm text-tanah/70 mb-4">
+              Kuliner khas Bali yang wajib dicoba. [PERLU DIVERIFIKASI]
+            </p>
+            <div class="flex items-center gap-2">
+              <span class="badge-padi text-xs">Kuliner</span>
+              <span class="badge-tanah text-xs">Gianyar</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROGRESS BAR ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Progress Bar
+        </h2>
+        <div class="space-y-4 max-w-md">
+          <div>
+            <p class="font-body text-sm text-tanah/70 mb-2">Paket selesai: 25%</p>
+            <div id="progress-25"></div>
+          </div>
+          <div>
+            <p class="font-body text-sm text-tanah/70 mb-2">Paket selesai: 75%</p>
+            <div id="progress-75"></div>
+          </div>
+          <div>
+            <p class="font-body text-sm text-tanah/70 mb-2">Paket selesai: 100% 🎉</p>
+            <div id="progress-100"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SKELETON ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Skeleton Loading
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="skeleton-area"></div>
+      </section>
+
+      <!-- ==================== EMPTY STATE ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Empty State
+        </h2>
+        <div class="card-organik" id="empty-state-area"></div>
+      </section>
+
+      <!-- ==================== TOAST & MODAL ==================== -->
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Toast & Modal
+        </h2>
+        <div class="flex flex-wrap gap-4">
+          <button class="btn-primer text-sm" id="btn-toast-sukses">Toast Sukses</button>
+          <button class="btn-sekunder text-sm" id="btn-toast-error">Toast Error</button>
+          <button class="btn-ghost text-sm" id="btn-toast-info">Toast Info</button>
+          <button class="btn-primer text-sm" id="btn-modal">Buka Modal</button>
+        </div>
+      </section>
+
+      <!-- ==================== WAVE DIVIDER ==================== -->
+      <section class="mb-8">
+        <h2 class="font-heading text-2xl font-semibold text-tanah-gelap mb-6">
+          Divider Bergelombang
+        </h2>
+      </section>
+    </div>
+
+    <!-- Wave divider demo (full width) -->
+    <div class="bg-daun py-12" id="wave-demo-area">
+      <p class="text-center font-body text-krem/80 text-sm">Bagian dengan divider bergelombang</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script type="module" src="/src/pages/komponen.js"></script>
+</body>
+</html>

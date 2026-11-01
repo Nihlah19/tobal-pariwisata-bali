@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ensiklopedia Budaya Bali — Tour Penjelajah Bali</title>
+  <meta name="description" content="Ensiklopedia kebudayaan Bali bergaya majalah. Pelajari etika berkunjung ke pura, filosofi canang sari, sistem subak, seni tari, kriya tenun, dan arsitektur Bali." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="flex flex-col min-h-screen bg-krem text-teks">
+
+  <div id="navbar"></div>
+
+  <main class="flex-1 py-10 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto space-y-10">
+
+      <!-- ====================================================================== -->
+      <!-- TAMPILAN 1: DAFTAR ARTIKEL MAJALAH (KATALOG)                           -->
+      <!-- ====================================================================== -->
+      <div id="culture-list-view" class="space-y-8">
+        
+        <!-- Header Hero -->
+        <header class="text-center space-y-4 max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-daun/10 text-daun border border-daun/20 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+            <span id="header-icon-landmark"></span>
+            Pustaka Budaya Dewata
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-tanah-gelap">
+            Ensiklopedia Budaya Bali
+          </h1>
+          <p class="font-body text-tanah text-base sm:text-lg leading-relaxed">
+            Menyelami kearifan lokal, filosofi sakral, tata krama pura, seni tari, kriya tenun, dan cita rasa rempah khas Pulau Dewata.
+          </p>
+        </header>
+
+        <!-- Kotak Pencarian & Filter Kategori -->
+        <section class="bg-white p-5 sm:p-6 rounded-3xl border border-pasir shadow-sm space-y-4">
+          
+          <!-- Search Input -->
+          <div class="relative">
+            <label for="culture-search-input" class="sr-only">Cari artikel kebudayaan Bali</label>
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-tanah/60" id="culture-search-icon"></div>
+            <input
+              type="search"
+              id="culture-search-input"
+              class="w-full pl-11 pr-12 py-3.5 bg-krem/40 hover:bg-krem/70 focus:bg-white rounded-2xl border border-pasir focus:border-daun focus:ring-2 focus:ring-daun/20 text-tanah-gelap font-body placeholder:text-tanah/50 text-base transition-all"
+              placeholder="Cari artikel (misal: etika pura, canang sari, subak, kecak, endek, lawar)..."
+              autocomplete="off"
+            />
+            <button
+              id="btn-clear-culture-search"
+              class="hidden absolute inset-y-0 right-0 pr-4 flex items-center text-tanah/50 hover:text-tanah transition-colors"
+              aria-label="Bersihkan pencarian"
+            ></button>
+          </div>
+
+          <!-- Kategori Tabs -->
+          <div class="space-y-1.5 pt-2 border-t border-pasir/40">
+            <span class="text-xs font-semibold uppercase tracking-wider text-tanah/70 block">
+              Kategori Kebudayaan
+            </span>
+            <div class="flex flex-wrap gap-2" id="culture-category-tabs">
+              <button data-cat="semua" class="filter-btn filter-btn-active">Semua</button>
+              <button data-cat="etika" class="filter-btn">Etika & Tata Krama</button>
+              <button data-cat="upacara" class="filter-btn">Upacara & Ritual</button>
+              <button data-cat="tradisi" class="filter-btn">Tradisi & Subak</button>
+              <button data-cat="tari" class="filter-btn">Seni Tari</button>
+              <button data-cat="kuliner" class="filter-btn">Kuliner Tradisional</button>
+              <button data-cat="kerajinan" class="filter-btn">Kriya & Tenun</button>
+              <button data-cat="arsitektur" class="filter-btn">Arsitektur</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Informasi Jumlah & Penanda Transparansi -->
+        <div class="flex items-center justify-between text-xs sm:text-sm text-tanah px-1">
+          <span id="culture-results-count">Memuat pustaka budaya...</span>
+          <span class="text-xs text-padi-dark bg-padi/10 px-2.5 py-0.5 rounded-full border border-padi/20">
+            [DATA PERLU DIVERIFIKASI PENUTUR ASLI]
+          </span>
+        </div>
+
+        <!-- Grid Kartu Majalah Budaya -->
+        <div id="culture-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered dynamically via JS -->
+        </div>
+
+      </div>
+
+      <!-- ====================================================================== -->
+      <!-- TAMPILAN 2: DETAIL ARTIKEL LENGKAP (EDITORIAL VIEW)                    -->
+      <!-- ====================================================================== -->
+      <article id="culture-detail-view" class="hidden space-y-8 animate-fade-in max-w-4xl mx-auto">
+        
+        <!-- Tombol Kembali -->
+        <button id="btn-back-to-list" class="inline-flex items-center gap-2 text-sm font-semibold text-tanah hover:text-daun transition-colors p-2 rounded-xl hover:bg-pasir/40">
+          <span id="icon-back-arrow"></span>
+          <span>Kembali ke Ensiklopedia Budaya</span>
+        </button>
+
+        <!-- Kontainer Konten Artikel -->
+        <div id="culture-article-body-container" class="space-y-6">
+          <!-- Injected dynamically by JS -->
+        </div>
+
+      </article>
+
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script type="module" src="/src/pages/budaya.js"></script>
+</body>
+</html>

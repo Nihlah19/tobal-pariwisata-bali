@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kenali Budaya dari Foto — Tour Penjelajah Bali</title>
+  <meta name="description" content="Identifikasi pura, sesaji canang, busana adat, tari, kriya tenun, dan kuliner Bali dari foto kamera ponsel Anda menggunakan AI Vision yang terhubung ke Ensiklopedia Budaya." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="flex flex-col min-h-screen bg-krem text-teks font-body antialiased">
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <!-- Main Container -->
+  <main class="flex-1 py-8 sm:py-12 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto space-y-8">
+
+      <!-- Header Hero -->
+      <header class="text-center space-y-3 sm:space-y-4">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-daun/10 text-daun border border-daun/20 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+          <span id="hero-camera-icon"></span>
+          AI Vision Budaya Bali
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-tanah-gelap leading-tight">
+          Kenali Budaya dari Foto
+        </h1>
+        <p class="font-body text-tanah text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Ambil foto saat menjelajahi Bali atau unggah dari galeri. AI kami akan menganalisis unsur visualnya dan mencocokkannya dengan koleksi artikel Ensiklopedia Budaya.
+        </p>
+      </header>
+
+      <!-- Catatan Privasi (Persyaratan 5) -->
+      <section class="bg-pasir/40 border border-pasir/70 rounded-2xl p-4 sm:p-5 flex items-start gap-3 sm:gap-4 shadow-sm" aria-label="Jaminan Privasi Pengguna">
+        <div class="p-2 rounded-xl bg-daun/15 text-daun shrink-0 mt-0.5" id="privacy-shield-icon"></div>
+        <div class="space-y-1 text-xs sm:text-sm text-tanah-gelap">
+          <p class="font-semibold text-daun flex items-center gap-1.5">
+            Privasi Terjaga Sepenuhnya
+          </p>
+          <p class="text-tanah leading-relaxed">
+            Foto Anda hanya diproses sementara di memori untuk keperluan analisis visual AI. Foto <strong>tidak pernah disimpan</strong> di server maupun database kami, tidak dicatat dalam log sistem, dan tidak dibagikan ke pihak ketiga mana pun.
+          </p>
+        </div>
+      </section>
+
+      <!-- Auth Warning Banner (Jika Belum Login) -->
+      <div id="auth-reminder-banner" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span id="auth-warn-icon" class="text-amber-600 shrink-0"></span>
+          <p class="text-sm">
+            <strong>Masuk Akun Diperlukan:</strong> Fitur pengenalan visual AI membutuhkan akun terdaftar untuk verifikasi kuota penjelajah.
+          </p>
+        </div>
+        <a href="/src/pages/masuk.html?returnTo=/src/pages/kenali-budaya.html" class="btn-primer text-xs !py-2 !px-4 whitespace-nowrap">
+          Masuk Sekarang
+        </a>
+      </div>
+
+      <!-- Area Unggah / Pengambilan Foto -->
+      <div class="card-organik p-6 sm:p-8 space-y-6 border border-pasir/80 bg-white/95">
+        
+        <!-- Dropzone & Tombol Aksi -->
+        <div id="dropzone-area" class="relative border-2 border-dashed border-pasir hover:border-daun/60 transition-all rounded-3xl p-6 sm:p-10 text-center bg-krem/30 group cursor-pointer focus-within:ring-2 focus-within:ring-daun">
+          
+          <input
+            type="file"
+            id="camera-input"
+            accept="image/jpeg,image/png,image/webp"
+            capture="environment"
+            class="sr-only"
+            aria-label="Ambil foto menggunakan kamera ponsel"
+          />
+          <input
+            type="file"
+            id="file-input"
+            accept="image/jpeg,image/png,image/webp"
+            class="sr-only"
+            aria-label="Unggah foto dari galeri atau komputer"
+          />
+
+          <div class="space-y-4 max-w-md mx-auto pointer-events-none">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-daun/10 text-daun flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-6">
+              <span id="dropzone-camera-icon"></span>
+            </div>
+            <div class="space-y-1">
+              <h3 class="font-heading text-lg sm:text-xl font-bold text-tanah-gelap">
+                Pilih atau Ambil Foto Budaya
+              </h3>
+              <p class="font-body text-xs sm:text-sm text-tanah/80">
+                Tarik foto ke sini atau pilih metode di bawah
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-2 text-xs text-tanah/70">
+              <span class="inline-flex items-center px-2 py-0.5 rounded bg-pasir/60">JPG, PNG, WebP</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded bg-pasir/60">Maksimal 4 MB</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded bg-pasir/60">Auto-Resize 1024px</span>
+            </div>
+          </div>
+
+          <!-- Tombol Pemicu Input (Interaktif) -->
+          <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              type="button"
+              id="btn-trigger-camera"
+              class="w-full sm:w-auto btn-primer text-sm !py-2.5 !px-5 flex items-center justify-center gap-2"
+            >
+              <span id="btn-camera-icon"></span>
+              Ambil Foto (Kamera)
+            </button>
+            <button
+              type="button"
+              id="btn-trigger-file"
+              class="w-full sm:w-auto btn-sekunder text-sm !py-2.5 !px-5 flex items-center justify-center gap-2"
+            >
+              <span id="btn-file-icon"></span>
+              Pilih dari Galeri
+            </button>
+          </div>
+        </div>
+
+        <!-- Pratinjau Gambar & Kontrol Resize Klien (Persyaratan 1) -->
+        <div id="preview-section" class="hidden space-y-5 animate-fade-in">
+          <div class="flex items-center justify-between border-b border-pasir/50 pb-3">
+            <h3 class="font-heading font-semibold text-tanah-gelap text-base sm:text-lg flex items-center gap-2">
+              <span id="preview-check-icon" class="text-daun"></span>
+              Pratinjau Foto
+            </h3>
+            <button
+              type="button"
+              id="btn-retake-photo"
+              class="btn-ghost text-xs sm:text-sm !py-1 !px-3 text-red-600 hover:text-red-700 hover:bg-red-50 flex items-center gap-1.5"
+            >
+              <span id="btn-retake-icon"></span>
+              Ganti Foto
+            </button>
+          </div>
+
+          <!-- Wadah Gambar dengan Bingkai Organik -->
+          <div class="relative rounded-2xl overflow-hidden bg-tanah-gelap/5 border border-pasir shadow-inner max-h-[420px] flex items-center justify-center">
+            <img
+              id="preview-img"
+              src=""
+              alt="Pratinjau objek budaya yang akan diidentifikasi"
+              class="max-h-[420px] w-auto max-w-full object-contain rounded-2xl transition-all"
+            />
+
+            <!-- Efek Garis Laser Scanner Saat Menganalisis -->
+            <div id="scanning-laser" class="hidden absolute inset-0 pointer-events-none">
+              <div class="w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#10b981] animate-laser"></div>
+            </div>
+          </div>
+
+          <!-- Status Spesifikasi Pengoptimalan Klien -->
+          <div class="bg-krem/60 rounded-xl p-3 text-xs text-tanah flex flex-wrap items-center justify-between gap-2 border border-pasir/40">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span id="file-spec-text">Dioptimalkan di sisi klien (maks. 1024 px, JPEG)</span>
+            </div>
+            <span id="file-size-badge" class="font-mono text-tanah-gelap font-medium">-- KB</span>
+          </div>
+
+          <!-- Tombol Mulai Identifikasi -->
+          <div class="pt-2">
+            <button
+              type="button"
+              id="btn-start-identify"
+              class="w-full btn-primer text-base !py-3.5 flex items-center justify-center gap-2 shadow-organik-lg"
+            >
+              <span id="btn-identify-sparkle-icon"></span>
+              <span>Kenali Budaya Sekarang</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Status 'Sedang Mengenali' (Persyaratan 1) -->
+        <div id="loading-state" class="hidden text-center py-10 space-y-4 animate-fade-in" aria-live="polite">
+          <div class="relative w-16 h-16 mx-auto">
+            <div class="w-16 h-16 rounded-full border-4 border-pasir border-t-daun animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center text-daun">
+              <span id="loading-center-icon"></span>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-heading text-lg font-bold text-tanah-gelap" id="loading-status-title">
+              Sedang Mengenali Budaya...
+            </h4>
+            <p class="font-body text-xs sm:text-sm text-tanah/80 max-w-sm mx-auto" id="loading-status-subtitle">
+              AI Vision sedang memeriksa elemen visual, ornamen, atau ritual pada foto Anda...
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ====================================================================== -->
+      <!-- WADAH HASIL IDENTIFIKASI (Persyaratan 1, 3, 4)                           -->
+      <!-- ====================================================================== -->
+
+      <!-- Kasus 1: Budaya Berhasil Teridentifikasi (Confidence >= 0.6) -->
+      <section id="result-identified" class="hidden card-organik p-6 sm:p-8 space-y-6 border-2 border-emerald-500/30 bg-white animate-slide-up" aria-label="Hasil Identifikasi Budaya">
+        
+        <!-- Header Hasil & Tingkat Keyakinan -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-pasir/60 pb-4">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">
+              <span id="result-check-icon"></span>
+              Terverifikasi Ensiklopedia
+            </span>
+            <span id="result-category-badge" class="badge-daun text-xs">Budaya</span>
+          </div>
+
+          <!-- Tingkat Keyakinan (Persyaratan 1) -->
+          <div class="flex items-center gap-2 text-xs sm:text-sm">
+            <span class="text-tanah">Tingkat Keyakinan AI:</span>
+            <div class="flex items-center gap-1.5 font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+              <span id="result-confidence-text">95%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nama Budaya Resmi (Dari Database) -->
+        <div class="space-y-2">
+          <div class="text-xs uppercase tracking-wider text-tanah/70 font-semibold" id="result-region-text">
+            Wilayah: Seluruh Bali
+          </div>
+          <h2 class="font-heading text-2xl sm:text-3xl font-bold text-tanah-gelap" id="result-culture-title">
+            Judul Budaya
+          </h2>
+        </div>
+
+        <!-- Ciri Visual AI (alasan_visual) -->
+        <div class="bg-pasir/30 rounded-2xl p-4 border border-pasir/60 space-y-1.5">
+          <span class="text-xs font-bold text-daun uppercase tracking-wider flex items-center gap-1.5">
+            <span id="result-eye-icon"></span>
+            Ciri Visual Terdeteksi:
+          </span>
+          <p class="text-xs sm:text-sm text-tanah-gelap leading-relaxed italic" id="result-visual-reason">
+            --
+          </p>
+        </div>
+
+        <!-- Ringkasan Resmi dari Database (BUKAN karangan AI model) (Persyaratan 4) -->
+        <div class="space-y-2">
+          <h3 class="text-sm font-semibold text-tanah-gelap">
+            Ringkasan Ensiklopedia Resmi:
+          </h3>
+          <p class="text-sm sm:text-base text-tanah leading-relaxed" id="result-culture-summary">
+            --
+          </p>
+        </div>
+
+        <!-- Tautan ke Artikel Lengkap & Aksi (Persyaratan 4) -->
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <a
+            href="#"
+            id="result-article-link"
+            class="w-full sm:w-auto btn-primer text-sm !py-3 !px-6 flex items-center justify-center gap-2 shadow-organik"
+          >
+            <span id="result-book-icon"></span>
+            <span>Baca Artikel Lengkap di Ensiklopedia</span>
+            <span id="result-arrow-icon"></span>
+          </a>
+
+          <button
+            type="button"
+            id="btn-identify-another"
+            class="w-full sm:w-auto btn-ghost text-sm !py-2.5 !px-4 text-tanah hover:text-daun"
+          >
+            Kenali Foto Lain
+          </button>
+        </div>
+
+        <!-- Peringatan AI Bisa Keliru (Persyaratan 4) -->
+        <div class="border-t border-pasir/40 pt-4 flex items-start gap-2.5 text-xs text-tanah/70">
+          <span id="result-disclaimer-icon" class="text-amber-600 shrink-0 mt-0.5"></span>
+          <p id="result-disclaimer-text">
+            Peringatan: Hasil identifikasi dihasilkan oleh kecerdasan buatan dan dapat keliru. Harap verifikasi keabsahan fakta dengan membaca artikel ensiklopedia lengkap kami atau berkonsultasi dengan pemuka adat setempat.
+          </p>
+        </div>
+      </section>
+
+      <!-- Kasus 2: Belum Bisa Dipastikan (Confidence < 0.6 atau Tidak Dikenali) (Persyaratan 3) -->
+      <section id="result-uncertain" class="hidden card-organik p-6 sm:p-8 space-y-6 border-2 border-amber-300 bg-white animate-slide-up" aria-label="Hasil Belum Bisa Dipastikan">
+        
+        <div class="flex items-center gap-3 border-b border-pasir/60 pb-4">
+          <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+            <span id="uncertain-help-icon"></span>
+          </div>
+          <div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 mb-1">
+              Belum Bisa Dipastikan
+            </span>
+            <h2 class="font-heading text-xl sm:text-2xl font-bold text-tanah-gelap">
+              Objek Budaya Belum Terkonfirmasi
+            </h2>
+          </div>
+        </div>
+
+        <!-- Alasan & Penjelasan Ramah Anti-Menebak -->
+        <div class="space-y-3 text-sm text-tanah leading-relaxed">
+          <p id="uncertain-reason-text">
+            Kecerdasan buatan kami tidak dapat memastikan kecocokan foto ini dengan tingkat keyakinan yang memadai (&lt; 60%). Kami menerapkan <strong>kebijakan ketat anti-halusinasi</strong> untuk tidak pernah menerka-nerka warisan budaya sakral Bali.
+          </p>
+          <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200/60 space-y-1.5 text-xs sm:text-sm text-amber-950">
+            <p class="font-semibold flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-amber-600"></i>
+              <span>Saran Pengambilan Foto (Photo Tips):</span>
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-amber-900/90 pl-1">
+              <li>Pastikan pencahayaan cukup terang dan gambar tidak buram (*blur*).</li>
+              <li>Posisikan objek utama budaya (misal canang sari, candi bentar, busana adat, atau tarian) berada di tengah fokus.</li>
+              <li>Hindari foto dari jarak yang terlalu jauh atau sudut yang membelakangi cahaya (*backlight*).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Penawaran Pencarian Manual di Ensiklopedia (Persyaratan 3) -->
+        <div class="pt-2 bg-krem/40 p-5 rounded-2xl border border-pasir/60 space-y-3">
+          <h3 class="font-heading text-sm sm:text-base font-bold text-tanah-gelap">
+            Cari Manual di Ensiklopedia Budaya Bali
+          </h3>
+          <p class="text-xs sm:text-sm text-tanah">
+            Anda dapat menelusuri artikel budaya secara langsung berdasarkan nama atau topik:
+          </p>
+
+          <!-- Shortcut Kategori Cepat -->
+          <div class="flex flex-wrap gap-2">
+            <a href="/src/pages/budaya.html?slug=etika-berkunjung-ke-pura-bali" class="badge-daun hover:bg-daun hover:text-white transition-colors text-xs py-2 px-3 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-landmark text-xs"></i>
+              <span>Etika Pura</span>
+            </a>
+            <a href="/src/pages/budaya.html?slug=filosofi-canang-sari-persembahan-harian" class="badge-daun hover:bg-daun hover:text-white transition-colors text-xs py-2 px-3 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-spa text-xs"></i>
+              <span>Canang Sari</span>
+            </a>
+            <a href="/src/pages/budaya.html?slug=tari-kecak-seni-suara-dan-kisah-ramayana" class="badge-daun hover:bg-daun hover:text-white transition-colors text-xs py-2 px-3 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-masks-theater text-xs"></i>
+              <span>Tari Kecak</span>
+            </a>
+            <a href="/src/pages/budaya.html?slug=sistem-irigasi-subak-tri-hita-karana" class="badge-daun hover:bg-daun hover:text-white transition-colors text-xs py-2 px-3 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-wheat-awn text-xs"></i>
+              <span>Sistem Subak</span>
+            </a>
+            <a href="/src/pages/budaya.html?slug=kain-tenun-gringsing-endek-dan-songket" class="badge-daun hover:bg-daun hover:text-white transition-colors text-xs py-2 px-3 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-scroll text-xs"></i>
+              <span>Kain Tenun</span>
+            </a>
+          </div>
+
+          <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <a href="/src/pages/budaya.html" class="w-full sm:w-auto btn-primer text-sm !py-2.5 !px-5 flex items-center justify-center gap-2">
+              <span id="uncertain-search-icon"></span>
+              Buka Seluruh Ensiklopedia
+            </a>
+            <button type="button" id="btn-try-another-photo" class="w-full sm:w-auto btn-sekunder text-sm !py-2.5 !px-5">
+              Coba Foto Lain
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================== -->
+      <!-- KATALOG INSPIRASI OBJEK BUDAYA (PILIHAN TERTUTUP)                        -->
+      <!-- ====================================================================== -->
+      <section class="space-y-4 pt-6 border-t border-pasir/60" aria-label="Objek Budaya Bali yang Dapat Dikenali">
+        <div class="text-center space-y-1">
+          <h2 class="font-heading text-xl sm:text-2xl font-bold text-tanah-gelap">
+            Objek Budaya yang Dapat Dikenali
+          </h2>
+          <p class="font-body text-xs sm:text-sm text-tanah/70 max-w-lg mx-auto">
+            AI Vision terhubung dengan taksonomi tertutup Ensiklopedia Budaya Bali untuk akurasi maksimal bebas halusinasi.
+          </p>
+          <p class="text-[11px] font-mono tracking-wider text-daun uppercase font-semibold">
+            Recognizable Balinese Cultural Artifacts
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2" id="inspiration-grid">
+          <!-- Card 1: Canang Sari -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-spa text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Canang Sari</p>
+              <p class="text-[11px] text-tanah/70">Sesaji janur & bunga</p>
+              <p class="text-[10px] text-tanah/50 italic">Floral offering</p>
+            </div>
+          </div>
+          <!-- Card 2: Pura & Etika -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-landmark text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Tata Busana Pura</p>
+              <p class="text-[11px] text-tanah/70">Kamben & senteng</p>
+              <p class="text-[10px] text-tanah/50 italic">Temple attire</p>
+            </div>
+          </div>
+          <!-- Card 3: Tari Tradisional -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-masks-theater text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Tari Kecak & Pendet</p>
+              <p class="text-[11px] text-tanah/70">Sendratari sakral</p>
+              <p class="text-[10px] text-tanah/50 italic">Sacred dances</p>
+            </div>
+          </div>
+          <!-- Card 4: Subak -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-wheat-awn text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Sistem Subak</p>
+              <p class="text-[11px] text-tanah/70">Terasering irigasi</p>
+              <p class="text-[10px] text-tanah/50 italic">Irrigation heritage</p>
+            </div>
+          </div>
+          <!-- Card 5: Ogoh-Ogoh -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-700 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-mask text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Patung Ogoh-Ogoh</p>
+              <p class="text-[11px] text-tanah/70">Pengerupukan Nyepi</p>
+              <p class="text-[10px] text-tanah/50 italic">Nyepi eve effigy</p>
+            </div>
+          </div>
+          <!-- Card 6: Tenun Wastra -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-scroll text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Tenun Gringsing</p>
+              <p class="text-[11px] text-tanah/70">Endek & Songket</p>
+              <p class="text-[10px] text-tanah/50 italic">Textile weaving</p>
+            </div>
+          </div>
+          <!-- Card 7: Arsitektur -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-archway text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Asta Kosala Kosali</p>
+              <p class="text-[11px] text-tanah/70">Candi bentar & bale</p>
+              <p class="text-[10px] text-tanah/50 italic">Sacred architecture</p>
+            </div>
+          </div>
+          <!-- Card 8: Kuliner Lawar -->
+          <div class="bg-white/90 p-4 rounded-2xl border border-pasir/60 text-center space-y-2 hover:shadow-md hover:border-daun/40 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-700 flex items-center justify-center mx-auto shadow-sm">
+              <i class="fa-solid fa-bowl-food text-xl"></i>
+            </div>
+            <div>
+              <p class="font-heading font-semibold text-xs sm:text-sm text-tanah-gelap">Lawar & Base Genep</p>
+              <p class="text-[11px] text-tanah/70">Rempah tradisional</p>
+              <p class="text-[10px] text-tanah/50 italic">Culinary spices</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Script Controller -->
+  <script type="module" src="/src/pages/kenali-budaya.js"></script>
+
+  <style>
+    @keyframes laserSweep {
+      0% { top: 0%; opacity: 0.8; }
+      50% { top: 96%; opacity: 1; }
+      100% { top: 0%; opacity: 0.8; }
+    }
+    .animate-laser {
+      position: absolute;
+      animation: laserSweep 2s ease-in-out infinite;
+    }
+  </style>
+</body>
+</html>

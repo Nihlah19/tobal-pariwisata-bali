@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tour Penjelajah Bali — Jelajahi Bali Seutuhnya</title>
+  <meta name="description" content="Website pemandu wisata bergamifikasi. AI merekomendasikan paket petualangan unik agar Anda menjelajahi Bali melampaui tempat viral." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <!-- Hero Section -->
+  <main class="flex-1">
+    <section class="relative overflow-hidden bg-gradient-to-b from-daun/5 via-krem to-krem py-16 sm:py-24 lg:py-32">
+      <!-- Animasi daun jatuh (dekoratif) -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg class="leaf-anim absolute w-6 h-6 text-lumut/30" style="left:10%; animation-delay:0s" viewBox="0 0 24 24">
+          <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20c4 0 8.71-3.13 9-7.5.11-1.6-.31-3.19-1.13-4.5z" fill="currentColor"/>
+        </svg>
+        <svg class="leaf-anim absolute w-5 h-5 text-daun/20" style="left:35%; animation-delay:2s" viewBox="0 0 24 24">
+          <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20c4 0 8.71-3.13 9-7.5.11-1.6-.31-3.19-1.13-4.5z" fill="currentColor"/>
+        </svg>
+        <svg class="leaf-anim absolute w-7 h-7 text-lumut/25" style="left:65%; animation-delay:4s" viewBox="0 0 24 24">
+          <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20c4 0 8.71-3.13 9-7.5.11-1.6-.31-3.19-1.13-4.5z" fill="currentColor"/>
+        </svg>
+        <svg class="leaf-anim absolute w-4 h-4 text-daun/15" style="left:85%; animation-delay:6s" viewBox="0 0 24 24">
+          <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20c4 0 8.71-3.13 9-7.5.11-1.6-.31-3.19-1.13-4.5z" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-3xl mx-auto animate-fade-in">
+          <span class="badge-daun mb-4 inline-flex">
+            <span id="hero-badge-icon" class="mr-1"></span>
+            Bali Digifest 2026
+          </span>
+          <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-tanah-gelap leading-tight mb-6">
+            Jelajahi Bali<br class="hidden sm:block" />
+            <span class="text-daun">Seutuhnya</span>
+          </h1>
+          <p class="font-body text-lg sm:text-xl text-tanah/80 leading-relaxed mb-8 max-w-2xl mx-auto">
+            Bali bukan hanya Kuta dan Seminyak. AI kami merekomendasikan
+            <strong class="text-tanah-gelap">paket petualangan</strong> unik —
+            3 destinasi tersembunyi + 1 kuliner lokal — agar Anda menjelajahi
+            budaya, alam, dan rasa yang sesungguhnya.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/src/pages/masuk.html" class="btn-primer text-base" id="hero-cta">
+              Mulai Petualangan
+            </a>
+            <a href="/src/pages/kenali-budaya.html" class="btn-sekunder text-base flex items-center gap-2">
+              <i class="fa-solid fa-camera-retro text-daun"></i>
+              <span>Kenali Budaya (AI)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave divider ke seksi berikutnya -->
+      <div class="wave-divider absolute bottom-0 left-0 right-0" aria-hidden="true">
+        <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="w-full h-10 sm:h-16">
+          <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F5EFE0"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Cara Kerja -->
+    <section id="cara-kerja" class="py-16 sm:py-24 bg-krem">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12 animate-fade-in">
+          <h2 class="font-heading text-3xl sm:text-4xl font-bold text-tanah-gelap mb-4">
+            Bagaimana Cara Kerjanya?
+          </h2>
+          <p class="font-body text-tanah/70 max-w-xl mx-auto">
+            Tiga langkah sederhana menuju petualangan Bali yang autentik.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Langkah 1 -->
+          <div class="card-organik text-center animate-slide-up" style="animation-delay: 0.1s">
+            <div class="w-16 h-16 rounded-2xl bg-daun/10 text-daun flex items-center justify-center mx-auto mb-5 shadow-sm">
+              <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
+            </div>
+            <h3 class="font-heading text-xl font-semibold mb-3">AI Merekomendasikan</h3>
+            <p class="font-body text-sm text-tanah/70">
+              Jawab beberapa pertanyaan tentang minat Anda, lalu AI kami menyusun
+              <strong>paket petualangan</strong> yang sesuai karakter Anda.
+            </p>
+          </div>
+
+          <!-- Langkah 2 -->
+          <div class="card-organik text-center animate-slide-up" style="animation-delay: 0.25s">
+            <div class="w-16 h-16 rounded-2xl bg-lumut/10 text-lumut flex items-center justify-center mx-auto mb-5 shadow-sm">
+              <i class="fa-solid fa-map-location-dot text-2xl"></i>
+            </div>
+            <h3 class="font-heading text-xl font-semibold mb-3">Jelajahi & Tandai</h3>
+            <p class="font-body text-sm text-tanah/70">
+              Kunjungi destinasi di paket Anda, tandai "Selesai Jelajah",
+              dan tulis ulasan singkat.
+            </p>
+          </div>
+
+          <!-- Langkah 3 -->
+          <div class="card-organik text-center animate-slide-up" style="animation-delay: 0.4s">
+            <div class="w-16 h-16 rounded-2xl bg-padi/15 text-padi-dark flex items-center justify-center mx-auto mb-5 shadow-sm">
+              <i class="fa-solid fa-award text-2xl"></i>
+            </div>
+            <h3 class="font-heading text-xl font-semibold mb-3">Raih Lencana</h3>
+            <p class="font-body text-sm text-tanah/70">
+              Selesaikan semua tempat dalam satu paket untuk mendapatkan
+              <strong>lencana eksklusif</strong>. Kumpulkan semuanya!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kata Bahasa Bali Hari Ini (Kruna Rahina Mangkin) -->
+    <section id="kata-hari-ini" class="py-14 sm:py-18 bg-pasir/30 border-y border-pasir/60">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div id="kata-hari-ini-container">
+          <!-- Rendered dynamically by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistik (dekoratif) -->
+    <section class="relative py-16 sm:py-20 bg-daun text-krem">
+      <!-- Wave atas -->
+      <div class="wave-divider absolute top-0 left-0 right-0 rotate-180 -mt-px" aria-hidden="true">
+        <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="w-full h-10 sm:h-16">
+          <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#2F5D3A"/>
+        </svg>
+      </div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <p class="font-heading text-3xl sm:text-4xl font-bold text-padi">8</p>
+            <p class="font-body text-sm text-krem/70 mt-1">Kabupaten Bali</p>
+          </div>
+          <div>
+            <p class="font-heading text-3xl sm:text-4xl font-bold text-padi">100+</p>
+            <p class="font-body text-sm text-krem/70 mt-1">Destinasi Tersembunyi</p>
+          </div>
+          <div>
+            <p class="font-heading text-3xl sm:text-4xl font-bold text-padi">AI</p>
+            <p class="font-body text-sm text-krem/70 mt-1">Rekomendasi Cerdas</p>
+          </div>
+          <div>
+            <p class="font-heading text-3xl sm:text-4xl font-bold text-padi">∞</p>
+            <p class="font-body text-sm text-krem/70 mt-1">Petualangan Menanti</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave bawah -->
+      <div class="wave-divider absolute bottom-0 left-0 right-0 -mb-px" aria-hidden="true">
+        <svg viewBox="0 0 1200 80" preserveAspectRatio="none" class="w-full h-10 sm:h-16">
+          <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F5EFE0"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- CTA Akhir -->
+    <section class="py-16 sm:py-24 bg-krem">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <h2 class="font-heading text-3xl sm:text-4xl font-bold text-tanah-gelap mb-4">
+          Siap Menjelajah?
+        </h2>
+        <p class="font-body text-tanah/70 mb-8 max-w-lg mx-auto">
+          Bergabunglah sekarang dan temukan sisi Bali yang belum pernah Anda lihat.
+          Gratis, tanpa iklan.
+        </p>
+        <a href="/src/pages/masuk.html" class="btn-primer text-base">
+          Daftar Gratis
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script type="module" src="/src/main.js"></script>
+
+  <style>
+    /* Animasi daun jatuh */
+    .leaf-anim {
+      animation: leafFall 8s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .leaf-anim { animation: none; opacity: 0.15; }
+    }
+  </style>
+</body>
+</html>

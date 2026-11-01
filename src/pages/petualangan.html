@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petualangan Saya — Tour Penjelajah Bali</title>
+  <meta name="description" content="Jalur petualangan Bali bergamifikasi ala Duolingo. Kunjungi destinasi tersembunyi, tandai selesai, dan raih lencana." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <style>
+    /* Jalur setapak bergelombang ala Duolingo */
+    .path-connector {
+      position: absolute;
+      left: 28px;
+      top: 50px;
+      bottom: -30px;
+      width: 4px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #6B8F5E,
+        #6B8F5E 8px,
+        transparent 8px,
+        transparent 16px
+      );
+      z-index: 0;
+    }
+    @media (min-width: 640px) {
+      .path-connector { left: 36px; }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar"></div>
+
+  <main class="flex-1 py-10 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Area Header & Status Petualangan -->
+      <div id="trip-header-area" class="mb-10">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Container Utama Petualangan -->
+      <div id="trip-content-area">
+        <!-- Loading Skeleton atau Empty State atau Jalur Duolingo -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal Review Selesai Jelajah -->
+  <div id="review-modal-container"></div>
+
+  <!-- Modal Perayaan Selesai Paket 4/4 -->
+  <div id="celebration-modal-container"></div>
+
+  <div id="footer"></div>
+
+  <script type="module" src="/src/pages/petualangan.js"></script>
+</body>
+</html>

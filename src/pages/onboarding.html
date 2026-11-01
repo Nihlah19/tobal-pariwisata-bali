@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preferensi Petualangan — Tour Penjelajah Bali</title>
+  <meta name="description" content="Tentukan minat, wilayah favorit, dan anggaran Anda agar AI dapat merekomendasikan petualangan Bali terbaik." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar"></div>
+
+  <main class="flex-1 py-12 px-4 sm:px-6">
+    <div class="max-w-2xl mx-auto">
+      
+      <!-- Card Onboarding -->
+      <div class="card-organik !p-6 sm:!p-10 animate-fade-in">
+        
+        <div class="text-center mb-8">
+          <span class="badge-daun mb-3 inline-flex">Langkah 1 dari 1</span>
+          <h1 class="font-heading text-3xl font-bold text-tanah-gelap">
+            Rancang Gaya Petualanganmu
+          </h1>
+          <p class="font-body text-sm sm:text-base text-tanah/70 mt-2">
+            Bantu AI kami mengenali minat Anda agar paket petualangan terasa personal dan autentik.
+          </p>
+        </div>
+
+        <form id="onboarding-form" class="space-y-8">
+
+          <!-- 1. PILIH MINAT -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="font-heading text-lg font-semibold text-tanah-gelap">
+                1. Minat Petualangan
+              </label>
+              <span class="text-xs text-tanah/60 font-body">Pilih minimal 1</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="interests-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- 2. WILAYAH FAVORIT -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="font-heading text-lg font-semibold text-tanah-gelap">
+                2. Wilayah yang Ingin Dijelajahi
+              </label>
+              <span class="text-xs text-tanah/60 font-body">Boleh pilih banyak</span>
+            </div>
+            
+            <!-- Opsi Kejutkan Saya -->
+            <div class="mb-3">
+              <button type="button" id="btn-surprise"
+                class="w-full flex items-center justify-center gap-2 p-3 rounded-2xl border-2 border-dashed border-padi bg-padi/10 text-tanah-gelap font-body font-semibold text-sm transition-all hover:bg-padi/20">
+                <i class="fa-solid fa-wand-magic-sparkles text-padi-dark"></i>
+                <span>Kejutkan Saya (Rekomendasikan Seluruh Penjuru Bali)</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="regions-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- 3. PILIHAN ANGGARAN -->
+          <div>
+            <label class="block font-heading text-lg font-semibold text-tanah-gelap mb-3">
+              3. Preferensi Anggaran (Budget)
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="budget-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+          <div class="pt-4 border-t border-pasir/40">
+            <button type="submit" id="btn-save-preferences" class="btn-primer w-full !py-4 text-base">
+              <span id="save-spinner" class="hidden inline-block animate-spin mr-2">◌</span>
+              <span>Simpan & Buat Petualangan Pertama</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script type="module" src="/src/pages/onboarding.js"></script>
+</body>
+</html>

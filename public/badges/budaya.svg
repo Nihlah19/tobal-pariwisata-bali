@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <circle cx="60" cy="60" r="54" fill="#F5EFE0" stroke="#7A5C3E" stroke-width="4"/>
+  <circle cx="60" cy="60" r="46" fill="#7A5C3E" fill-opacity="0.1"/>
+  <!-- Candi Bentar (Gateway) Silhouette -->
+  <!-- Left wing -->
+  <path d="M42,28 L54,28 L54,84 L40,84 L40,70 L44,66 L38,58 L46,52 L40,40 L44,36 Z" fill="#7A5C3E"/>
+  <!-- Right wing -->
+  <path d="M78,28 L66,28 L66,84 L80,84 L80,70 L76,66 L82,58 L74,52 L80,40 L76,36 Z" fill="#7A5C3E"/>
+  <!-- Golden base & central spark -->
+  <rect x="36" y="84" width="48" height="6" rx="2" fill="#C9A227"/>
+  <circle cx="60" cy="56" r="4" fill="#C9A227"/>
+</svg>

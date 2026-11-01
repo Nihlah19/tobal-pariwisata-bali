@@ -1,0 +1,222 @@
+/* ============================================
+   Tour Penjelajah Bali — Main Stylesheet
+   Tema: Natural (sawah, hutan, pantai)
+   ============================================ */
+
+/* --- Google Fonts & Font Awesome --- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Nunito+Sans:ital,wght@0,300..1000;1,300..1000&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Base Layer --- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body text-teks bg-krem antialiased;
+    /* Pola daun tipis sebagai latar */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 35c5-8 15-12 20-8s3 14-5 18-15 1-15-10z' fill='%232F5D3A' fill-opacity='0.025'/%3E%3Cpath d='M40 10c3-5 10-8 14-5s2 10-4 13-10 1-10-8z' fill='%236B8F5E' fill-opacity='0.02'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-tanah-gelap;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  /* Focus visible untuk aksesibilitas */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-daun rounded-lg;
+  }
+}
+
+/* --- Component Layer --- */
+@layer components {
+  /* Tombol Primer (daun) */
+  .btn-primer {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 min-h-[44px] rounded-3xl
+           bg-daun text-krem font-body font-semibold
+           shadow-organik
+           transition-all duration-300 ease-out
+           hover:bg-opacity-90 hover:shadow-organik-lg hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-organik
+           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-daun
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+  }
+
+  /* Tombol Sekunder (pasir) */
+  .btn-sekunder {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 min-h-[44px] rounded-3xl
+           bg-pasir text-tanah-gelap font-body font-semibold
+           border border-tanah/20
+           shadow-organik
+           transition-all duration-300 ease-out
+           hover:bg-opacity-80 hover:shadow-organik-lg hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-organik
+           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tanah
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+  }
+
+  /* Tombol Ghost */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 min-h-[40px] rounded-2xl
+           text-daun font-body font-medium
+           transition-all duration-200
+           hover:bg-daun/10
+           active:bg-daun/15;
+  }
+
+
+  /* Card Organik */
+  .card-organik {
+    @apply bg-white/80 backdrop-blur-sm
+           rounded-3xl p-6
+           shadow-organik
+           border border-pasir/40
+           transition-all duration-300
+           hover:shadow-organik-lg hover:-translate-y-1;
+  }
+
+  /* Badge / Chip */
+  .badge {
+    @apply inline-flex items-center gap-1.5
+           px-3 py-1 rounded-full
+           text-sm font-body font-medium;
+  }
+
+  .badge-daun {
+    @apply badge bg-daun/10 text-daun;
+  }
+
+  .badge-padi {
+    @apply badge bg-padi/15 text-tanah-gelap;
+  }
+
+  .badge-laut {
+    @apply badge bg-laut/10 text-laut;
+  }
+
+  .badge-tanah {
+    @apply badge bg-tanah/10 text-tanah;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    @apply w-full h-3 bg-pasir rounded-full overflow-hidden;
+  }
+
+  .progress-bar-fill {
+    @apply h-full bg-gradient-to-r from-lumut to-daun rounded-full
+           transition-all duration-700 ease-out;
+  }
+
+  /* Toast */
+  .toast {
+    @apply fixed bottom-6 right-6 z-50
+           flex items-center gap-3
+           px-5 py-4 rounded-2xl
+           bg-white shadow-organik-lg border border-pasir/30
+           font-body text-teks
+           animate-slide-up;
+    max-width: 400px;
+  }
+
+  .toast-sukses {
+    @apply toast border-l-4 border-l-daun;
+  }
+
+  .toast-error {
+    @apply toast border-l-4 border-l-red-500;
+  }
+
+  .toast-info {
+    @apply toast border-l-4 border-l-laut;
+  }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    @apply fixed inset-0 z-40
+           bg-tanah-gelap/40 backdrop-blur-sm
+           flex items-center justify-center p-4
+           animate-fade-in;
+  }
+
+  .modal-content {
+    @apply bg-krem rounded-3xl shadow-organik-lg
+           w-full max-w-lg p-8
+           animate-slide-up;
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply bg-pasir/60 rounded-2xl animate-pulse;
+  }
+
+  /* Empty State */
+  .empty-state {
+    @apply flex flex-col items-center justify-center
+           text-center py-16 px-6;
+  }
+
+  /* Divider Bergelombang */
+  .wave-divider {
+    @apply w-full overflow-hidden leading-none;
+  }
+
+  /* Navbar */
+  .nav-link {
+    @apply font-body font-medium text-tanah-gelap/70
+           px-3 py-2 rounded-2xl
+           transition-all duration-200
+           hover:text-daun hover:bg-daun/5;
+  }
+
+  .nav-link-active {
+    @apply nav-link text-daun bg-daun/10;
+  }
+
+  .nav-link-disabled {
+    @apply font-body font-medium text-tanah/40
+           px-3 py-2 rounded-2xl
+           cursor-not-allowed;
+  }
+
+  /* Filter Buttons Kamus */
+  .filter-btn {
+    @apply font-body text-xs sm:text-sm font-medium
+           px-3.5 py-1.5 rounded-full
+           bg-krem text-tanah border border-pasir
+           transition-all duration-200
+           hover:border-daun/50 hover:text-daun hover:bg-daun/5;
+  }
+
+  .filter-btn-active {
+    @apply filter-btn bg-daun text-krem border-daun hover:bg-daun hover:text-krem shadow-sm;
+  }
+
+  .card-natural {
+    @apply bg-white rounded-3xl border border-pasir shadow-sm;
+  }
+}
+
+/* --- Utility Layer --- */
+@layer utilities {
+  /* Hormati prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

@@ -1,5 +1,24 @@
-# Object file
-*.o
+# Dependency
+node_modules/
 
-# Ada Library Information
-*.ali
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

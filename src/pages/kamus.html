@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamus Bahasa Bali — Tour Penjelajah Bali</title>
+  <meta name="description" content="Kamus digital Bahasa Bali gaya KBBI. Pelajari etika bertutur kata (Anggah-Ungguhing Basa Bali), tingkatan bahasa alus singgih, alus sor, alus madya, hingga andap untuk wisatawan." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="flex flex-col min-h-screen bg-krem text-teks">
+
+  <div id="navbar"></div>
+
+  <main class="flex-1 py-10 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto space-y-8">
+
+      <!-- Header & Intro Kamus -->
+      <header class="text-center space-y-4 max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-daun/10 text-daun border border-daun/20 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+          <span id="header-icon-book"></span>
+          Kamus Basa Bali · Gaya KBBI
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-tanah-gelap">
+          Kamus Bahasa Bali
+        </h1>
+        <p class="font-body text-tanah text-base sm:text-lg leading-relaxed">
+          Pahami etika bertutur kata (<em class="text-daun font-medium">Anggah-Ungguhing Basa Bali</em>) dan temukan kosakata esensial untuk berinteraksi santun dengan masyarakat lokal di setiap sudut Bali.
+        </p>
+
+        <!-- Edukasi Tingkatan Bahasa (Collapsible / Banner) -->
+        <div class="bg-white/80 backdrop-blur-sm p-4 sm:p-5 rounded-2xl border border-pasir text-left shadow-sm mt-4">
+          <div class="flex items-center justify-between cursor-pointer select-none" id="btn-toggle-guide">
+            <div class="flex items-center gap-2">
+              <span id="guide-icon-sparkle" class="text-padi"></span>
+              <span class="font-heading font-semibold text-tanah-gelap text-sm sm:text-base">
+                Mengenal Tingkatan Bahasa Bali (Singgih, Sor, Madya, & Andap)
+              </span>
+            </div>
+            <button class="text-tanah hover:text-daun text-xs font-semibold px-2 py-1 rounded bg-pasir/40" id="guide-toggle-label">
+              Buka Panduan
+            </button>
+          </div>
+          <div id="guide-content" class="hidden mt-4 pt-4 border-t border-pasir/60 text-xs sm:text-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-tanah">
+            <div class="p-3.5 rounded-2xl bg-padi/10 border border-padi/30">
+              <strong class="text-amber-900 block font-heading mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-crown text-amber-600"></i>
+                <span>Alus Singgih (ASI)</span>
+              </strong>
+              Digunakan untuk menghormati orang yang diagungkan, pemuka agama (Pedanda/Pamangku), sesepuh, atau kasta terhormat.
+            </div>
+            <div class="p-3.5 rounded-2xl bg-daun/10 border border-daun/30">
+              <strong class="text-daun-gelap block font-heading mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-hands-praying text-daun"></i>
+                <span>Alus Sor (ASO)</span>
+              </strong>
+              Bentuk merendahkan diri sendiri secara santun saat berhadapan dengan orang yang dihormati (sikap <em>andap asor</em>).
+            </div>
+            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+              <strong class="text-emerald-900 block font-heading mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-leaf text-emerald-600"></i>
+                <span>Alus Madya (AMA)</span>
+              </strong>
+              Bahasa sopan netral sehari-hari. Paling aman dan dianjurkan dipakai wisatawan kepada warga lokal.
+            </div>
+            <div class="p-3.5 rounded-2xl bg-pasir/40 border border-pasir">
+              <strong class="text-tanah-gelap block font-heading mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-handshake text-tanah"></i>
+                <span>Andap / Kasar (AK)</span>
+              </strong>
+              Bahasa akrab sehari-hari di antara teman sebaya yang akrab atau orang tua kepada anak muda.
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Kotak Pencarian & Filter -->
+      <section class="bg-white p-4 sm:p-6 rounded-3xl border border-pasir shadow-sm space-y-4">
+        
+        <!-- Search Input -->
+        <div class="relative">
+          <label for="search-input" class="sr-only">Cari kata dalam Bahasa Bali atau Indonesia</label>
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-tanah/60" id="search-icon-wrapper">
+            <!-- Icon Search -->
+          </div>
+          <input
+            type="search"
+            id="search-input"
+            class="w-full pl-11 pr-12 py-3.5 sm:py-4 bg-krem/40 hover:bg-krem/70 focus:bg-white rounded-2xl border border-pasir focus:border-daun focus:ring-2 focus:ring-daun/20 text-tanah-gelap font-body placeholder:text-tanah/50 text-base transition-all"
+            placeholder="Cari kata Bali, arti Indonesia, atau contoh (misal: suksma, pura, air, makan)..."
+            autocomplete="off"
+            aria-label="Cari kata dalam kamus Bahasa Bali"
+          />
+          <button
+            id="btn-clear-search"
+            class="hidden absolute inset-y-0 right-0 pr-4 flex items-center text-tanah/50 hover:text-tanah transition-colors"
+            aria-label="Bersihkan pencarian"
+          >
+            <!-- Icon X -->
+          </button>
+
+          <!-- Autocomplete Suggestions Dropdown -->
+          <div
+            id="suggestions-dropdown"
+            class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl border border-pasir shadow-xl z-20 overflow-hidden divide-y divide-pasir/40 max-h-64 overflow-y-auto"
+            role="listbox"
+          >
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2 border-t border-pasir/40">
+          
+          <!-- Filter Tingkatan Bahasa -->
+          <div class="space-y-1.5">
+            <span class="text-xs font-semibold uppercase tracking-wider text-tanah/70 block">
+              Tingkat Bahasa
+            </span>
+            <div class="flex flex-wrap gap-1.5" id="tingkat-filter-buttons">
+              <button data-tingkat="semua" class="filter-btn filter-btn-active">Semua</button>
+              <button data-tingkat="alus madya" class="filter-btn">Alus Madya</button>
+              <button data-tingkat="alus singgih" class="filter-btn">Alus Singgih</button>
+              <button data-tingkat="alus sor" class="filter-btn">Alus Sor</button>
+              <button data-tingkat="andap/kasar" class="filter-btn">Andap / Kasar</button>
+              <button data-tingkat="umum" class="filter-btn">Umum</button>
+            </div>
+          </div>
+
+          <!-- Filter Kelas Kata -->
+          <div class="space-y-1.5">
+            <span class="text-xs font-semibold uppercase tracking-wider text-tanah/70 block">
+              Kelas Kata
+            </span>
+            <div class="flex items-center gap-2">
+              <select
+                id="select-kelas-kata"
+                class="bg-krem/50 border border-pasir text-tanah-gelap text-xs sm:text-sm rounded-xl px-3 py-2 focus:border-daun focus:ring-1 focus:ring-daun outline-none cursor-pointer"
+                aria-label="Filter berdasarkan kelas kata"
+              >
+                <option value="semua">Semua Kelas Kata</option>
+                <option value="n">Nomina (Kata Benda)</option>
+                <option value="v">Verba (Kata Kerja)</option>
+                <option value="adj">Adjektiva (Kata Sifat)</option>
+                <option value="adv">Adverbia (Keterangan)</option>
+                <option value="num">Numeralia (Bilangan)</option>
+                <option value="p">Partikel / Ungkapan</option>
+                <option value="pron">Pronomina (Kata Ganti)</option>
+              </select>
+
+              <button
+                id="btn-reset-filter"
+                class="text-xs text-tanah hover:text-daun font-medium underline px-2 py-1"
+                title="Kembalikan semua filter ke awal"
+              >
+                Reset Filter
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Informasi Jumlah Hasil & Status -->
+      <div class="flex items-center justify-between text-xs sm:text-sm text-tanah px-1">
+        <span id="results-count-text">Memuat entri kamus...</span>
+        <span class="text-xs text-padi-dark bg-padi/10 px-2 py-0.5 rounded-full border border-padi/20">
+          [PERLU DIVERIFIKASI OLEH PENUTUR ASLI]
+        </span>
+      </div>
+
+      <!-- Area Hasil / Daftar Entri Kamus -->
+      <div id="dictionary-entries-area" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <!-- Rendered dynamically via JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal Detail Kata (Pop-up komprehensif) -->
+  <div id="word-detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-tanah-gelap/60 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div class="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-pasir max-h-[90vh] overflow-y-auto space-y-6 animate-scale-in">
+      <div id="modal-content-container">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script type="module" src="/src/pages/kamus.js"></script>
+</body>
+</html>
