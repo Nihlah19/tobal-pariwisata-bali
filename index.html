@@ -48,9 +48,52 @@
           <p class="font-body text-base sm:text-lg text-tanah/90 leading-relaxed max-w-2xl mx-auto mb-2">
             Bali bukan hanya pantai viral di selatan. AI kami merekomendasikan <strong class="text-tanah-gelap">paket petualangan personal</strong> — 3 destinasi tersembunyi + 1 kuliner lokal legendaris — agar Anda menyelami alam, kearifan budaya, dan rasa yang sesungguhnya.
           </p>
-          <p class="font-body text-xs sm:text-sm text-tanah/70 italic max-w-xl mx-auto mb-8">
+          <p class="font-body text-xs sm:text-sm text-tanah/70 italic max-w-xl mx-auto mb-6">
             AI-curated sustainable adventures: 3 hidden gems + 1 authentic culinary stop honoring Balinese heritage.
           </p>
+
+          <!-- Showcase Maskot Bara si Barong Penjelajah & Musik Tradisional Bali -->
+          <div class="my-6 max-w-2xl mx-auto bg-gradient-to-r from-amber-50/95 via-white/95 to-emerald-50/95 rounded-3xl p-4 sm:p-5 border border-pasir/80 shadow-md flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-left relative overflow-hidden">
+            
+            <!-- Ornamen latar belakang -->
+            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl pointer-events-none"></div>
+
+            <!-- Avatar Maskot Bara Full Body -->
+            <div class="relative shrink-0 flex items-center justify-center">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-amber-200 via-orange-100 to-emerald-100 border-2 border-terakota/40 p-1.5 shadow-md flex items-center justify-center overflow-hidden animate-float-bara">
+                <img src="/images/mascot-barong.png" alt="Bara si Barong Penjelajah" class="w-full h-full object-contain filter drop-shadow">
+              </div>
+              <span class="absolute -bottom-2 bg-daun text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
+                Maskot Resmi
+              </span>
+            </div>
+
+            <!-- Pesan Sambutan Bara & Tombol Musik -->
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="font-heading font-bold text-base sm:text-lg text-tanah-gelap">
+                  Om Swastyastu! Aku <span class="text-terakota">Bara</span>
+                </h3>
+                <span class="badge-padi text-[10px] py-0.5 px-2">Kawan Petualang</span>
+              </div>
+              
+              <p class="text-xs sm:text-sm text-tanah/85 leading-relaxed">
+                Pemandu setiamu menjelajahi sudut tersembunyi Bali. Dengarkan alunan damai rindik bambu Ubud selagi merancang liburanmu!
+              </p>
+
+              <!-- Tombol Cepat Musik Tradisional Bali -->
+              <div class="pt-1 flex items-center gap-2.5 flex-wrap">
+                <button id="hero-music-toggle-btn" class="btn-toggle-bali-music px-4 py-2 rounded-full bg-daun text-white hover:bg-daun/90 text-xs font-semibold flex items-center gap-2 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer">
+                  <i class="fa-solid fa-play hero-music-icon"></i>
+                  <span class="hero-music-label">Dengarkan Musik Tradisional Bali</span>
+                </button>
+                <span class="text-[11px] text-tanah/65 italic flex items-center gap-1.5">
+                  <i class="fa-solid fa-spa text-padi-dark"></i> Gamelan Rindik Ubud
+                </span>
+              </div>
+            </div>
+
+          </div>
 
           <!-- Tombol CTA Utama -->
           <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">

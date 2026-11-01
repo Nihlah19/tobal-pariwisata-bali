@@ -780,19 +780,23 @@ async function createNewAdventure() {
 function renderEmptyTripState() {
   headerArea.innerHTML = '';
   contentArea.innerHTML = `
-    <div class="card-organik text-center !py-16 !px-6 animate-fade-in max-w-xl mx-auto my-8">
-      <div class="w-20 h-20 rounded-full bg-daun/10 text-daun flex items-center justify-center mx-auto mb-5 shadow-inner">
-        <span class="text-4xl">🗺️</span>
+    <div class="card-organik text-center !py-12 !px-6 animate-fade-in max-w-xl mx-auto my-8">
+      <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-amber-200 to-daun/20 border-2 border-terakota/30 p-1 flex items-center justify-center mx-auto mb-4 overflow-hidden shadow-md animate-float-bara">
+        <img src="/images/mascot-barong.png" alt="Bara Si Barong" class="w-full h-full object-contain filter drop-shadow">
       </div>
+      <span class="badge-padi text-xs py-0.5 px-3 mb-2 inline-flex items-center gap-1.5">
+        <i class="fa-solid fa-compass text-xs"></i>
+        <span>Bara Siap Memandu</span>
+      </span>
       <h2 class="font-heading text-2xl sm:text-3xl font-bold text-tanah-gelap mb-3">
         Belum Ada Petualangan Aktif
       </h2>
       <p class="font-body text-sm sm:text-base text-tanah/70 max-w-md mx-auto mb-8 leading-relaxed">
-        AI Penjelajah Bali siap meracik 1 paket petualangan berisi 3 destinasi wisata tersembunyi
-        dan 1 tempat makan autentik sesuai karakter Anda.
+        Bara dan AI Penjelajah Bali siap meracik 1 paket petualangan personal berisi 3 destinasi tersembunyi non-viral dan 1 kuliner legendaris khas Bali.
       </p>
-      <button id="btn-create-first-trip" class="btn-primer text-base !py-3.5 !px-8">
-        Buat Petualangan Sekarang
+      <button id="btn-create-first-trip" class="btn-primer text-base !py-3.5 !px-8 flex items-center justify-center gap-2 mx-auto">
+        <i class="fa-solid fa-wand-magic-sparkles text-krem"></i>
+        <span>Buat Petualangan 3+1 Sekarang</span>
       </button>
     </div>
   `;

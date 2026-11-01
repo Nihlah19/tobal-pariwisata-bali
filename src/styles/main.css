@@ -207,6 +207,43 @@
   .card-natural {
     @apply bg-white rounded-3xl border border-pasir shadow-sm;
   }
+
+  /* Animasi Bara Mascot & Musik Bali */
+  @keyframes floatBara {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(1.2deg); }
+  }
+
+  @keyframes soundWaveBar {
+    0%, 100% { height: 4px; }
+    50% { height: 15px; }
+  }
+
+  @keyframes pulseAura {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(224, 122, 95, 0.45); }
+    50% { box-shadow: 0 0 0 10px rgba(224, 122, 95, 0); }
+  }
+
+  .animate-float-bara {
+    animation: floatBara 4s ease-in-out infinite;
+  }
+
+  .animate-pulse-aura {
+    animation: pulseAura 2.5s infinite;
+  }
+
+  .sound-bar {
+    width: 3px;
+    height: 4px;
+    background-color: currentColor;
+    border-radius: 9999px;
+    display: inline-block;
+  }
+
+  .sound-bar-playing:nth-child(1) { animation: soundWaveBar 0.8s ease-in-out infinite 0.1s; }
+  .sound-bar-playing:nth-child(2) { animation: soundWaveBar 0.9s ease-in-out infinite 0.3s; }
+  .sound-bar-playing:nth-child(3) { animation: soundWaveBar 0.7s ease-in-out infinite 0.2s; }
+  .sound-bar-playing:nth-child(4) { animation: soundWaveBar 1.0s ease-in-out infinite 0.4s; }
 }
 
 /* --- Utility Layer --- */
@@ -220,3 +257,4 @@
     }
   }
 }
+

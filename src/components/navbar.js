@@ -9,6 +9,7 @@ import {
   Menu, X, BookOpen, Landmark, Camera, Sparkles
 } from 'lucide';
 import { getCurrentUser, getUserProfile, signOutUser } from '../lib/auth.js';
+import { initBalineseAudio } from './balineseAudio.js';
 
 /**
  * Menentukan halaman aktif dari URL.
@@ -50,12 +51,19 @@ export async function renderNavbar(selector) {
     <nav class="sticky top-0 z-30 bg-krem/90 backdrop-blur-md border-b border-pasir/40" role="navigation" aria-label="Navigasi utama">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between h-16">
-          <!-- Logo -->
-          <a href="/" class="flex items-center gap-2 group" aria-label="Beranda Tour Penjelajah Bali">
-            <span class="text-daun transition-transform duration-300 group-hover:rotate-12" id="nav-logo-icon"></span>
-            <span class="font-heading font-bold text-lg text-tanah-gelap hidden sm:block">
-              Penjelajah Bali
-            </span>
+          <!-- Logo dengan Maskot Bara -->
+          <a href="/" class="flex items-center gap-2.5 group" aria-label="Beranda Tour Penjelajah Bali">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-300 to-terakota/20 border border-terakota/40 flex items-center justify-center overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-110">
+              <img src="/images/mascot-barong-head.png" alt="Bara Maskot" class="w-8 h-8 object-contain">
+            </div>
+            <div class="flex flex-col">
+              <span class="font-heading font-bold text-base sm:text-lg text-tanah-gelap leading-tight">
+                Penjelajah Bali
+              </span>
+              <span class="text-[10px] text-terakota font-semibold tracking-wider uppercase hidden sm:block">
+                Kawan Budaya Dewata
+              </span>
+            </div>
           </a>
 
           <!-- Desktop Menu -->
@@ -90,8 +98,20 @@ export async function renderNavbar(selector) {
             </a>
           </div>
 
-          <!-- Auth + Mobile Toggle -->
+          <!-- Auth + Music Toggle + Mobile Toggle -->
           <div class="flex items-center gap-2">
+            
+            <!-- Tombol Musik Tradisional Bali -->
+            <button id="nav-music-btn" class="btn-toggle-bali-music px-2.5 sm:px-3 py-1.5 rounded-full border border-pasir/70 hover:border-terakota/40 hover:bg-pasir/30 text-tanah transition-all flex items-center gap-1.5 sm:gap-2 text-xs font-semibold cursor-pointer" title="Dengarkan Musik Tradisional Bali (Gamelan & Rindik)">
+              <i class="fa-solid fa-music text-tanah/70 text-xs"></i>
+              <span class="nav-music-text hidden lg:inline text-xs text-tanah-gelap">Musik Bali</span>
+              <span class="nav-equalizer flex items-end gap-0.5 h-3 text-terakota">
+                <span class="sound-bar"></span>
+                <span class="sound-bar"></span>
+                <span class="sound-bar"></span>
+              </span>
+            </button>
+
             ${user
               ? `<div class="hidden sm:flex items-center gap-2 text-sm font-body text-tanah bg-pasir/40 px-3 py-1.5 rounded-full border border-pasir/60">
                    <span id="nav-icon-user" class="text-daun"></span>
@@ -188,4 +208,7 @@ export async function renderNavbar(selector) {
       btnMobile.setAttribute('aria-label', isOpen ? 'Buka menu' : 'Tutup menu');
     });
   }
+
+  // Pasang pemutar audio Bali & maskot Bara di seluruh halaman
+  initBalineseAudio();
 }
