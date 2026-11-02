@@ -1,6 +1,7 @@
 /**
  * Navbar — Tour Penjelajah Bali
  * Desain: Clean, Human-Crafted Editorial Navigation (Cepat, Ringan & Non-blocking)
+ * Responsivitas: Proporsional di seluruh viewport (Mobile, Tablet, Laptop, Desktop)
  */
 
 import { getCurrentUser, getUserProfile, signOutUser, hasCachedSession } from '../lib/auth.js';
@@ -16,7 +17,7 @@ function getActivePage() {
   if (path.includes('petualangan')) return 'petualangan';
   if (path.includes('lencana')) return 'lencana';
   if (path.includes('kamus')) return 'kamus';
-  if (path.includes('budaya')) return 'budaya';
+  if (path.includes('budaya') && !path.includes('kenali')) return 'budaya';
   if (path.includes('kenali-budaya') || path.includes('kenali')) return 'kenali-budaya';
   if (path.includes('masuk')) return 'masuk';
   if (path.includes('onboarding')) return 'onboarding';
@@ -36,85 +37,76 @@ export function renderNavbar(selector) {
 
   const navItemClass = (page) =>
     active === page
-      ? 'bg-daun text-white font-semibold shadow-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-xs transition-all'
-      : 'text-tanah-gelap/80 hover:text-daun hover:bg-white/80 font-medium px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-xs transition-colors';
+      ? 'bg-daun text-white font-semibold shadow-xs px-2.5 xl:px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-xs transition-all shrink-0'
+      : 'text-tanah-gelap/80 hover:text-daun hover:bg-white/80 font-medium px-2.5 xl:px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-xs transition-colors shrink-0';
 
   // Render navbar layout IMMEDIATELY (0ms blocking time)
   el.innerHTML = `
     <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pasir/60 shadow-xs" role="navigation" aria-label="Navigasi Utama">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-18">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-18 gap-2">
           
           <!-- Logo Brand dengan Maskot Bara Asli -->
-          <a href="/" class="flex items-center gap-2.5 group shrink-0" aria-label="Beranda Tobal">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-daun/15 via-krem to-amber-100 border border-daun/25 p-1 flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs overflow-hidden">
+          <a href="/" class="flex items-center gap-2 sm:gap-2.5 group shrink-0" aria-label="Beranda Tobal">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-daun/15 via-krem to-amber-100 border border-daun/25 p-1 flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs overflow-hidden shrink-0">
               <img src="/images/mascot-barong-head.png" alt="Bara Si Barong" class="w-full h-full object-contain filter drop-shadow-xs" />
             </div>
             <div class="flex flex-col">
-              <span class="font-heading font-bold text-lg text-tanah-gelap tracking-tight leading-none group-hover:text-daun transition-colors">
+              <span class="font-heading font-bold text-base sm:text-lg text-tanah-gelap tracking-tight leading-none group-hover:text-daun transition-colors">
                 Tobal
               </span>
-              <span class="text-[9px] tracking-widest text-tanah/60 uppercase font-semibold mt-0.5">
+              <span class="text-[8.5px] sm:text-[9px] tracking-wider text-tanah/60 uppercase font-semibold mt-0.5">
                 Penjelajah Bali
               </span>
             </div>
           </a>
 
-          <!-- Menu Desktop: Capsule Dock Minimalis -->
-          <div class="hidden xl:flex items-center p-1 rounded-full bg-pasir/30 border border-pasir/60 backdrop-blur-sm gap-0.5">
-            <a href="/" class="${navItemClass('beranda')}" title="Beranda">
+          <!-- Menu Desktop: Capsule Dock Minimalis & Proporsional (Aktif pada Layar Lebar >= 1024px) -->
+          <div class="hidden lg:flex items-center p-1 rounded-full bg-pasir/30 border border-pasir/60 backdrop-blur-sm gap-0.5 xl:gap-1 shadow-2xs">
+            <a href="/" class="${navItemClass('beranda')}" title="Beranda Utama">
               <span>Beranda</span>
             </a>
-            <a href="/src/pages/petualangan.html" class="${navItemClass('petualangan')}" title="Jalur Petualangan" data-auth-required="true" data-feature-name="Jalur Petualangan Cerdas">
+            <a href="/src/pages/petualangan.html" class="${navItemClass('petualangan')}" title="Jalur Petualangan Cerdas" data-auth-required="true" data-feature-name="Jalur Petualangan Cerdas">
               <span>Petualangan</span>
             </a>
-            <a href="/src/pages/lencana.html" class="${navItemClass('lencana')}" title="Koleksi Lencana" data-auth-required="true" data-feature-name="Koleksi Lencana Budaya">
+            <a href="/src/pages/lencana.html" class="${navItemClass('lencana')}" title="Koleksi Lencana Budaya" data-auth-required="true" data-feature-name="Koleksi Lencana Budaya">
               <span>Lencana</span>
             </a>
-            <a href="/src/pages/kamus.html" class="${navItemClass('kamus')}" title="Kamus Etika Basa Bali">
-              <span>Kamus Basa Bali</span>
+            <a href="/src/pages/kamus.html" class="${navItemClass('kamus')}" title="Kamus Basa Bali">
+              <span>Kamus<span class="hidden 2xl:inline"> Basa</span> Bali</span>
             </a>
-            <a href="/src/pages/budaya.html" class="${navItemClass('budaya')}" title="Ensiklopedia Budaya">
+            <a href="/src/pages/budaya.html" class="${navItemClass('budaya')}" title="Ensiklopedia Budaya Bali">
               <span>Ensiklopedia</span>
             </a>
-            <a href="/src/pages/kenali-budaya.html" class="${navItemClass('kenali-budaya')}" title="Kenali Budaya (AI)" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
+            <a href="/src/pages/kenali-budaya.html" class="${navItemClass('kenali-budaya')}" title="Kenali Budaya (AI Vision)" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
               <span>Kenali Budaya</span>
               <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold px-1.5 py-0.2 rounded-full">AI</span>
             </a>
           </div>
 
-          <!-- Secondary Menu (Layar Medium) -->
-          <div class="hidden md:flex xl:hidden items-center p-1 rounded-full bg-pasir/30 border border-pasir/60 gap-0.5">
-            <a href="/" class="${navItemClass('beranda')}">Beranda</a>
-            <a href="/src/pages/petualangan.html" class="${navItemClass('petualangan')}" data-auth-required="true">Petualangan</a>
-            <a href="/src/pages/kamus.html" class="${navItemClass('kamus')}">Kamus</a>
-            <a href="/src/pages/budaya.html" class="${navItemClass('budaya')}">Ensiklopedia</a>
-            <a href="/src/pages/kenali-budaya.html" class="${navItemClass('kenali-budaya')}" data-auth-required="true">AI Budaya</a>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex items-center gap-2 sm:gap-2.5">
+          <!-- Action Buttons Kanan -->
+          <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             
             <!-- Admin Link Container (dihidrasi otomatis) -->
             <div id="navbar-admin-slot">
               ${isAdminCached ? `
-                <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs">
+                <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs shrink-0" title="Super Admin Dashboard">
                   <i class="fa-solid fa-shield-halved text-amber-700 text-xs"></i>
-                  <span>Admin</span>
+                  <span class="hidden sm:inline">Admin</span>
                 </a>
               ` : ''}
             </div>
 
             <!-- Akun / Masuk Slot -->
             <div id="navbar-auth-slot">
-              <a href="/src/pages/masuk.html" class="btn-primer !rounded-full !px-4 !py-2 text-xs font-bold shadow-xs hover:shadow-md transition flex items-center gap-1.5">
+              <a href="/src/pages/masuk.html" class="btn-primer !rounded-full !px-3 sm:!px-4 !py-1.5 sm:!py-2 text-xs font-bold shadow-xs hover:shadow-md transition flex items-center gap-1.5 shrink-0">
                 <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i>
                 <span>Masuk</span>
               </a>
             </div>
 
-            <!-- Hamburger Mobile -->
-            <button class="md:hidden w-9 h-9 rounded-xl bg-pasir/30 hover:bg-pasir/60 border border-pasir/60 text-tanah-gelap flex items-center justify-center transition cursor-pointer" id="btn-mobile-menu" aria-label="Buka navigasi mobile">
+            <!-- Hamburger Button (Mobile & Tablet < 1024px) -->
+            <button class="lg:hidden w-9 h-9 rounded-xl bg-pasir/30 hover:bg-pasir/60 border border-pasir/60 text-tanah-gelap flex items-center justify-center transition cursor-pointer shrink-0" id="btn-mobile-menu" aria-label="Buka navigasi mobile">
               <i class="fa-solid fa-bars text-sm"></i>
             </button>
 
@@ -122,38 +114,41 @@ export function renderNavbar(selector) {
         </div>
       </div>
 
-      <!-- Mobile Drawer -->
-      <div class="md:hidden hidden border-t border-pasir/50 bg-white/98 backdrop-blur-xl animate-fade-in shadow-lg" id="mobile-menu">
-        <div class="px-4 py-3 space-y-1 text-sm font-medium">
+      <!-- Mobile & Tablet Drawer (Layar < 1024px) -->
+      <div class="lg:hidden hidden border-t border-pasir/50 bg-white/98 backdrop-blur-xl animate-fade-in shadow-lg" id="mobile-menu">
+        <div class="px-4 py-3.5 space-y-1 text-sm font-medium max-w-md mx-auto">
+          
           <div id="mobile-user-slot"></div>
-          <a href="/" class="${active === 'beranda' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
+
+          <a href="/" class="${active === 'beranda' ? 'bg-daun text-white font-semibold shadow-xs' : 'text-tanah-gelap hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
             <i class="fa-solid fa-house w-4 text-xs"></i>
             <span>Beranda</span>
           </a>
-          <a href="/src/pages/petualangan.html" class="${active === 'petualangan' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Jalur Petualangan Cerdas">
+          <a href="/src/pages/petualangan.html" class="${active === 'petualangan' ? 'bg-daun text-white font-semibold shadow-xs' : 'text-tanah-gelap hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Jalur Petualangan Cerdas">
             <i class="fa-solid fa-compass w-4 text-xs"></i>
             <span>Petualangan Saya</span>
           </a>
-          <a href="/src/pages/lencana.html" class="${active === 'lencana' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Koleksi Lencana Budaya">
+          <a href="/src/pages/lencana.html" class="${active === 'lencana' ? 'bg-daun text-white font-semibold shadow-xs' : 'text-tanah-gelap hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Koleksi Lencana Budaya">
             <i class="fa-solid fa-award w-4 text-xs"></i>
             <span>Koleksi Lencana</span>
           </a>
-          <a href="/src/pages/kamus.html" class="${active === 'kamus' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
+          <a href="/src/pages/kamus.html" class="${active === 'kamus' ? 'bg-daun text-white font-semibold shadow-xs' : 'text-tanah-gelap hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
             <i class="fa-solid fa-book-open w-4 text-xs"></i>
             <span>Kamus Basa Bali</span>
           </a>
-          <a href="/src/pages/budaya.html" class="${active === 'budaya' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
+          <a href="/src/pages/budaya.html" class="${active === 'budaya' ? 'bg-daun text-white font-semibold shadow-xs' : 'text-tanah-gelap hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
             <i class="fa-solid fa-landmark w-4 text-xs"></i>
             <span>Ensiklopedia Budaya</span>
           </a>
-          <a href="/src/pages/kenali-budaya.html" class="${active === 'kenali-budaya' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center justify-between px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
+          <a href="/src/pages/kenali-budaya.html" class="${active === 'kenali-budaya' ? 'bg-daun text-white font-semibold shadow-xs' : 'text-tanah-gelap hover:bg-pasir/30'} flex items-center justify-between px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
             <span class="flex items-center gap-2.5">
               <i class="fa-solid fa-camera-retro w-4 text-xs"></i>
               <span>Kenali Budaya</span>
             </span>
             <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold px-1.5 py-0.2 rounded-full">AI</span>
           </a>
-          <div id="mobile-admin-slot"></div>
+
+          <div id="mobile-admin-slot" class="pt-2"></div>
         </div>
       </div>
     </nav>
@@ -168,7 +163,7 @@ export function renderNavbar(selector) {
     });
   }
 
-  // Pasang pemutar audio (icon popup mengapung di pojok kanan)
+  // Pasang pemutar audio playlist tradisi Bali (mengapung di pojok kanan bawah)
   initBalineseAudio();
 
   // Hidrasi sesi user secara asinkron di latar belakang (tanpa menghalangi render utama)
@@ -185,15 +180,15 @@ export function renderNavbar(selector) {
           const authSlot = document.getElementById('navbar-auth-slot');
           if (authSlot) {
             authSlot.innerHTML = `
-              <div class="flex items-center gap-2">
-                <button type="button" id="btn-open-profile-edit" class="flex items-center gap-2 bg-pasir/30 hover:bg-pasir/60 px-3 py-1.5 rounded-full border border-pasir/60 text-xs font-semibold text-tanah-gelap transition cursor-pointer" title="Sunting Profil Penjelajah">
+              <div class="flex items-center gap-1.5 sm:gap-2">
+                <button type="button" id="btn-open-profile-edit" class="flex items-center gap-1.5 sm:gap-2 bg-pasir/30 hover:bg-pasir/60 px-2.5 sm:px-3 py-1.5 rounded-full border border-pasir/60 text-xs font-semibold text-tanah-gelap transition cursor-pointer" title="Sunting Profil Penjelajah">
                   <div class="w-6 h-6 rounded-full overflow-hidden bg-white border border-pasir/80 flex items-center justify-center shrink-0">
                     <img id="navbar-user-avatar-img" src="${avatarUrl}" alt="${displayName}" class="w-full h-full object-contain" />
                   </div>
-                  <span id="navbar-user-name" class="max-w-[100px] truncate">${displayName}</span>
-                  <i class="fa-solid fa-pen text-[10px] text-daun"></i>
+                  <span id="navbar-user-name" class="max-w-[75px] sm:max-w-[95px] xl:max-w-[110px] truncate text-xs">${displayName}</span>
+                  <i class="fa-solid fa-pen text-[9px] text-daun shrink-0"></i>
                 </button>
-                <button class="w-8 h-8 rounded-full bg-pasir/30 hover:bg-red-50 hover:text-red-600 text-tanah/70 border border-pasir/60 flex items-center justify-center transition cursor-pointer" id="btn-keluar" title="Keluar Akun">
+                <button class="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-pasir/30 hover:bg-red-50 hover:text-red-600 text-tanah/70 border border-pasir/60 flex items-center justify-center transition cursor-pointer shrink-0" id="btn-keluar" title="Keluar Akun">
                   <i class="fa-solid fa-right-from-bracket text-xs"></i>
                 </button>
               </div>
@@ -205,25 +200,48 @@ export function renderNavbar(selector) {
               await signOutUser();
             });
 
-            // Mobile drawer profile edit
-            const mobileAdminSlot = document.getElementById('mobile-admin-slot');
-            if (mobileAdminSlot && !document.getElementById('mobile-btn-profile-edit')) {
-              const pBtn = document.createElement('button');
-              pBtn.type = 'button';
-              pBtn.id = 'mobile-btn-profile-edit';
-              pBtn.className = 'w-full mt-2 px-3.5 py-2.5 rounded-xl bg-daun/10 hover:bg-daun/20 text-daun border border-daun/30 text-xs font-semibold flex items-center justify-between cursor-pointer transition';
-              pBtn.innerHTML = `
-                <span class="flex items-center gap-2">
-                  <img src="${avatarUrl}" class="w-5 h-5 rounded-full object-contain" />
-                  <span>Sunting Profil (${displayName})</span>
-                </span>
-                <i class="fa-solid fa-pen-to-square text-xs"></i>
+            // Mobile drawer profile card & edit
+            const mobileUserSlot = document.getElementById('mobile-user-slot');
+            if (mobileUserSlot) {
+              mobileUserSlot.innerHTML = `
+                <div class="p-3 mb-2 rounded-2xl bg-pasir/20 border border-pasir/60 flex items-center justify-between">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <img src="${avatarUrl}" class="w-8 h-8 rounded-full object-contain border border-pasir shrink-0" />
+                    <div class="leading-tight truncate">
+                      <div class="font-bold text-xs text-tanah-gelap truncate">${displayName}</div>
+                      <div class="text-[10px] text-tanah/60 truncate">${user.email || 'Penjelajah Bali'}</div>
+                    </div>
+                  </div>
+                  <button type="button" id="mobile-btn-profile-edit" class="px-2.5 py-1 rounded-full bg-daun/10 hover:bg-daun/20 text-daun text-[11px] font-bold border border-daun/20 flex items-center gap-1 transition cursor-pointer shrink-0">
+                    <i class="fa-solid fa-pen text-[9px]"></i>
+                    <span>Edit</span>
+                  </button>
+                </div>
               `;
-              pBtn.addEventListener('click', () => {
+              document.getElementById('mobile-btn-profile-edit')?.addEventListener('click', () => {
                 mobileMenu?.classList.add('hidden');
                 openProfileEditModal();
               });
-              mobileAdminSlot.appendChild(pBtn);
+            }
+
+            // Mobile drawer logout button
+            const mobileAdminSlot = document.getElementById('mobile-admin-slot');
+            if (mobileAdminSlot && !document.getElementById('mobile-btn-keluar')) {
+              const logoutBtn = document.createElement('button');
+              logoutBtn.type = 'button';
+              logoutBtn.id = 'mobile-btn-keluar';
+              logoutBtn.className = 'w-full mt-2 px-3.5 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-semibold flex items-center justify-between cursor-pointer transition';
+              logoutBtn.innerHTML = `
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                  <span>Keluar Akun</span>
+                </span>
+                <i class="fa-solid fa-angle-right text-xs"></i>
+              `;
+              logoutBtn.addEventListener('click', async () => {
+                await signOutUser();
+              });
+              mobileAdminSlot.appendChild(logoutBtn);
             }
           }
 
@@ -231,11 +249,27 @@ export function renderNavbar(selector) {
             const adminSlot = document.getElementById('navbar-admin-slot');
             if (adminSlot && !adminSlot.innerHTML.trim()) {
               adminSlot.innerHTML = `
-                <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs">
+                <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs shrink-0" title="Super Admin Dashboard">
                   <i class="fa-solid fa-shield-halved text-amber-700 text-xs"></i>
-                  <span>Admin</span>
+                  <span class="hidden sm:inline">Admin</span>
                 </a>
               `;
+            }
+
+            const mobileAdminSlot = document.getElementById('mobile-admin-slot');
+            if (mobileAdminSlot && !document.getElementById('mobile-btn-admin-link')) {
+              const aBtn = document.createElement('a');
+              aBtn.href = '/src/pages/admin.html';
+              aBtn.id = 'mobile-btn-admin-link';
+              aBtn.className = 'w-full mb-2 px-3.5 py-2.5 rounded-xl bg-amber-100/80 hover:bg-amber-200 text-amber-900 border border-amber-300/80 text-xs font-bold flex items-center justify-between transition shadow-xs';
+              aBtn.innerHTML = `
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-shield-halved text-amber-700 text-xs"></i>
+                  <span>Dashboard Super Admin</span>
+                </span>
+                <i class="fa-solid fa-angle-right text-xs"></i>
+              `;
+              mobileAdminSlot.prepend(aBtn);
             }
           }
         }
