@@ -874,7 +874,7 @@ function setupSettingsHandlers() {
     }
 
     btnTestGemini.disabled = true;
-    btnTestGemini.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i> Menguji AI...';
+    btnTestGemini.innerHTML = '<span class="inline-block animate-spin mr-1">◌</span> Menguji AI...';
     geminiFeedback.classList.remove('hidden', 'bg-purple-50', 'bg-red-50');
 
     try {
@@ -892,17 +892,17 @@ function setupSettingsHandlers() {
 
       geminiFeedback.className = 'text-xs p-3 rounded-xl bg-purple-50 text-purple-900 border border-purple-200';
       geminiFeedback.innerHTML = `
-        <i class="fa-solid fa-wand-magic-sparkles text-purple-600 mr-1.5"></i>
+        <span class="text-purple-600 font-bold mr-1.5">✓</span>
         <strong>${json.message}</strong> Respon AI: <em>"${json.sampleReply}"</em>
       `;
       showToast('API Key Gemini valid dan siap digunakan!', 'success');
     } catch (err) {
       geminiFeedback.className = 'text-xs p-3 rounded-xl bg-red-50 text-red-800 border border-red-200';
-      geminiFeedback.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-600 mr-1.5"></i> ${err.message}`;
+      geminiFeedback.innerHTML = `<span class="text-red-600 font-bold mr-1.5">✕</span> ${err.message}`;
       showToast(err.message, 'error');
     } finally {
       btnTestGemini.disabled = false;
-      btnTestGemini.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Uji API Key Gemini';
+      btnTestGemini.innerHTML = '<span class="mr-1">✦</span> Uji API Key Gemini';
     }
   });
 

@@ -7,6 +7,7 @@ import { getCurrentUser, getUserProfile, signOutUser, hasCachedSession } from '.
 import { initBalineseAudio } from './balineseAudio.js';
 import { setupProtectedLinks } from '../lib/authGate.js';
 import { registerServiceWorker } from '../lib/registerSW.js';
+import { initChatbot } from './chatModal.js';
 
 function getActivePage() {
   const path = window.location.pathname;
@@ -26,6 +27,7 @@ export function renderNavbar(selector) {
   if (!el) return;
 
   registerServiceWorker();
+  initChatbot();
 
   const active = getActivePage();
   const isAdminCached = sessionStorage.getItem('tobal_admin_key') === 'tobal2026';
@@ -92,6 +94,12 @@ export function renderNavbar(selector) {
           <!-- Action Buttons -->
           <div class="flex items-center gap-2 sm:gap-2.5">
             
+            <!-- Tombol Chat AI Budaya (Database Access) -->
+            <button id="nav-chat-ai-btn" class="px-3 py-1.5 rounded-full bg-daun/10 hover:bg-daun/20 text-daun border border-daun/30 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer" title="Tanya AI Budaya Tobal">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Chat AI</span>
+            </button>
+
             <!-- Tombol Musik Suasana Bali -->
             <button id="nav-music-btn" class="btn-toggle-bali-music px-3 py-1.5 rounded-full bg-pasir/40 hover:bg-pasir/70 text-tanah-gelap border border-pasir/70 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer" title="Alunan Rindik Ubud">
               <svg class="w-3.5 h-3.5 text-daun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -157,6 +165,13 @@ export function renderNavbar(selector) {
             <span>Kenali Budaya</span>
             <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold px-1.5 py-0.2 rounded-full">AI</span>
           </a>
+          <button type="button" id="mobile-chat-ai-btn" class="w-full text-left text-daun font-semibold hover:bg-pasir/30 flex items-center justify-between px-3.5 py-2.5 rounded-xl transition cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Tanya AI Budaya (Database)</span>
+            </span>
+            <span class="text-xs">💬</span>
+          </button>
           <div id="mobile-admin-slot"></div>
         </div>
       </div>
@@ -171,6 +186,20 @@ export function renderNavbar(selector) {
       mobileMenu.classList.toggle('hidden');
     });
   }
+
+  // Hubungkan tombol Chat AI di Navbar Desktop & Mobile ke Launcher
+  const triggerChat = () => {
+    const launcherBtn = document.getElementById('btn-open-tobal-chat');
+    if (launcherBtn) {
+      launcherBtn.click();
+    }
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+    }
+  };
+
+  document.getElementById('nav-chat-ai-btn')?.addEventListener('click', triggerChat);
+  document.getElementById('mobile-chat-ai-btn')?.addEventListener('click', triggerChat);
 
   // Pasang pemutar audio
   initBalineseAudio();

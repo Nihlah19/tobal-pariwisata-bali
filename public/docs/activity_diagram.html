@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UML Activity Diagram — Tour Penjelajah Bali</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #F8F9FA;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    #diagram-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+      width: 1300px;
+      padding: 30px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #F1F5F9;
+      padding-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1E293B;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      font-size: 13px;
+      color: #64748B;
+      margin-top: 4px;
+    }
+    svg {
+      width: 100%;
+      height: 840px;
+      display: block;
+    }
+    .lane-title {
+      font-size: 13px;
+      font-weight: 700;
+      fill: #FFFFFF;
+      text-anchor: middle;
+    }
+    .act-box {
+      fill: #FFFFFF;
+      stroke: #2F5D3A;
+      stroke-width: 1.8;
+      rx: 12px;
+    }
+    .act-box.ai {
+      stroke: #7C3AED;
+      fill: #FAF5FF;
+    }
+    .act-box.db {
+      stroke: #16A34A;
+      fill: #F0FDF4;
+    }
+    .act-box.admin {
+      stroke: #D97706;
+      fill: #FFFBEB;
+    }
+    .act-text {
+      font-size: 11px;
+      font-weight: 600;
+      fill: #1E293B;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .guard-text {
+      font-size: 10px;
+      font-weight: 700;
+      fill: #DC2626;
+      text-anchor: middle;
+    }
+    .guard-ok {
+      font-size: 10px;
+      font-weight: 700;
+      fill: #16A34A;
+      text-anchor: middle;
+    }
+    .flow-line {
+      stroke: #475569;
+      stroke-width: 1.8;
+      fill: none;
+    }
+    .decision {
+      fill: #FEF3C7;
+      stroke: #D97706;
+      stroke-width: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="diagram-card">
+    <div class="header">
+      <h1>UML ACTIVITY DIAGRAM — TOUR PENJELAJAH BALI (TOBAL)</h1>
+      <p>Alur Aktivitas End-to-End: Eksplorasi Pengguna, Autentikasi Gate, Chatbot RAG Database, &amp; Admin Config</p>
+    </div>
+
+    <svg viewBox="0 0 1240 820" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" />
+        </marker>
+        <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#16A34A" />
+        </marker>
+        <marker id="arr-purple" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7C3AED" />
+        </marker>
+        <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+          <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#0F172A" flood-opacity="0.06"/>
+        </filter>
+      </defs>
+
+      <!-- SWIMLANES -->
+      <!-- Lane 1: Pengguna / Penjelajah -->
+      <rect x="20" y="20" width="240" height="780" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" />
+      <rect x="20" y="20" width="240" height="40" fill="#2F5D3A" />
+      <text x="140" y="45" class="lane-title">Pengguna (Wisatawan)</text>
+
+      <!-- Lane 2: Frontend Tobal UI -->
+      <rect x="260" y="20" width="260" height="780" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
+      <rect x="260" y="20" width="260" height="40" fill="#1E3A2B" />
+      <text x="390" y="45" class="lane-title">Frontend Tobal (SPA / UI)</text>
+
+      <!-- Lane 3: Backend / Serverless API -->
+      <rect x="520" y="20" width="240" height="780" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" />
+      <rect x="520" y="20" width="240" height="40" fill="#3B2F24" />
+      <text x="640" y="45" class="lane-title">Backend API (/api/chat)</text>
+
+      <!-- Lane 4: Supabase Database -->
+      <rect x="760" y="20" width="240" height="780" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
+      <rect x="760" y="20" width="240" height="40" fill="#166534" />
+      <text x="880" y="45" class="lane-title">Supabase Database</text>
+
+      <!-- Lane 5: Google Gemini AI -->
+      <rect x="1000" y="20" width="220" height="780" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" />
+      <rect x="1000" y="20" width="220" height="40" fill="#581C87" />
+      <text x="1110" y="45" class="lane-title">Google Gemini AI</text>
+
+      <!-- ================= ALUR AKTIVITAS ================= -->
+
+      <!-- 1. Start Node -->
+      <circle cx="140" cy="90" r="12" fill="#1E293B" />
+      <line x1="140" y1="102" x2="140" y2="135" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 2. Buka Web Tobal -->
+      <rect x="50" y="135" width="180" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="140" y="157" class="act-text">Akses Web Tobal</text>
+      <line x1="230" y1="157" x2="295" y2="157" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 3. Render Landing Page + Offline SW -->
+      <rect x="295" y="135" width="190" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="390" y="150" class="act-text">Render UI (HTML + CSS)</text>
+      <text x="390" y="165" font-size="9.5" fill="#64748B" text-anchor="middle">&amp; Aktifkan Cache SW (0ms)</text>
+
+      <!-- 4. Klik Tombol 'Tanya AI Budaya' -->
+      <line x1="390" y1="179" x2="390" y2="215" class="flow-line" />
+      <line x1="390" y1="215" x2="230" y2="215" class="flow-line" marker-end="url(#arr)" />
+
+      <rect x="50" y="195" width="180" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="140" y="217" class="act-text">Klik "Tanya AI Budaya"</text>
+      <line x1="140" y1="239" x2="140" y2="275" class="flow-line" />
+      <line x1="140" y1="275" x2="335" y2="275" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 5. Decision: Cek Status Login -->
+      <polygon points="390,250 445,275 390,300 335,275" class="decision" />
+      <text x="390" y="275" font-size="10.5" font-weight="700" fill="#92400E" text-anchor="middle">Sudah Login?</text>
+
+      <!-- [Belum Login] Branch -->
+      <line x1="390" y1="250" x2="390" y2="210" stroke="#DC2626" stroke-width="1.8" />
+      <line x1="390" y1="210" x2="330" y2="210" stroke="#DC2626" stroke-width="1.8" marker-end="url(#arr)" />
+      <text x="425" y="235" class="guard-text">[Belum]</text>
+
+      <rect x="280" y="190" width="160" height="38" rx="10" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5" />
+      <text x="360" y="209" font-size="10.5" font-weight="700" fill="#B91C1C" text-anchor="middle">Tampilkan Auth Gate</text>
+
+      <!-- [Sudah Login] Branch -->
+      <line x1="390" y1="300" x2="390" y2="340" stroke="#16A34A" stroke-width="1.8" marker-end="url(#arr-green)" />
+      <text x="425" y="320" class="guard-ok">[Sudah]</text>
+
+      <!-- 6. Buka Chat Modal & Tulis Pertanyaan -->
+      <rect x="295" y="340" width="190" height="44" class="act-box ai" filter="url(#shadow)" />
+      <text x="390" y="362" class="act-text" fill="#6B21A8">Buka Dialog Chat Bli Kadek</text>
+
+      <line x1="295" y1="362" x2="230" y2="362" class="flow-line" marker-end="url(#arr)" />
+      <rect x="50" y="340" width="180" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="140" y="355" class="act-text">Ketik / Pilih Topik Cepat</text>
+      <text x="140" y="369" font-size="9" fill="#64748B" text-anchor="middle">(Kosa Kata, Etika, Tempat 3+1)</text>
+
+      <!-- 7. Kirim POST /api/chat -->
+      <line x1="140" y1="384" x2="140" y2="425" class="flow-line" />
+      <line x1="140" y1="425" x2="295" y2="425" class="flow-line" marker-end="url(#arr)" />
+
+      <rect x="295" y="405" width="190" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="390" y="420" class="act-text">Kirim Request JSON</text>
+      <text x="390" y="435" font-size="9.5" fill="#64748B" text-anchor="middle">Bearer Token + Prompt + History</text>
+
+      <line x1="485" y1="427" x2="550" y2="427" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 8. Backend Verifikasi & Ekstraksi Keyword -->
+      <rect x="550" y="405" width="180" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="640" y="420" class="act-text">Verifikasi Auth &amp;</text>
+      <text x="640" y="435" font-size="9.5" fill="#1E293B" text-anchor="middle">Ekstraksi Keyword Pencarian</text>
+
+      <line x1="730" y1="427" x2="790" y2="427" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 9. Supabase Query RAG -->
+      <rect x="790" y="405" width="180" height="44" class="act-box db" filter="url(#shadow)" />
+      <text x="880" y="420" class="act-text" fill="#15803D">Query Database Supabase</text>
+      <text x="880" y="435" font-size="9.5" fill="#15803D" text-anchor="middle">(dictionary, places, culture)</text>
+
+      <!-- Return data to backend -->
+      <line x1="880" y1="449" x2="880" y2="490" class="flow-line" />
+      <line x1="880" y1="490" x2="730" y2="490" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 10. Backend: Rakit Prompt Kompak & Kirim ke Gemini -->
+      <rect x="550" y="470" width="180" height="48" class="act-box ai" filter="url(#shadow)" />
+      <text x="640" y="487" class="act-text" fill="#6B21A8">Rakit Grounding Context</text>
+      <text x="640" y="502" font-size="9" fill="#7C3AED" text-anchor="middle">(Hemat Token: Max 400 Output)</text>
+
+      <line x1="730" y1="494" x2="1030" y2="494" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arr-purple)" />
+
+      <!-- 11. Google Gemini Inferensi -->
+      <rect x="1030" y="470" width="160" height="48" class="act-box ai" filter="url(#shadow)" />
+      <text x="1110" y="487" class="act-text" fill="#6B21A8">Generasi Respons Santun</text>
+      <text x="1110" y="502" font-size="9" fill="#7C3AED" text-anchor="middle">Kultural Bali &amp; Ringkas</text>
+
+      <!-- Return to Backend -->
+      <line x1="1110" y1="518" x2="1110" y2="560" class="flow-line" />
+      <line x1="1110" y1="560" x2="730" y2="560" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 12. Backend Response Sanitasi -->
+      <rect x="550" y="540" width="180" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="640" y="555" class="act-text">Sanitasi &amp; Lampirkan</text>
+      <text x="640" y="570" font-size="9" fill="#64748B" text-anchor="middle">Sumber Database Referensi</text>
+
+      <line x1="550" y1="562" x2="485" y2="562" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 13. Frontend Render Chat Bubble -->
+      <rect x="295" y="540" width="190" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="390" y="555" class="act-text">Render Bubble Jawaban AI</text>
+      <text x="390" y="570" font-size="9" fill="#64748B" text-anchor="middle">+ Tag Sumber Basis Data</text>
+
+      <line x1="295" y1="562" x2="230" y2="562" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- 14. Pengguna Membaca Jawaban -->
+      <rect x="50" y="540" width="180" height="44" class="act-box" filter="url(#shadow)" />
+      <text x="140" y="555" class="act-text">Membaca Jawaban Edukasi</text>
+      <text x="140" y="570" font-size="9" fill="#64748B" text-anchor="middle">(Basa Bali / Rute / Etika)</text>
+
+      <!-- End Node 1 -->
+      <line x1="140" y1="584" x2="140" y2="615" class="flow-line" marker-end="url(#arr)" />
+      <circle cx="140" cy="630" r="14" fill="#FFFFFF" stroke="#1E293B" stroke-width="2" />
+      <circle cx="140" cy="630" r="8" fill="#1E293B" />
+
+      <!-- ================= SECTION ALUR ADMIN (BAWAH) ================= -->
+      <line x1="20" y1="670" x2="1220" y2="670" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="6,4" />
+      <text x="35" y="692" font-size="11.5" font-weight="800" fill="#D97706" letter-spacing="0.5">
+        SUB-ALUR SUPER ADMIN: PENGATURAN API KEY GEMINI &amp; DATABASE SWITCHER
+      </text>
+
+      <!-- Admin Start -->
+      <circle cx="140" cy="740" r="10" fill="#D97706" />
+      <line x1="150" y1="740" x2="185" y2="740" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- Admin Step 1 -->
+      <rect x="185" y="720" width="170" height="40" class="act-box admin" filter="url(#shadow)" />
+      <text x="270" y="735" class="act-text" fill="#B45309">Masuk Dashboard Admin</text>
+      <text x="270" y="748" font-size="8.5" fill="#D97706" text-anchor="middle">Input Passkey tobal2026</text>
+
+      <line x1="355" y1="740" x2="395" y2="740" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- Admin Step 2 -->
+      <rect x="395" y="720" width="170" height="40" class="act-box admin" filter="url(#shadow)" />
+      <text x="480" y="735" class="act-text" fill="#B45309">Ubah Gemini API Key</text>
+      <text x="480" y="748" font-size="8.5" fill="#D97706" text-anchor="middle">&amp; Pilih Model Cepat</text>
+
+      <line x1="565" y1="740" x2="605" y2="740" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- Admin Step 3: Test Gemini -->
+      <rect x="605" y="720" width="180" height="40" class="act-box admin" filter="url(#shadow)" />
+      <text x="695" y="735" class="act-text" fill="#B45309">Klik "Uji API Key Gemini"</text>
+      <text x="695" y="748" font-size="8.5" fill="#D97706" text-anchor="middle">Verifikasi Ping &amp; Respon AI</text>
+
+      <line x1="785" y1="740" x2="825" y2="740" class="flow-line" marker-end="url(#arr)" />
+
+      <!-- Admin Step 4: Simpan ke .env & Runtime -->
+      <rect x="825" y="720" width="190" height="40" class="act-box admin" filter="url(#shadow)" />
+      <text x="920" y="735" class="act-text" fill="#B45309">Simpan Konfigurasi</text>
+      <text x="920" y="748" font-size="8.5" fill="#D97706" text-anchor="middle">Perbarui .env &amp; Aktif Seketika</text>
+
+      <!-- Admin End -->
+      <line x1="1015" y1="740" x2="1055" y2="740" class="flow-line" marker-end="url(#arr)" />
+      <circle cx="1070" cy="740" r="14" fill="#FFFFFF" stroke="#D97706" stroke-width="2" />
+      <circle cx="1070" cy="740" r="8" fill="#D97706" />
+
+    </svg>
+  </div>
+
+</body>
+</html>

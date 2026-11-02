@@ -101,6 +101,20 @@ function apiDevServerPlugin() {
           res.end(JSON.stringify({ error: 'Internal Server Error', details: err.message }));
         }
       });
+
+      server.middlewares.use('/api/chat', async (req, res) => {
+        try {
+          loadEnvToProcess();
+          const { default: handler } = await import('./api/chat.js');
+          setupPolyfills(res);
+          await handler(req, res);
+        } catch (err) {
+          console.error('[Vite Dev API Error /api/chat]:', err);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Internal Server Error', details: err.message }));
+        }
+      });
     }
   };
 }

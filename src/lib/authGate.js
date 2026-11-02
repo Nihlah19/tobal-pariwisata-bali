@@ -11,6 +11,7 @@ import { getSession, hasCachedSession } from './auth.js';
  * @param {string} featureName - Nama fitur yang coba diakses
  * @param {string} targetUrl - URL tujuan setelah berhasil login
  */
+export const openAuthModal = promptAuthModal;
 export function promptAuthModal(featureName = 'Fitur Petualangan', targetUrl = '') {
   // Hapus modal lama jika sudah ada
   const existing = document.getElementById('auth-gate-modal');

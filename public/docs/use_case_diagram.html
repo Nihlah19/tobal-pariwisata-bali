@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UML Use Case Diagram — Tour Penjelajah Bali</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #F8F9FA;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    #diagram-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+      width: 1280px;
+      padding: 30px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #F1F5F9;
+      padding-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1E293B;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      font-size: 13px;
+      color: #64748B;
+      margin-top: 4px;
+    }
+    svg {
+      width: 100%;
+      height: 780px;
+      display: block;
+    }
+    .actor-label {
+      font-size: 13px;
+      font-weight: 700;
+      fill: #1E293B;
+      text-anchor: middle;
+    }
+    .actor-sub {
+      font-size: 11px;
+      font-weight: 500;
+      fill: #64748B;
+      text-anchor: middle;
+    }
+    .uc-ellipse {
+      fill: #FFFFFF;
+      stroke: #2F5D3A;
+      stroke-width: 2;
+      transition: all 0.2s;
+    }
+    .uc-ellipse.ai {
+      stroke: #7C3AED;
+      fill: #FAF5FF;
+    }
+    .uc-ellipse.admin {
+      stroke: #D97706;
+      fill: #FFFBEB;
+    }
+    .uc-text {
+      font-size: 11.5px;
+      font-weight: 600;
+      fill: #1E293B;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .rel-line {
+      stroke: #64748B;
+      stroke-width: 1.5;
+      fill: none;
+    }
+    .rel-include {
+      stroke: #7C3AED;
+      stroke-width: 1.5;
+      stroke-dasharray: 4, 3;
+      fill: none;
+    }
+    .rel-text {
+      font-size: 9.5px;
+      font-weight: 700;
+      fill: #7C3AED;
+      text-anchor: middle;
+    }
+    .legend-box {
+      font-size: 11px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="diagram-card">
+    <div class="header">
+      <h1>UML USE CASE DIAGRAM — TOUR PENJELAJAH BALI (TOBAL)</h1>
+      <p>Arsitektur Fungsional Wisatawan Publik, Anggota Terdaftar, Asisten AI (Gemini), & Super Admin</p>
+    </div>
+
+    <svg viewBox="0 0 1220 780" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B" />
+        </marker>
+        <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7C3AED" />
+        </marker>
+        <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+          <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.06"/>
+        </filter>
+      </defs>
+
+      <!-- SYSTEM BOUNDARY -->
+      <rect x="250" y="20" width="670" height="740" rx="20" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2" />
+      <rect x="250" y="20" width="670" height="38" rx="20" fill="#2F5D3A" />
+      <rect x="250" y="38" width="670" height="20" fill="#2F5D3A" />
+      <text x="585" y="42" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1">
+        SISTEM WEB APLIKASI TOUR PENJELAJAH BALI (TOBAL)
+      </text>
+
+      <!-- ================= ACTORS (LEFT: USERS) ================= -->
+      
+      <!-- Actor 1: Wisatawan Publik -->
+      <g id="actor-wisatawan" transform="translate(110, 160)">
+        <circle cx="0" cy="-30" r="14" fill="#E2E8F0" stroke="#1E293B" stroke-width="2.2" />
+        <line x1="0" y1="-16" x2="0" y2="18" stroke="#1E293B" stroke-width="2.2" />
+        <line x1="-22" y1="-4" x2="22" y2="-4" stroke="#1E293B" stroke-width="2.2" />
+        <line x1="0" y1="18" x2="-18" y2="48" stroke="#1E293B" stroke-width="2.2" />
+        <line x1="0" y1="18" x2="18" y2="48" stroke="#1E293B" stroke-width="2.2" />
+        <text x="0" y="70" class="actor-label">Wisatawan Publik</text>
+        <text x="0" y="86" class="actor-sub">(Pengunjung Web)</text>
+      </g>
+
+      <!-- Generalization Arrow (Registered inherits from Public) -->
+      <path d="M 110, 410 L 110, 265" stroke="#1E293B" stroke-width="1.8" stroke-dasharray="4,3" />
+      <polygon points="110,250 104,265 116,265" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.8" />
+
+      <!-- Actor 2: Penjelajah Terdaftar -->
+      <g id="actor-member" transform="translate(110, 490)">
+        <circle cx="0" cy="-30" r="14" fill="#DCFCE7" stroke="#2F5D3A" stroke-width="2.2" />
+        <line x1="0" y1="-16" x2="0" y2="18" stroke="#2F5D3A" stroke-width="2.2" />
+        <line x1="-22" y1="-4" x2="22" y2="-4" stroke="#2F5D3A" stroke-width="2.2" />
+        <line x1="0" y1="18" x2="-18" y2="48" stroke="#2F5D3A" stroke-width="2.2" />
+        <line x1="0" y1="18" x2="18" y2="48" stroke="#2F5D3A" stroke-width="2.2" />
+        <text x="0" y="70" class="actor-label" fill="#2F5D3A">Penjelajah Terdaftar</text>
+        <text x="0" y="86" class="actor-sub">(Telah Masuk / Login)</text>
+      </g>
+
+      <!-- ================= ACTORS (RIGHT: ADMIN & EXTERNAL SYSTEMS) ================= -->
+      
+      <!-- Actor 3: Super Admin -->
+      <g id="actor-admin" transform="translate(1080, 180)">
+        <circle cx="0" cy="-30" r="14" fill="#FEF3C7" stroke="#D97706" stroke-width="2.2" />
+        <line x1="0" y1="-16" x2="0" y2="18" stroke="#D97706" stroke-width="2.2" />
+        <line x1="-22" y1="-4" x2="22" y2="-4" stroke="#D97706" stroke-width="2.2" />
+        <line x1="0" y1="18" x2="-18" y2="48" stroke="#D97706" stroke-width="2.2" />
+        <line x1="0" y1="18" x2="18" y2="48" stroke="#D97706" stroke-width="2.2" />
+        <text x="0" y="70" class="actor-label" fill="#D97706">Super Admin</text>
+        <text x="0" y="86" class="actor-sub">(Pengelola Konten & Sistem)</text>
+      </g>
+
+      <!-- External System 1: Google Gemini AI -->
+      <g id="actor-gemini" transform="translate(1020, 480)">
+        <rect x="0" y="0" width="130" height="60" rx="14" fill="#FAF5FF" stroke="#7C3AED" stroke-width="2" filter="url(#shadow)" />
+        <text x="65" y="26" class="actor-label" fill="#7C3AED">&lt;&lt;Service&gt;&gt;</text>
+        <text x="65" y="44" font-size="11" font-weight="700" fill="#6B21A8" text-anchor="middle">Google Gemini AI</text>
+      </g>
+
+      <!-- External System 2: Supabase Database -->
+      <g id="actor-supabase" transform="translate(1020, 610)">
+        <rect x="0" y="0" width="130" height="60" rx="14" fill="#F0FDF4" stroke="#16A34A" stroke-width="2" filter="url(#shadow)" />
+        <text x="65" y="26" class="actor-label" fill="#16A34A">&lt;&lt;Database&gt;&gt;</text>
+        <text x="65" y="44" font-size="11" font-weight="700" fill="#15803D" text-anchor="middle">Supabase PostgreSQL</text>
+      </g>
+
+      <!-- ================= USE CASES (ELLIPSES) ================= -->
+
+      <!-- UC 1: Eksplorasi Beranda & Formula 3+1 -->
+      <g transform="translate(410, 90)">
+        <ellipse cx="0" cy="0" rx="125" ry="24" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Eksplorasi Beranda &amp; Formula 3+1</text>
+      </g>
+
+      <!-- UC 2: Baca Ensiklopedia Budaya & Etika Pura -->
+      <g transform="translate(410, 150)">
+        <ellipse cx="0" cy="0" rx="125" ry="24" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Baca Ensiklopedia Budaya &amp; Etika</text>
+      </g>
+
+      <!-- UC 3: Cari Kosakata Kamus Basa Bali (KBBI) -->
+      <g transform="translate(410, 210)">
+        <ellipse cx="0" cy="0" rx="125" ry="24" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Cari Kosakata &amp; Etika Basa Bali</text>
+      </g>
+
+      <!-- UC 4: Masuk / Daftar Akun Penjelajah -->
+      <g transform="translate(410, 270)">
+        <ellipse cx="0" cy="0" rx="125" ry="24" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Masuk / Daftar Akun Penjelajah</text>
+      </g>
+
+      <!-- UC 5: Putar Musik Suasana Tradisi Rindik Ubud -->
+      <g transform="translate(410, 330)">
+        <ellipse cx="0" cy="0" rx="125" ry="24" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Putar Alunan Musik Rindik Bali</text>
+      </g>
+
+      <!-- ============ USE CASES KHUSUS ANGGOTA (TERDAFTAR) ============ -->
+
+      <!-- UC 6: Chatbot AI Budaya (Bli Kadek) Akses DB -->
+      <g transform="translate(440, 420)">
+        <ellipse cx="0" cy="0" rx="150" ry="28" class="uc-ellipse ai" filter="url(#shadow)"/>
+        <text x="0" y="-4" class="uc-text" fill="#6B21A8">Chatbot AI Budaya (Bli Kadek)</text>
+        <text x="0" y="11" font-size="9.5" font-weight="700" fill="#7C3AED" text-anchor="middle">(Akses Kamus, Etika, &amp; Tempat 3+1)</text>
+      </g>
+
+      <!-- Sub UC 6A: Tanya Kosakata & Anggah-Ungguhing (include) -->
+      <g transform="translate(740, 390)">
+        <ellipse cx="0" cy="0" rx="115" ry="22" class="uc-ellipse ai" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text" fill="#6B21A8">Tanya Kosakata Basa Bali</text>
+      </g>
+
+      <!-- Sub UC 6B: Tanya Etika Pura & Rute 3+1 (include) -->
+      <g transform="translate(740, 450)">
+        <ellipse cx="0" cy="0" rx="115" ry="22" class="uc-ellipse ai" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text" fill="#6B21A8">Tanya Etika Pura &amp; Rute 3+1</text>
+      </g>
+
+      <!-- UC 7: Kenali Budaya dari Foto (Gemini Vision AI) -->
+      <g transform="translate(440, 500)">
+        <ellipse cx="0" cy="0" rx="140" ry="25" class="uc-ellipse ai" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text" fill="#6B21A8">Kenali Budaya Foto (AI Vision)</text>
+      </g>
+
+      <!-- UC 8: Generate Paket Petualangan Cerdas (3+1) -->
+      <g transform="translate(440, 570)">
+        <ellipse cx="0" cy="0" rx="140" ry="25" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Generate Paket Petualangan 3+1</text>
+      </g>
+
+      <!-- UC 9: Gamifikasi Lencana & Tandai Selesai -->
+      <g transform="translate(440, 640)">
+        <ellipse cx="0" cy="0" rx="140" ry="25" class="uc-ellipse" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text">Tandai Selesai &amp; Koleksi Lencana</text>
+      </g>
+
+      <!-- ============ USE CASES SUPER ADMIN ============ -->
+
+      <!-- UC 10: Kelola Blog Budaya, Kamus & Tata Bahasa (CRUD) -->
+      <g transform="translate(750, 110)">
+        <ellipse cx="0" cy="0" rx="135" ry="24" class="uc-ellipse admin" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text" fill="#B45309">Kelola Budaya, Kamus &amp; Grammar</text>
+      </g>
+
+      <!-- UC 11: Konfigurasi & Uji Google Gemini API Key -->
+      <g transform="translate(750, 180)">
+        <ellipse cx="0" cy="0" rx="135" ry="26" class="uc-ellipse admin" filter="url(#shadow)"/>
+        <text x="0" y="-3" class="uc-text" fill="#B45309">Ubah &amp; Uji Gemini API Key</text>
+        <text x="0" y="11" font-size="9" font-weight="700" fill="#D97706" text-anchor="middle">(Model Selector &amp; Verifikasi)</text>
+      </g>
+
+      <!-- UC 12: Switcher & Monitoring Database Supabase -->
+      <g transform="translate(750, 255)">
+        <ellipse cx="0" cy="0" rx="135" ry="25" class="uc-ellipse admin" filter="url(#shadow)"/>
+        <text x="0" y="0" class="uc-text" fill="#B45309">Switcher Database Supabase Baru</text>
+      </g>
+
+      <!-- ================= RELATIONS (LINES) ================= -->
+
+      <!-- Wisatawan lines -->
+      <line x1="140" y1="160" x2="285" y2="90" class="rel-line" />
+      <line x1="140" y1="160" x2="285" y2="150" class="rel-line" />
+      <line x1="140" y1="160" x2="285" y2="210" class="rel-line" />
+      <line x1="140" y1="160" x2="285" y2="270" class="rel-line" />
+      <line x1="140" y1="160" x2="285" y2="330" class="rel-line" />
+
+      <!-- Member lines -->
+      <line x1="145" y1="490" x2="290" y2="420" class="rel-line" stroke="#2F5D3A" stroke-width="2" />
+      <line x1="145" y1="490" x2="300" y2="500" class="rel-line" stroke="#2F5D3A" stroke-width="2" />
+      <line x1="145" y1="490" x2="300" y2="570" class="rel-line" stroke="#2F5D3A" stroke-width="2" />
+      <line x1="145" y1="490" x2="300" y2="640" class="rel-line" stroke="#2F5D3A" stroke-width="2" />
+
+      <!-- Include dependencies for Chatbot -->
+      <path d="M 590, 415 L 625, 400" class="rel-include" marker-end="url(#arrow-purple)" />
+      <text x="610" y="395" class="rel-text">&lt;&lt;include&gt;&gt;</text>
+
+      <path d="M 590, 425 L 625, 440" class="rel-include" marker-end="url(#arrow-purple)" />
+      <text x="610" y="448" class="rel-text">&lt;&lt;include&gt;&gt;</text>
+
+      <!-- Admin lines -->
+      <line x1="1045" y1="180" x2="885" y2="110" class="rel-line" stroke="#D97706" stroke-width="2" />
+      <line x1="1045" y1="180" x2="885" y2="180" class="rel-line" stroke="#D97706" stroke-width="2" />
+      <line x1="1045" y1="180" x2="885" y2="255" class="rel-line" stroke="#D97706" stroke-width="2" />
+
+      <!-- External System Connections -->
+      <!-- Chatbot & Vision -> Gemini -->
+      <path d="M 855, 400 C 920, 410 960, 470 1020, 490" class="rel-line" stroke="#7C3AED" stroke-dasharray="3,3" marker-end="url(#arrow-purple)" />
+      <path d="M 580, 500 C 700, 510 880, 510 1020, 510" class="rel-line" stroke="#7C3AED" stroke-dasharray="3,3" marker-end="url(#arrow-purple)" />
+
+      <!-- System -> Supabase -->
+      <path d="M 855, 455 C 920, 470 960, 580 1020, 620" class="rel-line" stroke="#16A34A" stroke-dasharray="3,3" />
+      <path d="M 580, 570 C 700, 600 880, 630 1020, 640" class="rel-line" stroke="#16A34A" stroke-dasharray="3,3" />
+      <path d="M 885, 110 C 950, 140 1000, 560 1020, 610" class="rel-line" stroke="#16A34A" stroke-dasharray="3,3" />
+
+      <!-- Admin Config -> Gemini Config -->
+      <path d="M 885, 180 C 950, 190 980, 440 1020, 480" class="rel-line" stroke="#D97706" stroke-dasharray="3,3" />
+
+      <!-- LEGEND -->
+      <g transform="translate(270, 715)">
+        <rect x="0" y="0" width="14" height="14" rx="4" fill="#FFFFFF" stroke="#2F5D3A" stroke-width="1.5" />
+        <text x="22" y="11" font-size="10.5" font-weight="600" fill="#334155">Fitur Publik</text>
+
+        <rect x="120" y="0" width="14" height="14" rx="4" fill="#FAF5FF" stroke="#7C3AED" stroke-width="1.5" />
+        <text x="142" y="11" font-size="10.5" font-weight="600" fill="#6B21A8">Fitur AI Budaya &amp; Vision</text>
+
+        <rect x="300" y="0" width="14" height="14" rx="4" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5" />
+        <text x="322" y="11" font-size="10.5" font-weight="600" fill="#B45309">Fitur Khusus Super Admin</text>
+
+        <line x1="490" y1="7" x2="520" y2="7" stroke="#7C3AED" stroke-dasharray="4,3" stroke-width="1.5" />
+        <text x="528" y="11" font-size="10.5" font-weight="600" fill="#7C3AED">&lt;&lt;include&gt;&gt; Relasi</text>
+      </g>
+
+    </svg>
+  </div>
+
+</body>
+</html>
