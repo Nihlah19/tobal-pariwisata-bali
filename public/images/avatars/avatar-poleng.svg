@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad-4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBF9F5" />
+      <stop offset="100%" stop-color="#E2DBCD" />
+    </linearGradient>
+    <linearGradient id="skin-poleng" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFDFBA" />
+      <stop offset="100%" stop-color="#F4C79B" />
+    </linearGradient>
+    <!-- Pattern Kotak-Kotak Catur Kain Poleng Khas Bali -->
+    <pattern id="poleng-pattern" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="#1C1917" />
+      <rect x="4" width="4" height="4" fill="#F8FAFC" />
+      <rect y="4" width="4" height="4" fill="#F8FAFC" />
+      <rect x="4" y="4" width="4" height="4" fill="#1C1917" />
+    </pattern>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="64" cy="64" r="62" fill="url(#bg-grad-4)" stroke="#1C1917" stroke-width="3"/>
+  <circle cx="64" cy="64" r="58" fill="none" stroke="#C05621" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- Body / Kemeja Hitam Adat dengan Selempang Poleng Catur -->
+  <path d="M26 120 C28 98 42 86 64 86 C86 86 100 98 102 120 Z" fill="#292524" stroke="#1C1917" stroke-width="2.5"/>
+  <!-- Selempang Kain Poleng Diagonal Khas Pecalang & Pemedek Bali -->
+  <path d="M40 88 L72 120 L84 120 L52 88 Z" fill="url(#poleng-pattern)" stroke="#1C1917" stroke-width="1.8"/>
+  <path d="M40 88 L72 120" stroke="#DC2626" stroke-width="2"/>
+  <path d="M52 88 L84 120" stroke="#DC2626" stroke-width="2"/>
+
+  <!-- Kerah Kemeja -->
+  <path d="M54 86 L64 96 L74 86" fill="none" stroke="#E2DBCD" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Leher -->
+  <rect x="56" y="74" width="16" height="16" rx="4" fill="#F4C79B"/>
+
+  <!-- Kepala / Wajah Kartun -->
+  <ellipse cx="64" cy="60" rx="26" ry="25" fill="url(#skin-poleng)" stroke="#1C1917" stroke-width="2.5"/>
+
+  <!-- Telinga -->
+  <circle cx="38" cy="61" r="6" fill="#F4C79B" stroke="#1C1917" stroke-width="2"/>
+  <circle cx="90" cy="61" r="6" fill="#F4C79B" stroke="#1C1917" stroke-width="2"/>
+
+  <!-- Bunga Kamboja Kuning-Putih di Telinga Kanan -->
+  <g transform="translate(87, 53)">
+    <circle cx="0" cy="0" r="3.5" fill="#FBBF24"/>
+    <ellipse cx="0" cy="-5" rx="3" ry="4" fill="#FFFFFF"/>
+    <ellipse cx="5" cy="-2" rx="3" ry="4" fill="#FFFFFF" transform="rotate(45, 5, -2)"/>
+    <ellipse cx="3" cy="4" rx="3" ry="4" fill="#FFFFFF" transform="rotate(110, 3, 4)"/>
+    <ellipse cx="-4" cy="3" rx="3" ry="4" fill="#FFFFFF" transform="rotate(180, -4, 3)"/>
+    <ellipse cx="-4" cy="-3" rx="3" ry="4" fill="#FFFFFF" transform="rotate(240, -4, -3)"/>
+    <circle cx="0" cy="0" r="1.8" fill="#F59E0B"/>
+  </g>
+
+  <!-- Rambut Bawah Udeng -->
+  <path d="M40 50 C44 46 50 48 56 46" stroke="#1C1917" stroke-width="3" stroke-linecap="round"/>
+  <path d="M88 50 C84 46 78 48 72 46" stroke="#1C1917" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Udeng Motif Poleng Catur Khas Bali -->
+  <!-- Lingkar Dasar Udeng -->
+  <path d="M37 50 C48 42 80 42 91 50 C93 54 88 56 64 54 C40 56 35 54 37 50 Z" fill="url(#poleng-pattern)" stroke="#1C1917" stroke-width="2.5"/>
+  <path d="M37 50 C48 42 80 42 91 50" fill="none" stroke="#DC2626" stroke-width="2"/>
+  <!-- Jenggar Udeng Puncak Poleng -->
+  <path d="M58 43 C56 30 63 22 64 20 C66 23 72 32 70 43 Z" fill="url(#poleng-pattern)" stroke="#1C1917" stroke-width="2.5"/>
+  <path d="M64 20 L64 43" stroke="#DC2626" stroke-width="2"/>
+  <circle cx="64" cy="48" r="3.5" fill="#DC2626" stroke="#FFFFFF" stroke-width="1.2"/>
+
+  <!-- Alis Kartun Percaya Diri & Ramah -->
+  <path d="M48 53 Q53 49 58 52" fill="none" stroke="#1C1917" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M70 52 Q75 49 80 53" fill="none" stroke="#1C1917" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Mata Karismatik & Berbinar -->
+  <circle cx="53" cy="60" r="3.8" fill="#1C1917"/>
+  <circle cx="54.2" cy="58.8" r="1.3" fill="#FFFFFF"/>
+  <circle cx="75" cy="60" r="3.8" fill="#1C1917"/>
+  <circle cx="76.2" cy="58.8" r="1.3" fill="#FFFFFF"/>
+
+  <!-- Pipi Merona Halus -->
+  <ellipse cx="46" cy="66" rx="4" ry="2.2" fill="#F87171" opacity="0.4"/>
+  <ellipse cx="82" cy="66" rx="4" ry="2.2" fill="#F87171" opacity="0.4"/>
+
+  <!-- Hidung -->
+  <path d="M63 62 Q64 64 65 62" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Senyum Hangat Dewata -->
+  <path d="M57 68 Q64 76 71 68" fill="none" stroke="#1C1917" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

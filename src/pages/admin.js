@@ -19,7 +19,12 @@ const adminState = {
   dictionary: [],
   grammar: [],
   loadedTabs: new Set(['overview']),
-  dictLimit: 35
+  dictPage: 1,
+  dictPageSize: 15,
+  culturePage: 1,
+  culturePageSize: 6,
+  grammarPage: 1,
+  grammarPageSize: 8
 };
 
 // Helper debounce untuk menghindari freezing saat mengetik pencarian
@@ -194,6 +199,94 @@ async function loadConfig() {
 }
 
 // ==============================================================================
+// 4.5 REUSABLE ADMIN PAGINATION COMPONENT
+// ==============================================================================
+function renderAdminPagination({
+  containerId,
+  currentPage,
+  pageSize,
+  totalItems,
+  itemName = 'data',
+  onPageChange
+}) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const totalPages = Math.ceil(totalItems / pageSize);
+  if (totalPages <= 1) {
+    container.classList.add('hidden');
+    container.innerHTML = '';
+    return;
+  }
+
+  container.classList.remove('hidden');
+
+  const startIdx = (currentPage - 1) * pageSize;
+  const endIdx = Math.min(startIdx + pageSize, totalItems);
+
+  let pageButtonsHTML = '';
+  const maxButtons = 5;
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+  if (endPage - startPage < maxButtons - 1) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  if (startPage > 1) {
+    pageButtonsHTML += `
+      <button class="adm-p-btn w-8 h-8 rounded-lg border border-pasir text-xs font-semibold hover:border-terakota hover:text-terakota transition-colors cursor-pointer" data-page="1">1</button>
+      ${startPage > 2 ? '<span class="px-1 text-tanah/50 text-xs">...</span>' : ''}
+    `;
+  }
+
+  for (let p = startPage; p <= endPage; p++) {
+    const isActive = p === currentPage;
+    pageButtonsHTML += `
+      <button class="adm-p-btn w-8 h-8 rounded-lg text-xs font-bold transition-all cursor-pointer ${isActive ? 'bg-terakota text-white shadow-xs' : 'border border-pasir hover:border-terakota hover:text-terakota bg-white text-tanah'}" data-page="${p}">${p}</button>
+    `;
+  }
+
+  if (endPage < totalPages) {
+    pageButtonsHTML += `
+      ${endPage < totalPages - 1 ? '<span class="px-1 text-tanah/50 text-xs">...</span>' : ''}
+      <button class="adm-p-btn w-8 h-8 rounded-lg border border-pasir text-xs font-semibold hover:border-terakota hover:text-terakota transition-colors cursor-pointer" data-page="${totalPages}">${totalPages}</button>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="text-xs text-tanah font-medium">
+      Menampilkan <strong>${startIdx + 1} - ${endIdx}</strong> dari <strong>${totalItems}</strong> ${itemName} (Halaman ${currentPage} / ${totalPages})
+    </div>
+    <div class="flex items-center gap-1.5">
+      <button id="${containerId}-prev" class="px-3 py-1.5 rounded-xl border border-pasir text-xs font-semibold text-tanah hover:border-terakota hover:text-terakota transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:pointer-events-none" ${currentPage <= 1 ? 'disabled' : ''}>
+        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+        <span>Sebelumnya</span>
+      </button>
+      <div class="flex items-center gap-1">
+        ${pageButtonsHTML}
+      </div>
+      <button id="${containerId}-next" class="px-3 py-1.5 rounded-xl border border-pasir text-xs font-semibold text-tanah hover:border-terakota hover:text-terakota transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:pointer-events-none" ${currentPage >= totalPages ? 'disabled' : ''}>
+        <span>Berikutnya</span>
+        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+      </button>
+    </div>
+  `;
+
+  container.querySelector(`#${containerId}-prev`)?.addEventListener('click', () => {
+    if (currentPage > 1) onPageChange(currentPage - 1);
+  });
+  container.querySelector(`#${containerId}-next`)?.addEventListener('click', () => {
+    if (currentPage < totalPages) onPageChange(currentPage + 1);
+  });
+  container.querySelectorAll('.adm-p-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = parseInt(btn.dataset.page, 10);
+      if (p && p !== currentPage) onPageChange(p);
+    });
+  });
+}
+
+// ==============================================================================
 // 5. ENSIKLOPEDIA BUDAYA (BLOG / CMS STUDIO)
 // ==============================================================================
 async function loadCultureArticles() {
@@ -213,6 +306,7 @@ async function loadCultureArticles() {
 
 function renderCultureList() {
   const container = document.getElementById('admin-culture-list');
+  const paginationEl = document.getElementById('admin-culture-pagination');
   if (!container) return;
 
   const searchQuery = (document.getElementById('filter-culture-search')?.value || '').toLowerCase().trim();
@@ -229,6 +323,10 @@ function renderCultureList() {
   });
 
   if (filtered.length === 0) {
+    if (paginationEl) {
+      paginationEl.classList.add('hidden');
+      paginationEl.innerHTML = '';
+    }
     container.innerHTML = `
       <div class="col-span-full py-12 text-center bg-white rounded-3xl border border-pasir p-6">
         <i class="fa-solid fa-file-circle-question text-tanah/40 text-3xl mb-2"></i>
@@ -239,7 +337,15 @@ function renderCultureList() {
     return;
   }
 
-  container.innerHTML = filtered.map(item => `
+  // Paginasi artikel
+  const totalPages = Math.ceil(filtered.length / adminState.culturePageSize);
+  if (adminState.culturePage > totalPages) adminState.culturePage = totalPages;
+  if (adminState.culturePage < 1) adminState.culturePage = 1;
+
+  const startIdx = (adminState.culturePage - 1) * adminState.culturePageSize;
+  const pagedArticles = filtered.slice(startIdx, startIdx + adminState.culturePageSize);
+
+  container.innerHTML = pagedArticles.map(item => `
     <div class="card-organik p-5 bg-white border border-pasir/80 flex flex-col justify-between group hover:shadow-md transition-all">
       <div class="space-y-3">
         <div class="relative w-full h-36 rounded-2xl overflow-hidden bg-pasir/40">
@@ -247,7 +353,7 @@ function renderCultureList() {
           <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${item.diterbitkan !== false ? 'bg-emerald-600 text-white' : 'bg-tanah/80 text-white'} shadow-xs">
             ${item.diterbitkan !== false ? 'Terbit' : 'Draft'}
           </span>
-          <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/90 text-tanah-gelap backdrop-blur-xs">
+          <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/90 text-tanah-gelap backdrop-blur-xs">
             ${item.kategori}
           </span>
         </div>
@@ -285,6 +391,20 @@ function renderCultureList() {
   });
   container.querySelectorAll('.btn-delete-culture').forEach(btn => {
     btn.addEventListener('click', () => deleteCultureArticle(btn.dataset.id, btn.dataset.title));
+  });
+
+  // Render kontrol paginasi
+  renderAdminPagination({
+    containerId: 'admin-culture-pagination',
+    currentPage: adminState.culturePage,
+    pageSize: adminState.culturePageSize,
+    totalItems: filtered.length,
+    itemName: 'artikel budaya',
+    onPageChange: (newPage) => {
+      adminState.culturePage = newPage;
+      renderCultureList();
+      document.getElementById('admin-culture-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 }
 
@@ -409,6 +529,7 @@ async function loadDictionary() {
 
 function renderDictionaryTable() {
   const tbody = document.getElementById('admin-dict-table-body');
+  const paginationEl = document.getElementById('admin-dict-pagination');
   if (!tbody) return;
 
   const searchQuery = (document.getElementById('filter-dict-search')?.value || '').toLowerCase().trim();
@@ -425,6 +546,10 @@ function renderDictionaryTable() {
   });
 
   if (filtered.length === 0) {
+    if (paginationEl) {
+      paginationEl.classList.add('hidden');
+      paginationEl.innerHTML = '';
+    }
     tbody.innerHTML = `
       <tr>
         <td colspan="6" class="py-8 text-center text-tanah/50 font-medium">
@@ -435,8 +560,13 @@ function renderDictionaryTable() {
     return;
   }
 
-  const displayItems = filtered.slice(0, adminState.dictLimit);
-  const hasMore = filtered.length > adminState.dictLimit;
+  // Paginasi tabel kosakata
+  const totalPages = Math.ceil(filtered.length / adminState.dictPageSize);
+  if (adminState.dictPage > totalPages) adminState.dictPage = totalPages;
+  if (adminState.dictPage < 1) adminState.dictPage = 1;
+
+  const startIdx = (adminState.dictPage - 1) * adminState.dictPageSize;
+  const displayItems = filtered.slice(startIdx, startIdx + adminState.dictPageSize);
 
   tbody.innerHTML = displayItems.map(w => `
     <tr class="hover:bg-krem/30 transition-colors">
@@ -458,15 +588,7 @@ function renderDictionaryTable() {
         </button>
       </td>
     </tr>
-  `).join('') + (hasMore ? `
-    <tr>
-      <td colspan="6" class="py-4 text-center bg-pasir/20">
-        <button type="button" id="btn-load-more-dict" class="px-5 py-2 rounded-xl bg-daun text-white text-xs font-bold hover:bg-daun/90 shadow-xs cursor-pointer transition">
-          Muat Lebih Banyak (${displayItems.length} dari ${filtered.length} Kosakata)
-        </button>
-      </td>
-    </tr>
-  ` : '');
+  `).join('');
 
   // Event handlers
   tbody.querySelectorAll('.btn-edit-word').forEach(btn => {
@@ -475,9 +597,19 @@ function renderDictionaryTable() {
   tbody.querySelectorAll('.btn-delete-word').forEach(btn => {
     btn.addEventListener('click', () => deleteWord(btn.dataset.id, btn.dataset.kata));
   });
-  tbody.querySelector('#btn-load-more-dict')?.addEventListener('click', () => {
-    adminState.dictLimit += 40;
-    renderDictionaryTable();
+
+  // Render kontrol paginasi kamus
+  renderAdminPagination({
+    containerId: 'admin-dict-pagination',
+    currentPage: adminState.dictPage,
+    pageSize: adminState.dictPageSize,
+    totalItems: filtered.length,
+    itemName: 'kosakata',
+    onPageChange: (newPage) => {
+      adminState.dictPage = newPage;
+      renderDictionaryTable();
+      document.getElementById('section-dictionary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 }
 
@@ -601,6 +733,7 @@ async function loadGrammar() {
 
 function renderGrammarList() {
   const container = document.getElementById('admin-grammar-list');
+  const paginationEl = document.getElementById('admin-grammar-pagination');
   if (!container) return;
 
   const searchQuery = (document.getElementById('filter-grammar-search')?.value || '').toLowerCase().trim();
@@ -617,6 +750,10 @@ function renderGrammarList() {
   });
 
   if (filtered.length === 0) {
+    if (paginationEl) {
+      paginationEl.classList.add('hidden');
+      paginationEl.innerHTML = '';
+    }
     container.innerHTML = `
       <div class="py-10 text-center bg-white rounded-3xl border border-pasir p-6">
         <i class="fa-solid fa-feather-pointed text-tanah/40 text-3xl mb-2"></i>
@@ -626,7 +763,15 @@ function renderGrammarList() {
     return;
   }
 
-  container.innerHTML = filtered.map(item => `
+  // Paginasi tata bahasa
+  const totalPages = Math.ceil(filtered.length / adminState.grammarPageSize);
+  if (adminState.grammarPage > totalPages) adminState.grammarPage = totalPages;
+  if (adminState.grammarPage < 1) adminState.grammarPage = 1;
+
+  const startIdx = (adminState.grammarPage - 1) * adminState.grammarPageSize;
+  const displayItems = filtered.slice(startIdx, startIdx + adminState.grammarPageSize);
+
+  container.innerHTML = displayItems.map(item => `
     <div class="card-organik p-5 bg-white border border-pasir/80 space-y-4 hover:shadow-xs transition-all">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pasir/50 pb-3">
         <div class="flex items-center gap-2.5">
@@ -688,6 +833,20 @@ function renderGrammarList() {
   });
   container.querySelectorAll('.btn-delete-grammar').forEach(btn => {
     btn.addEventListener('click', () => deleteGrammar(btn.dataset.id, btn.dataset.title));
+  });
+
+  // Render kontrol paginasi tata bahasa
+  renderAdminPagination({
+    containerId: 'admin-grammar-pagination',
+    currentPage: adminState.grammarPage,
+    pageSize: adminState.grammarPageSize,
+    totalItems: filtered.length,
+    itemName: 'kaidah tata bahasa',
+    onPageChange: (newPage) => {
+      adminState.grammarPage = newPage;
+      renderGrammarList();
+      document.getElementById('section-grammar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 }
 
@@ -1000,18 +1159,30 @@ Tuliskan sejarah, latar belakang, dan filosofi sakral dari warisan budaya ini se
   });
 
   // Filter input listeners dengan debouncing
-  document.getElementById('filter-culture-search')?.addEventListener('input', debounce(renderCultureList, 150));
-  document.getElementById('filter-culture-category')?.addEventListener('change', renderCultureList);
+  document.getElementById('filter-culture-search')?.addEventListener('input', debounce(() => {
+    adminState.culturePage = 1;
+    renderCultureList();
+  }, 150));
+  document.getElementById('filter-culture-category')?.addEventListener('change', () => {
+    adminState.culturePage = 1;
+    renderCultureList();
+  });
   document.getElementById('filter-dict-search')?.addEventListener('input', debounce(() => {
-    adminState.dictLimit = 35;
+    adminState.dictPage = 1;
     renderDictionaryTable();
   }, 150));
   document.getElementById('filter-dict-level')?.addEventListener('change', () => {
-    adminState.dictLimit = 35;
+    adminState.dictPage = 1;
     renderDictionaryTable();
   });
-  document.getElementById('filter-grammar-search')?.addEventListener('input', debounce(renderGrammarList, 150));
-  document.getElementById('filter-grammar-category')?.addEventListener('change', renderGrammarList);
+  document.getElementById('filter-grammar-search')?.addEventListener('input', debounce(() => {
+    adminState.grammarPage = 1;
+    renderGrammarList();
+  }, 150));
+  document.getElementById('filter-grammar-category')?.addEventListener('change', () => {
+    adminState.grammarPage = 1;
+    renderGrammarList();
+  });
 
   // Forms submit
   document.getElementById('form-culture-article')?.addEventListener('submit', handleCultureSubmit);

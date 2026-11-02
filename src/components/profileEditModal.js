@@ -7,14 +7,14 @@ import { getCurrentUser, updateUserProfile } from '../lib/auth.js';
 
 let modalEl = null;
 
-// Avatar Persona Pilihan Khas Bali
+// Avatar Karakter Kartun Berbusana Adat Bali & Maskot Resmi
 export const AVATAR_OPTIONS = [
-  { id: 'bara-barong', name: 'Bara Si Barong (Maskot)', url: '/images/mascot-barong-head.png' },
+  { id: 'bara-barong', name: 'Bara Barong (Maskot)', url: '/images/mascot-barong-head.png' },
   { id: 'bara-full', name: 'Bara Petualang', url: '/images/mascot-barong.png' },
-  { id: 'bli-kadek', name: 'Bli Kadek (Pemandu Kultural)', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80' },
-  { id: 'gek-ayu', name: 'Gek Ayu (Pecinta Tari & Bunga)', url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80' },
-  { id: 'wayan-alam', name: 'Wayan (Penjelajah Alam)', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' },
-  { id: 'made-pura', name: 'Made (Pecinta Sejarah Pura)', url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80' }
+  { id: 'bli-udeng', name: 'Bli Wayan (Adat Safari & Udeng)', url: '/images/avatars/avatar-bli-udeng.svg' },
+  { id: 'gek-kebaya', name: 'Gek Luh (Kebaya & Bunga Jepun)', url: '/images/avatars/avatar-gek-kebaya.svg' },
+  { id: 'penari-legong', name: 'Tari Legong (Gelungan Emas)', url: '/images/avatars/avatar-legong.svg' },
+  { id: 'dalang-poleng', name: 'Bli Kadek (Kain Poleng Catur)', url: '/images/avatars/avatar-poleng.svg' }
 ];
 
 export const REGIONS_BALI = [
@@ -46,6 +46,9 @@ export async function openProfileEditModal(onSaveSuccess = null) {
   const currentRegion = metadata.preferred_region || 'Buleleng (Bali Utara)';
   const currentInterests = Array.isArray(metadata.interests) ? metadata.interests : ['alam', 'budaya'];
 
+  const isPresetAvatar = AVATAR_OPTIONS.some(opt => opt.url === currentAvatar);
+  const isCustomAvatar = !isPresetAvatar && currentAvatar && (currentAvatar.startsWith('data:image/') || currentAvatar.startsWith('http') || currentAvatar.startsWith('/'));
+
   if (!modalEl) {
     modalEl = document.createElement('div');
     modalEl.id = 'profile-edit-modal-overlay';
@@ -75,20 +78,45 @@ export async function openProfileEditModal(onSaveSuccess = null) {
       <!-- Modal Body Form -->
       <form id="form-edit-profile" class="p-6 overflow-y-auto space-y-5 text-xs font-body">
         
-        <!-- Pilihan Avatar Persona -->
+        <!-- Pilihan Avatar Kartun Adat Bali & Maskot Bara -->
         <div>
-          <label class="block font-bold text-tanah-gelap mb-2">Pilih Avatar Maskot & Persona Dewata</label>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block font-bold text-tanah-gelap">Pilih Karakter Maskot & Baju Adat Bali</label>
+            <span class="text-[10px] text-daun font-semibold uppercase tracking-wider">Karakter Khas Dewata</span>
+          </div>
           <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5" id="avatar-selector-grid">
             ${AVATAR_OPTIONS.map(opt => `
-              <button type="button" class="avatar-option-btn relative group p-1.5 rounded-2xl border-2 transition-all flex flex-col items-center gap-1 cursor-pointer ${currentAvatar === opt.url ? 'border-daun bg-daun/10' : 'border-pasir hover:border-daun/40 bg-krem/30'}" data-avatar-url="${opt.url}">
+              <button type="button" class="avatar-option-btn relative group p-1.5 rounded-2xl border-2 transition-all flex flex-col items-center gap-1 cursor-pointer ${currentAvatar === opt.url ? 'border-daun bg-daun/10 ring-2 ring-daun/20' : 'border-pasir hover:border-daun/40 bg-krem/30'}" data-avatar-url="${opt.url}">
                 <div class="w-12 h-12 rounded-xl overflow-hidden bg-white p-0.5 border border-pasir/60 flex items-center justify-center">
                   <img src="${opt.url}" alt="${opt.name}" class="w-full h-full object-contain" />
                 </div>
                 <span class="text-[9px] text-center font-semibold text-tanah truncate max-w-full leading-tight">${opt.name.split(' ')[0]}</span>
-                ${currentAvatar === opt.url ? '<span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold"><i class="fa-solid fa-check text-[8px]"></i></span>' : ''}
+                ${currentAvatar === opt.url ? '<span class="avatar-check-badge absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold"><i class="fa-solid fa-check text-[8px]"></i></span>' : ''}
               </button>
             `).join('')}
           </div>
+
+          <!-- Pilihan Unggah Foto Sendiri -->
+          <div class="mt-3 p-3 rounded-2xl bg-krem/40 border border-pasir flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div id="custom-avatar-preview-box" class="w-11 h-11 rounded-xl bg-white border ${isCustomAvatar ? 'border-daun ring-2 ring-daun/30' : 'border-pasir/70'} flex items-center justify-center overflow-hidden shrink-0 relative shadow-2xs">
+                <img id="custom-avatar-preview-img" src="${isCustomAvatar ? currentAvatar : '/images/mascot-barong-head.png'}" alt="Foto Sendiri" class="w-full h-full object-cover ${isCustomAvatar ? '' : 'opacity-30'}" />
+                <span id="custom-avatar-badge" class="${isCustomAvatar ? '' : 'hidden'} absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-check text-[8px]"></i>
+                </span>
+              </div>
+              <div class="min-w-0">
+                <span class="font-bold text-tanah-gelap text-xs block truncate">Unggah Foto Profil Sendiri</span>
+                <span class="text-[10px] text-tanah/70 block truncate" id="custom-avatar-filename">Gunakan foto asli Anda (Maks. 2.5MB)</span>
+              </div>
+            </div>
+            <label for="input-custom-avatar-file" class="btn-sekunder text-xs !py-1.5 !px-3 shrink-0 cursor-pointer flex items-center gap-1.5 hover:bg-daun hover:text-white transition-all shadow-2xs">
+              <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+              <span>Pilih Foto</span>
+            </label>
+            <input type="file" id="input-custom-avatar-file" accept="image/*" class="hidden" />
+          </div>
+
           <input type="hidden" id="input-profile-avatar" value="${currentAvatar}" />
         </div>
 
@@ -160,23 +188,81 @@ export async function openProfileEditModal(onSaveSuccess = null) {
   // Avatar Selection Handlers
   const avatarButtons = modalEl.querySelectorAll('.avatar-option-btn');
   const avatarHiddenInput = modalEl.querySelector('#input-profile-avatar');
+  const customFileInput = modalEl.querySelector('#input-custom-avatar-file');
+  const customPreviewBox = modalEl.querySelector('#custom-avatar-preview-box');
+  const customPreviewImg = modalEl.querySelector('#custom-avatar-preview-img');
+  const customBadge = modalEl.querySelector('#custom-avatar-badge');
+  const customFilenameText = modalEl.querySelector('#custom-avatar-filename');
+
+  function clearPresetAvatars() {
+    avatarButtons.forEach(b => {
+      b.classList.remove('border-daun', 'bg-daun/10', 'ring-2', 'ring-daun/20');
+      b.classList.add('border-pasir', 'bg-krem/30');
+      b.querySelector('.avatar-check-badge')?.remove();
+    });
+  }
+
+  function clearCustomAvatar() {
+    customBadge?.classList.add('hidden');
+    customPreviewBox?.classList.remove('border-daun', 'ring-2', 'ring-daun/30');
+    customPreviewBox?.classList.add('border-pasir/70');
+    customPreviewImg?.classList.add('opacity-30');
+    if (customFilenameText) {
+      customFilenameText.textContent = 'Gunakan foto asli Anda (Maks. 2.5MB)';
+    }
+  }
 
   avatarButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const selectedUrl = btn.getAttribute('data-avatar-url');
       avatarHiddenInput.value = selectedUrl;
-      avatarButtons.forEach(b => {
-        b.classList.remove('border-daun', 'bg-daun/10');
-        b.classList.add('border-pasir', 'bg-krem/30');
-        b.querySelector('.text-white')?.remove();
-      });
+      clearPresetAvatars();
+      clearCustomAvatar();
+
       btn.classList.remove('border-pasir', 'bg-krem/30');
-      btn.classList.add('border-daun', 'bg-daun/10');
+      btn.classList.add('border-daun', 'bg-daun/10', 'ring-2', 'ring-daun/20');
       const badge = document.createElement('span');
-      badge.className = 'absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold';
+      badge.className = 'avatar-check-badge absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold';
       badge.innerHTML = '<i class="fa-solid fa-check text-[8px]"></i>';
       btn.appendChild(badge);
     });
+  });
+
+  // Unggah Foto Sendiri (File Reader & Image Compression)
+  customFileInput?.addEventListener('change', (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Format file tidak didukung. Harap pilih gambar (JPG, PNG, atau WebP).');
+      return;
+    }
+
+    if (file.size > 2.5 * 1024 * 1024) {
+      alert('Ukuran gambar melebihi batas 2.5 MB. Harap pilih foto yang lebih kecil.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64Data = event.target.result;
+      avatarHiddenInput.value = base64Data;
+      
+      clearPresetAvatars();
+      
+      if (customPreviewImg) {
+        customPreviewImg.src = base64Data;
+        customPreviewImg.classList.remove('opacity-30');
+      }
+      customBadge?.classList.remove('hidden');
+      customPreviewBox?.classList.remove('border-pasir/70');
+      customPreviewBox?.classList.add('border-daun', 'ring-2', 'ring-daun/30');
+      
+      if (customFilenameText) {
+        customFilenameText.textContent = `Terpilih: ${file.name}`;
+      }
+    };
+    reader.readAsDataURL(file);
   });
 
   // Close Handlers

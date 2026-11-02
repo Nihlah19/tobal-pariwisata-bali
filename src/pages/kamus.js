@@ -40,6 +40,8 @@ const state = {
   results: [],
   isLoading: false,
   debounceTimer: null,
+  page: 1,
+  pageSize: 12
 };
 
 /**
@@ -234,10 +236,14 @@ function updateTingkatButtonUI(selectedTingkat) {
 /**
  * Melakukan pencarian data kamus
  */
-async function performSearch() {
+async function performSearch(resetPage = true) {
   const countText = document.getElementById('results-count-text');
   const container = document.getElementById('dictionary-entries-area');
   if (!container) return;
+
+  if (resetPage) {
+    state.page = 1;
+  }
 
   state.isLoading = true;
   if (countText) countText.textContent = 'Mencari kosakata...';
@@ -344,8 +350,15 @@ function renderDictionaryResults(entries) {
   const container = document.getElementById('dictionary-entries-area');
   if (!container) return;
 
+  const paginationEl = document.getElementById('dictionary-pagination');
+
   // 1. KONDISI KOSONG (KATA TIDAK DITEMUKAN)
   if (!entries || entries.length === 0) {
+    if (paginationEl) {
+      paginationEl.classList.add('hidden');
+      paginationEl.innerHTML = '';
+    }
+
     container.innerHTML = `
       <div class="col-span-full py-12 px-6 text-center card-natural border-dashed border-2 border-pasir max-w-xl mx-auto space-y-5">
         <div class="w-16 h-16 mx-auto rounded-full bg-pasir/40 flex items-center justify-center text-tanah">
@@ -401,8 +414,18 @@ function renderDictionaryResults(entries) {
     return;
   }
 
-  // 2. RENDER ENTRI KARTU GAYA KBBI
-  container.innerHTML = entries.map(item => {
+  // Paginasi: hitung total halaman & slice
+  const totalItems = entries.length;
+  const totalPages = Math.ceil(totalItems / state.pageSize);
+  if (state.page > totalPages) state.page = totalPages;
+  if (state.page < 1) state.page = 1;
+
+  const startIdx = (state.page - 1) * state.pageSize;
+  const endIdx = Math.min(startIdx + state.pageSize, totalItems);
+  const pagedEntries = entries.slice(startIdx, endIdx);
+
+  // 2. RENDER ENTRI KARTU GAYA KBBI (HANYA HALAMAN AKTIF)
+  container.innerHTML = pagedEntries.map(item => {
     const tingkatInfo = TINGKAT_STYLE_MAP[item.tingkat] || TINGKAT_STYLE_MAP['umum'];
     const kelasLabel = KELAS_KATA_MAP[item.kelas_kata] || item.kelas_kata;
 
@@ -572,6 +595,111 @@ function renderDictionaryResults(entries) {
       performSearch();
     });
   });
+
+  // Render kontrol paginasi
+  renderDictionaryPagination(totalItems, totalPages, startIdx, endIdx);
+}
+
+/**
+ * Render Kontrol Navigasi Paginasi Kamus
+ */
+function renderDictionaryPagination(totalItems, totalPages, startIdx, endIdx) {
+  const paginationEl = document.getElementById('dictionary-pagination');
+  if (!paginationEl) return;
+
+  if (totalPages <= 1) {
+    paginationEl.classList.add('hidden');
+    paginationEl.innerHTML = '';
+    return;
+  }
+
+  paginationEl.classList.remove('hidden');
+
+  // Generate tombol halaman
+  let pageButtonsHTML = '';
+  const maxButtons = 5;
+  let startPage = Math.max(1, state.page - 2);
+  let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+  if (endPage - startPage < maxButtons - 1) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  if (startPage > 1) {
+    pageButtonsHTML += `
+      <button class="kamus-page-btn w-9 h-9 rounded-xl border border-pasir text-xs font-semibold hover:border-daun hover:text-daun transition-colors cursor-pointer" data-page="1">1</button>
+      ${startPage > 2 ? '<span class="px-1 text-tanah/50 text-xs">...</span>' : ''}
+    `;
+  }
+
+  for (let p = startPage; p <= endPage; p++) {
+    const isActive = p === state.page;
+    pageButtonsHTML += `
+      <button class="kamus-page-btn w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer ${isActive ? 'bg-daun text-white shadow-xs' : 'border border-pasir hover:border-daun hover:text-daun bg-white text-tanah'}" data-page="${p}">${p}</button>
+    `;
+  }
+
+  if (endPage < totalPages) {
+    pageButtonsHTML += `
+      ${endPage < totalPages - 1 ? '<span class="px-1 text-tanah/50 text-xs">...</span>' : ''}
+      <button class="kamus-page-btn w-9 h-9 rounded-xl border border-pasir text-xs font-semibold hover:border-daun hover:text-daun transition-colors cursor-pointer" data-page="${totalPages}">${totalPages}</button>
+    `;
+  }
+
+  paginationEl.innerHTML = `
+    <div class="text-xs text-tanah font-medium">
+      Menampilkan <strong>${startIdx + 1} - ${endIdx}</strong> dari <strong>${totalItems}</strong> kosakata (Halaman ${state.page} / ${totalPages})
+    </div>
+    <div class="flex items-center gap-1.5">
+      <button id="btn-kamus-prev" class="px-3.5 py-2 rounded-xl border border-pasir text-xs font-semibold text-tanah hover:border-daun hover:text-daun transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:pointer-events-none" ${state.page <= 1 ? 'disabled' : ''}>
+        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+        <span>Sebelumnya</span>
+      </button>
+      <div class="flex items-center gap-1">
+        ${pageButtonsHTML}
+      </div>
+      <button id="btn-kamus-next" class="px-3.5 py-2 rounded-xl border border-pasir text-xs font-semibold text-tanah hover:border-daun hover:text-daun transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:pointer-events-none" ${state.page >= totalPages ? 'disabled' : ''}>
+        <span>Berikutnya</span>
+        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+      </button>
+    </div>
+  `;
+
+  // Listener tombol halaman
+  paginationEl.querySelector('#btn-kamus-prev')?.addEventListener('click', () => {
+    if (state.page > 1) {
+      state.page--;
+      renderDictionaryResults(state.results);
+      scrollToKamusTop();
+    }
+  });
+
+  paginationEl.querySelector('#btn-kamus-next')?.addEventListener('click', () => {
+    if (state.page < totalPages) {
+      state.page++;
+      renderDictionaryResults(state.results);
+      scrollToKamusTop();
+    }
+  });
+
+  paginationEl.querySelectorAll('.kamus-page-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = parseInt(btn.dataset.page, 10);
+      if (p && p !== state.page) {
+        state.page = p;
+        renderDictionaryResults(state.results);
+        scrollToKamusTop();
+      }
+    });
+  });
+}
+
+function scrollToKamusTop() {
+  const target = document.getElementById('dictionary-entries-area');
+  if (target) {
+    const yOffset = -90;
+    const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
 }
 
 /**
