@@ -6,6 +6,7 @@
 import { getCurrentUser, getUserProfile, signOutUser, hasCachedSession } from '../lib/auth.js';
 import { initBalineseAudio } from './balineseAudio.js';
 import { setupProtectedLinks } from '../lib/authGate.js';
+import { registerServiceWorker } from '../lib/registerSW.js';
 
 function getActivePage() {
   const path = window.location.pathname;
@@ -23,6 +24,8 @@ function getActivePage() {
 export function renderNavbar(selector) {
   const el = document.querySelector(selector);
   if (!el) return;
+
+  registerServiceWorker();
 
   const active = getActivePage();
   const isAdminCached = sessionStorage.getItem('tobal_admin_key') === 'tobal2026';

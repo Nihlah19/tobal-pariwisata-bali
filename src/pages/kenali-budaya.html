@@ -9,10 +9,12 @@
   <!-- Optimasi Tipografi Clean Non-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
-  </noscript>
+  <!-- Stylesheet Utama & Offline Fallback -->
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <style>
+    :root { --bg-krem: #F5EFE0; --text-teks: #2B2B24; }
+    html, body { background-color: #F5EFE0; color: #2B2B24; margin: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+  </style>
 </head>
 <body class="flex flex-col min-h-screen bg-krem text-teks font-body antialiased">
 

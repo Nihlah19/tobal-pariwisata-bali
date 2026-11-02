@@ -6,6 +6,7 @@
  * Tour Penjelajah Bali — Bali Digifest 2026
  */
 
+import '../styles/main.css';
 import {
   createElement,
   Camera,

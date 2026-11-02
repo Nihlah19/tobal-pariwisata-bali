@@ -10,12 +10,16 @@ import { getSession, getUserProfile, hasCachedSession } from './lib/auth.js';
 import { getWordOfTheDay, TINGKAT_STYLE_MAP, KELAS_KATA_MAP } from './lib/dictionary.js';
 import { showToast } from './components/ui.js';
 import { setupProtectedLinks } from './lib/authGate.js';
+import { registerServiceWorker } from './lib/registerSW.js';
 
-// 1. Render layout secara sinkron (FCP < 0.3s)
+// 1. Registrasi Service Worker untuk Caching Offline & Jaringan Lambat
+registerServiceWorker();
+
+// 2. Render layout secara sinkron (FCP < 0.3s)
 renderNavbar('#navbar');
 renderFooter('#footer');
 
-// 2. Lindungi fitur pada landing page
+// 3. Lindungi fitur pada landing page
 setupProtectedLinks();
 
 // 3. Inisialisasi CTA tombol utama tanpa blocking

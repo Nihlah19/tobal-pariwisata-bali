@@ -4,6 +4,7 @@
  * Tour Penjelajah Bali — Bali Digifest 2026
  */
 
+import '../styles/main.css';
 import { supabase } from '../lib/supabaseClient.js';
 import { FALLBACK_CULTURE_ARTICLES } from '../lib/culture.js';
 import { FALLBACK_DICTIONARY } from '../lib/dictionary.js';
