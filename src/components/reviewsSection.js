@@ -81,14 +81,10 @@ export function initReviewsSection(containerSelector = '#ulasan-penjelajah-conta
       <!-- Header Ulasan & Skor Kredibilitas -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-pasir">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-daun/10 text-daun border border-daun/20 text-xs font-semibold uppercase tracking-wider mb-2">
-            <span class="w-2 h-2 rounded-full bg-daun"></span>
-            Catatan Penjelajah · Ulasan Terkurasi
-          </div>
           <h2 class="font-heading text-3xl sm:text-4xl font-bold text-tanah-gelap tracking-tight">
-            Kesan Mendalam dari Balik Tapak Petualang
+            Catatan Penjelajah
           </h2>
-          <p class="font-body text-xs sm:text-sm text-tanah/75 mt-1 max-w-xl">
+          <p class="font-body text-xs sm:text-sm text-tanah/75 mt-1.5 max-w-xl">
             Cerita nyata dari para penjelajah yang melangkah melampaui hiruk-pikuk wisata massal, menjaga kesucian adat, dan menemukan kedamaian Dewata sejati.
           </p>
         </div>
