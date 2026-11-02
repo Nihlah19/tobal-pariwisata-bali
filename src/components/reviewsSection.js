@@ -92,34 +92,46 @@ export function initReviewsSection(containerSelector = '#ulasan-penjelajah-conta
         <!-- Rating Summary Pill & Tombol Tulis -->
         <div class="flex items-center gap-3 shrink-0 flex-wrap">
           <div class="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-pasir shadow-xs">
-            <div class="flex text-amber-500 text-sm">★★★★★</div>
+            <div class="flex text-amber-500 text-xs gap-0.5">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
             <div class="text-xs font-bold text-tanah-gelap">
               4.98 <span class="text-tanah/50 font-normal">/ 5.0</span>
             </div>
-            <span class="text-[10px] text-daun font-semibold bg-daun/10 px-2 py-0.5 rounded-full">
-              Terkurasi
+            <span class="text-[10px] text-daun font-semibold bg-daun/10 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+              <i class="fa-solid fa-check text-[8px]"></i>
+              <span>Terkurasi</span>
             </span>
           </div>
 
           <button type="button" id="btn-open-review-modal" class="px-4 py-2 rounded-2xl bg-daun hover:bg-daun/90 text-krem text-xs font-bold shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-1.5">
-            <span>✍️ Tulis Ulasan Rute</span>
+            <i class="fa-solid fa-pen-to-square text-xs"></i>
+            <span>Tulis Ulasan Rute</span>
           </button>
         </div>
       </div>
 
       <!-- Filter Kategori Ulasan -->
       <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-daun text-white shadow-xs transition cursor-pointer" data-category="all">
-          Semua Cerita (${allReviews.length})
+        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-daun text-white shadow-xs transition cursor-pointer flex items-center gap-1.5" data-category="all">
+          <i class="fa-solid fa-layer-group text-xs"></i>
+          <span>Semua Cerita (${allReviews.length})</span>
         </button>
-        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer" data-category="alam">
-          🌿 Alam Asri 3+1
+        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer flex items-center gap-1.5" data-category="alam">
+          <i class="fa-solid fa-leaf text-daun text-xs"></i>
+          <span>Alam Asri 3+1</span>
         </button>
-        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer" data-category="budaya">
-          🛕 Adat & Etika Pura
+        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer flex items-center gap-1.5" data-category="budaya">
+          <i class="fa-solid fa-gopuram text-amber-700 text-xs"></i>
+          <span>Adat & Etika Pura</span>
         </button>
-        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer" data-category="kuliner">
-          🍲 Kuliner Pusaka
+        <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer flex items-center gap-1.5" data-category="kuliner">
+          <i class="fa-solid fa-utensils text-orange-600 text-xs"></i>
+          <span>Kuliner Pusaka</span>
         </button>
       </div>
 
@@ -183,11 +195,12 @@ function renderReviewCards(reviews) {
       <div>
         <!-- Rute Tag & Rating -->
         <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
-          <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
-            ${r.routeVisited}
+          <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20 inline-flex items-center gap-1">
+            <i class="fa-solid fa-location-dot text-[9px]"></i>
+            <span>${r.routeVisited}</span>
           </span>
           <div class="flex items-center gap-1 text-amber-500 text-xs">
-            ${'★'.repeat(r.rating)}
+            <span class="flex gap-0.5">${Array.from({ length: r.rating }, () => '<i class="fa-solid fa-star text-[10px]"></i>').join('')}</span>
             <span class="text-tanah/50 text-[10px] ml-1 font-mono">${r.date}</span>
           </div>
         </div>
@@ -211,8 +224,8 @@ function renderReviewCards(reviews) {
         </div>
 
         <span class="text-[10px] font-semibold text-daun flex items-center gap-1 bg-pasir/30 px-2 py-0.5 rounded-md">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          Terverifikasi
+          <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+          <span>Terverifikasi</span>
         </span>
       </div>
     </div>
@@ -245,8 +258,8 @@ function showReviewModal(user) {
           </div>
           <h3 class="font-heading font-bold text-sm text-tanah-gelap">Bagikan Pengalaman Rute Anda</h3>
         </div>
-        <button type="button" id="btn-close-sub-review" class="w-7 h-7 rounded-full bg-pasir/40 text-tanah-gelap flex items-center justify-center cursor-pointer">
-          ✕
+        <button type="button" id="btn-close-sub-review" class="w-7 h-7 rounded-full bg-pasir/40 hover:bg-pasir text-tanah-gelap flex items-center justify-center cursor-pointer transition-colors">
+          <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
 
@@ -262,9 +275,9 @@ function showReviewModal(user) {
         <div>
           <label class="block font-bold text-tanah-gelap mb-1">Kategori Pengalaman</label>
           <select id="select-rev-cat" class="w-full px-3.5 py-2.5 rounded-xl bg-krem/40 border border-pasir text-xs text-teks focus:border-daun focus:outline-hidden">
-            <option value="alam">🌿 Alam Asri & Air Terjun</option>
-            <option value="budaya">🛕 Adat & Etika Pura</option>
-            <option value="kuliner">🍲 Kuliner Tradisional Pusaka</option>
+            <option value="alam">Alam Asri & Air Terjun</option>
+            <option value="budaya">Adat & Etika Pura</option>
+            <option value="kuliner">Kuliner Tradisional Pusaka</option>
           </select>
         </div>
 
@@ -290,11 +303,13 @@ function showReviewModal(user) {
         <div id="sub-review-alert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" id="btn-cancel-sub-review" class="px-4 py-2 rounded-xl bg-pasir/40 text-tanah font-semibold cursor-pointer">
-            Batal
+          <button type="button" id="btn-cancel-sub-review" class="px-4 py-2 rounded-xl bg-pasir/40 hover:bg-pasir text-tanah font-semibold cursor-pointer flex items-center gap-1.5 transition-colors">
+            <i class="fa-solid fa-xmark text-xs"></i>
+            <span>Batal</span>
           </button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-daun hover:bg-daun/90 text-krem font-bold shadow-xs cursor-pointer">
-            Kirim Ulasan Terkurasi
+          <button type="submit" class="px-5 py-2 rounded-xl bg-daun hover:bg-daun/90 text-krem font-bold shadow-xs cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-paper-plane text-xs"></i>
+            <span>Kirim Ulasan Terkurasi</span>
           </button>
         </div>
       </form>

@@ -429,34 +429,46 @@
             <!-- Rating Summary Pill & Tombol Tulis -->
             <div class="flex items-center gap-3 shrink-0 flex-wrap">
               <div class="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-pasir shadow-xs">
-                <div class="flex text-amber-500 text-sm">★★★★★</div>
+                <div class="flex text-amber-500 text-xs gap-0.5">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
                 <div class="text-xs font-bold text-tanah-gelap">
                   4.98 <span class="text-tanah/50 font-normal">/ 5.0</span>
                 </div>
-                <span class="text-[10px] text-daun font-semibold bg-daun/10 px-2 py-0.5 rounded-full">
-                  Terkurasi
+                <span class="text-[10px] text-daun font-semibold bg-daun/10 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                  <i class="fa-solid fa-check text-[8px]"></i>
+                  <span>Terkurasi</span>
                 </span>
               </div>
 
               <button type="button" id="btn-open-review-modal" class="px-4 py-2 rounded-2xl bg-daun hover:bg-daun/90 text-krem text-xs font-bold shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-1.5">
-                <span>✍️ Tulis Ulasan Rute</span>
+                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                <span>Tulis Ulasan Rute</span>
               </button>
             </div>
           </div>
 
           <!-- Filter Kategori Ulasan -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-daun text-white shadow-xs transition cursor-pointer" data-category="all">
-              Semua Cerita (4)
+            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-daun text-white shadow-xs transition cursor-pointer flex items-center gap-1.5" data-category="all">
+              <i class="fa-solid fa-layer-group text-xs"></i>
+              <span>Semua Cerita (4)</span>
             </button>
-            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer" data-category="alam">
-              🌿 Alam Asri 3+1
+            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer flex items-center gap-1.5" data-category="alam">
+              <i class="fa-solid fa-leaf text-daun text-xs"></i>
+              <span>Alam Asri 3+1</span>
             </button>
-            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer" data-category="budaya">
-              🛕 Adat & Etika Pura
+            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer flex items-center gap-1.5" data-category="budaya">
+              <i class="fa-solid fa-gopuram text-amber-700 text-xs"></i>
+              <span>Adat & Etika Pura</span>
             </button>
-            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer" data-category="kuliner">
-              🍲 Kuliner Pusaka
+            <button type="button" class="review-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pasir/40 hover:bg-pasir text-tanah transition cursor-pointer flex items-center gap-1.5" data-category="kuliner">
+              <i class="fa-solid fa-utensils text-orange-600 text-xs"></i>
+              <span>Kuliner Pusaka</span>
             </button>
           </div>
 
@@ -467,11 +479,14 @@
             <div class="card-organik !p-6 bg-white/95 border border-pasir hover:border-daun/40 transition-all flex flex-col justify-between group shadow-xs">
               <div>
                 <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
-                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
-                    Buleleng · Air Terjun Sekumpul & Desa Adat Pedawa
+                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20 inline-flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-[9px]"></i>
+                    <span>Buleleng · Air Terjun Sekumpul & Desa Adat Pedawa</span>
                   </span>
                   <div class="flex items-center gap-1 text-amber-500 text-xs">
-                    ★★★★★
+                    <span class="flex gap-0.5 text-amber-500 text-[10px]">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </span>
                     <span class="text-tanah/50 text-[10px] ml-1 font-mono">Oktober 2026</span>
                   </div>
                 </div>
@@ -490,8 +505,8 @@
                   </div>
                 </div>
                 <span class="text-[10px] font-semibold text-daun flex items-center gap-1 bg-pasir/30 px-2 py-0.5 rounded-md">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  Terverifikasi
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+                  <span>Terverifikasi</span>
                 </span>
               </div>
             </div>
@@ -500,11 +515,14 @@
             <div class="card-organik !p-6 bg-white/95 border border-pasir hover:border-daun/40 transition-all flex flex-col justify-between group shadow-xs">
               <div>
                 <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
-                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
-                    Karangasem · Pura Lempuyang & Teluk Jemeluk
+                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20 inline-flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-[9px]"></i>
+                    <span>Karangasem · Pura Lempuyang & Teluk Jemeluk</span>
                   </span>
                   <div class="flex items-center gap-1 text-amber-500 text-xs">
-                    ★★★★★
+                    <span class="flex gap-0.5 text-amber-500 text-[10px]">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </span>
                     <span class="text-tanah/50 text-[10px] ml-1 font-mono">September 2026</span>
                   </div>
                 </div>
@@ -523,8 +541,8 @@
                   </div>
                 </div>
                 <span class="text-[10px] font-semibold text-daun flex items-center gap-1 bg-pasir/30 px-2 py-0.5 rounded-md">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  Terverifikasi
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+                  <span>Terverifikasi</span>
                 </span>
               </div>
             </div>
@@ -533,11 +551,14 @@
             <div class="card-organik !p-6 bg-white/95 border border-pasir hover:border-daun/40 transition-all flex flex-col justify-between group shadow-xs">
               <div>
                 <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
-                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
-                    Tabanan · Air Terjun Leke-Leke & Warung Entil Pupuan
+                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20 inline-flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-[9px]"></i>
+                    <span>Tabanan · Air Terjun Leke-Leke & Warung Entil Pupuan</span>
                   </span>
                   <div class="flex items-center gap-1 text-amber-500 text-xs">
-                    ★★★★★
+                    <span class="flex gap-0.5 text-amber-500 text-[10px]">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </span>
                     <span class="text-tanah/50 text-[10px] ml-1 font-mono">Oktober 2026</span>
                   </div>
                 </div>
@@ -556,8 +577,8 @@
                   </div>
                 </div>
                 <span class="text-[10px] font-semibold text-daun flex items-center gap-1 bg-pasir/30 px-2 py-0.5 rounded-md">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  Terverifikasi
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+                  <span>Terverifikasi</span>
                 </span>
               </div>
             </div>
@@ -566,11 +587,14 @@
             <div class="card-organik !p-6 bg-white/95 border border-pasir hover:border-daun/40 transition-all flex flex-col justify-between group shadow-xs">
               <div>
                 <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
-                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
-                    Bangli · Hutan Bambu Penglipuran & Danau Batur
+                  <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-daun/10 text-daun border border-daun/20 inline-flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-[9px]"></i>
+                    <span>Bangli · Hutan Bambu Penglipuran & Danau Batur</span>
                   </span>
                   <div class="flex items-center gap-1 text-amber-500 text-xs">
-                    ★★★★★
+                    <span class="flex gap-0.5 text-amber-500 text-[10px]">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </span>
                     <span class="text-tanah/50 text-[10px] ml-1 font-mono">Oktober 2026</span>
                   </div>
                 </div>
@@ -589,8 +613,8 @@
                   </div>
                 </div>
                 <span class="text-[10px] font-semibold text-daun flex items-center gap-1 bg-pasir/30 px-2 py-0.5 rounded-md">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  Terverifikasi
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+                  <span>Terverifikasi</span>
                 </span>
               </div>
             </div>

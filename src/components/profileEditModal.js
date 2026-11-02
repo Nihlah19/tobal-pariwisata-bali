@@ -68,7 +68,7 @@ export async function openProfileEditModal(onSaveSuccess = null) {
           </div>
         </div>
         <button type="button" id="btn-close-profile-modal" class="w-8 h-8 rounded-full bg-pasir/40 hover:bg-pasir text-tanah-gelap flex items-center justify-center transition-colors cursor-pointer" aria-label="Tutup">
-          ✕
+          <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
@@ -85,7 +85,7 @@ export async function openProfileEditModal(onSaveSuccess = null) {
                   <img src="${opt.url}" alt="${opt.name}" class="w-full h-full object-contain" />
                 </div>
                 <span class="text-[9px] text-center font-semibold text-tanah truncate max-w-full leading-tight">${opt.name.split(' ')[0]}</span>
-                ${currentAvatar === opt.url ? '<span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold">✓</span>' : ''}
+                ${currentAvatar === opt.url ? '<span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold"><i class="fa-solid fa-check text-[8px]"></i></span>' : ''}
               </button>
             `).join('')}
           </div>
@@ -115,13 +115,14 @@ export async function openProfileEditModal(onSaveSuccess = null) {
           <label class="block font-bold text-tanah-gelap mb-1.5">Minat Eksplorasi</label>
           <div class="flex flex-wrap gap-2">
             ${[
-              { id: 'alam', label: '🌿 Alam & Air Terjun Asri' },
-              { id: 'budaya', label: '🛕 Pura Sakral & Filosofi Adat' },
-              { id: 'kuliner', label: '🍲 Kuliner Pusaka Tradisional' },
-              { id: 'seni', label: '🎨 Seni Tari & Musik Rindik' }
+              { id: 'alam', icon: 'fa-solid fa-leaf text-daun', label: 'Alam & Air Terjun Asri' },
+              { id: 'budaya', icon: 'fa-solid fa-gopuram text-amber-700', label: 'Pura Sakral & Filosofi Adat' },
+              { id: 'kuliner', icon: 'fa-solid fa-utensils text-orange-600', label: 'Kuliner Pusaka Tradisional' },
+              { id: 'seni', icon: 'fa-solid fa-masks-theater text-purple-700', label: 'Seni Tari & Musik Rindik' }
             ].map(tag => `
               <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-pasir bg-krem/40 cursor-pointer hover:bg-daun/10 transition-colors text-xs">
                 <input type="checkbox" name="interests" value="${tag.id}" ${currentInterests.includes(tag.id) ? 'checked' : ''} class="accent-daun" />
+                <i class="${tag.icon} text-xs"></i>
                 <span class="text-tanah-gelap font-medium">${tag.label}</span>
               </label>
             `).join('')}
@@ -142,10 +143,12 @@ export async function openProfileEditModal(onSaveSuccess = null) {
 
         <!-- Action Buttons -->
         <div class="pt-2 flex items-center justify-end gap-2.5">
-          <button type="button" id="btn-cancel-profile-modal" class="px-5 py-2.5 rounded-2xl bg-pasir/40 hover:bg-pasir text-tanah font-semibold transition-colors cursor-pointer">
-            Batal
+          <button type="button" id="btn-cancel-profile-modal" class="px-5 py-2.5 rounded-2xl bg-pasir/40 hover:bg-pasir text-tanah font-semibold transition-colors cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-xmark text-xs"></i>
+            <span>Batal</span>
           </button>
           <button type="submit" id="btn-save-profile" class="px-6 py-2.5 rounded-2xl bg-daun hover:bg-daun/90 text-krem font-bold shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk text-xs"></i>
             <span>Simpan Perubahan</span>
           </button>
         </div>
@@ -171,7 +174,7 @@ export async function openProfileEditModal(onSaveSuccess = null) {
       btn.classList.add('border-daun', 'bg-daun/10');
       const badge = document.createElement('span');
       badge.className = 'absolute -top-1 -right-1 w-4 h-4 rounded-full bg-daun text-white text-[9px] flex items-center justify-center font-bold';
-      badge.textContent = '✓';
+      badge.innerHTML = '<i class="fa-solid fa-check text-[8px]"></i>';
       btn.appendChild(badge);
     });
   });

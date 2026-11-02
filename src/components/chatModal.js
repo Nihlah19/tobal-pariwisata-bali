@@ -106,23 +106,27 @@ function showChatModal(user) {
         </div>
         
         <button type="button" id="btn-close-tobal-chat" class="w-8 h-8 rounded-full bg-pasir/30 hover:bg-pasir text-tanah-gelap flex items-center justify-center transition-colors cursor-pointer" aria-label="Tutup Obrolan">
-          ✕
+          <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
       <!-- Quick Chips / Pertanyaan Instan -->
       <div class="px-4 py-2.5 bg-pasir/20 border-b border-pasir/40 overflow-x-auto flex items-center gap-2 text-xs font-body scrollbar-none" id="chat-quick-chips">
-        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer" data-question="Apa bahasa Balinya terima kasih dan bagaimana cara mengucapkannya dengan sopan?">
-          💬 Basa Bali "Terima Kasih"
+        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer flex items-center" data-question="Apa bahasa Balinya terima kasih dan bagaimana cara mengucapkannya dengan sopan?">
+          <i class="fa-solid fa-language text-daun mr-1.5"></i>
+          <span>Basa Bali "Terima Kasih"</span>
         </button>
-        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer" data-question="Bagaimana etika berpakaian dan tata krama saat berkunjung ke pura di Bali?">
-          🙏 Etika Masuk Pura
+        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer flex items-center" data-question="Bagaimana etika berpakaian dan tata krama saat berkunjung ke pura di Bali?">
+          <i class="fa-solid fa-hands-praying text-amber-700 mr-1.5"></i>
+          <span>Etika Masuk Pura</span>
         </button>
-        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer" data-question="Apa makna filosofis bunga dan sesaji Canang Sari harian?">
-          🌺 Makna Canang Sari
+        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer flex items-center" data-question="Apa makna filosofis bunga dan sesaji Canang Sari harian?">
+          <i class="fa-solid fa-seedling text-emerald-600 mr-1.5"></i>
+          <span>Makna Canang Sari</span>
         </button>
-        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer" data-question="Rekomendasikan paket rute 3 wisata tersembunyi + 1 kuliner pusaka di Buleleng.">
-          🧭 Rute 3+1 Buleleng
+        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer flex items-center" data-question="Rekomendasikan paket rute 3 wisata tersembunyi + 1 kuliner pusaka di Buleleng.">
+          <i class="fa-solid fa-compass text-daun mr-1.5"></i>
+          <span>Rute 3+1 Buleleng</span>
         </button>
       </div>
 
@@ -150,10 +154,7 @@ function showChatModal(user) {
             class="flex-1 px-4 py-2.5 rounded-2xl bg-krem/40 border border-pasir text-xs font-body text-teks placeholder-tanah/50 focus:outline-hidden focus:border-daun focus:ring-1 focus:ring-daun transition-all"
             placeholder="Ketik pertanyaan (cth: arti suksma, rute 3+1)..." />
           <button type="submit" id="btn-send-tobal-chat" class="w-10 h-10 rounded-2xl bg-daun hover:bg-daun/90 text-krem flex items-center justify-center shadow-xs transition-transform active:scale-95 disabled:opacity-50 cursor-pointer" aria-label="Kirim Pesan">
-            <svg class="w-4 h-4 text-krem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
+            <i class="fa-solid fa-paper-plane text-xs text-krem"></i>
           </button>
         </form>
       </div>

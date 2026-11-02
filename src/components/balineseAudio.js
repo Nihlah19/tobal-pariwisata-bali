@@ -94,13 +94,11 @@ class BalineseAudioManager {
       <div class="flex items-center gap-2.5 p-1.5 pl-3.5 pr-2 rounded-full bg-white/95 backdrop-blur-md border border-pasir/80 shadow-md hover:shadow-lg transition-all text-xs font-body text-tanah-gelap">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full ${this.isPlaying ? 'bg-daun animate-pulse' : 'bg-pasir-gelap/60'}" id="audio-pill-dot"></span>
-          <span class="font-semibold text-xs text-tanah-gelap hidden sm:inline">Rindik Bali</span>
+          <span class="font-semibold text-xs text-tanah-gelap hidden sm:inline flex items-center gap-1.5"><i class="fa-solid fa-music text-daun text-[11px]"></i> Rindik Bali</span>
         </div>
 
         <button id="floating-audio-toggle" class="w-7 h-7 rounded-full bg-daun hover:bg-daun/90 text-white flex items-center justify-center transition shadow-xs cursor-pointer active:scale-95" aria-label="Putar Suasana Musik Bali">
-          <svg class="w-3 h-3" id="floating-audio-icon" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
+          <i id="floating-audio-icon" class="fa-solid fa-play text-[10px]"></i>
         </button>
       </div>
     `;
@@ -132,12 +130,9 @@ class BalineseAudioManager {
 
     if (floatingIcon) {
       if (this.isPlaying) {
-        floatingIcon.innerHTML = `
-          <rect x="6" y="4" width="4" height="16"></rect>
-          <rect x="14" y="4" width="4" height="16"></rect>
-        `;
+        floatingIcon.className = 'fa-solid fa-pause text-[10px]';
       } else {
-        floatingIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"></polygon>`;
+        floatingIcon.className = 'fa-solid fa-play text-[10px]';
       }
     }
 

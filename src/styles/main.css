@@ -3,7 +3,10 @@
    Tema: Natural (sawah, hutan, pantai)
    ============================================ */
 
-/* --- Base Tailwind Directives (Fonts & Font Awesome di-load asinkron via HTML head) --- */
+/* Font Awesome Free Icons */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+/* --- Base Tailwind Directives --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

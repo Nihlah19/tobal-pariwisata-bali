@@ -95,29 +95,11 @@ export function renderNavbar(selector) {
           <!-- Action Buttons -->
           <div class="flex items-center gap-2 sm:gap-2.5">
             
-            <!-- Tombol Chat AI Budaya (Database Access) -->
-            <button id="nav-chat-ai-btn" class="px-3 py-1.5 rounded-full bg-daun/10 hover:bg-daun/20 text-daun border border-daun/30 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer" title="Tanya AI Budaya Tobal">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Chat AI</span>
-            </button>
-
-            <!-- Tombol Musik Suasana Bali -->
-            <button id="nav-music-btn" class="btn-toggle-bali-music px-3 py-1.5 rounded-full bg-pasir/40 hover:bg-pasir/70 text-tanah-gelap border border-pasir/70 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer" title="Alunan Rindik Ubud">
-              <svg class="w-3.5 h-3.5 text-daun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 18V5l12-2v13"></path>
-                <circle cx="6" cy="18" r="3"></circle>
-                <circle cx="18" cy="16" r="3"></circle>
-              </svg>
-              <span class="hidden sm:inline">Rindik Bali</span>
-            </button>
-
             <!-- Admin Link Container (dihidrasi otomatis) -->
             <div id="navbar-admin-slot">
               ${isAdminCached ? `
                 <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs">
-                  <svg class="w-3.5 h-3.5 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                  </svg>
+                  <i class="fa-solid fa-shield-halved text-amber-700 text-xs"></i>
                   <span>Admin</span>
                 </a>
               ` : ''}
@@ -125,18 +107,15 @@ export function renderNavbar(selector) {
 
             <!-- Akun / Masuk Slot -->
             <div id="navbar-auth-slot">
-              <a href="/src/pages/masuk.html" class="btn-primer !rounded-full !px-4 !py-2 text-xs font-bold shadow-xs hover:shadow-md transition">
+              <a href="/src/pages/masuk.html" class="btn-primer !rounded-full !px-4 !py-2 text-xs font-bold shadow-xs hover:shadow-md transition flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i>
                 <span>Masuk</span>
               </a>
             </div>
 
             <!-- Hamburger Mobile -->
             <button class="md:hidden w-9 h-9 rounded-xl bg-pasir/30 hover:bg-pasir/60 border border-pasir/60 text-tanah-gelap flex items-center justify-center transition cursor-pointer" id="btn-mobile-menu" aria-label="Buka navigasi mobile">
-              <svg class="w-4 h-4" id="mobile-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
+              <i class="fa-solid fa-bars text-sm"></i>
             </button>
 
           </div>
@@ -148,31 +127,32 @@ export function renderNavbar(selector) {
         <div class="px-4 py-3 space-y-1 text-sm font-medium">
           <div id="mobile-user-slot"></div>
           <a href="/" class="${active === 'beranda' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
+            <i class="fa-solid fa-house w-4 text-xs"></i>
             <span>Beranda</span>
           </a>
           <a href="/src/pages/petualangan.html" class="${active === 'petualangan' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Jalur Petualangan Cerdas">
+            <i class="fa-solid fa-compass w-4 text-xs"></i>
             <span>Petualangan Saya</span>
           </a>
           <a href="/src/pages/lencana.html" class="${active === 'lencana' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Koleksi Lencana Budaya">
+            <i class="fa-solid fa-award w-4 text-xs"></i>
             <span>Koleksi Lencana</span>
           </a>
           <a href="/src/pages/kamus.html" class="${active === 'kamus' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
+            <i class="fa-solid fa-book-open w-4 text-xs"></i>
             <span>Kamus Basa Bali</span>
           </a>
           <a href="/src/pages/budaya.html" class="${active === 'budaya' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition">
+            <i class="fa-solid fa-landmark w-4 text-xs"></i>
             <span>Ensiklopedia Budaya</span>
           </a>
           <a href="/src/pages/kenali-budaya.html" class="${active === 'kenali-budaya' ? 'bg-daun text-white font-semibold' : 'text-tanah hover:bg-pasir/30'} flex items-center justify-between px-3.5 py-2.5 rounded-xl transition" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
-            <span>Kenali Budaya</span>
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-camera-retro w-4 text-xs"></i>
+              <span>Kenali Budaya</span>
+            </span>
             <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold px-1.5 py-0.2 rounded-full">AI</span>
           </a>
-          <button type="button" id="mobile-chat-ai-btn" class="w-full text-left text-daun font-semibold hover:bg-pasir/30 flex items-center justify-between px-3.5 py-2.5 rounded-xl transition cursor-pointer">
-            <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Tanya AI Budaya (Database)</span>
-            </span>
-            <span class="text-xs">💬</span>
-          </button>
           <div id="mobile-admin-slot"></div>
         </div>
       </div>
@@ -188,21 +168,7 @@ export function renderNavbar(selector) {
     });
   }
 
-  // Hubungkan tombol Chat AI di Navbar Desktop & Mobile ke Launcher
-  const triggerChat = () => {
-    const launcherBtn = document.getElementById('btn-open-tobal-chat');
-    if (launcherBtn) {
-      launcherBtn.click();
-    }
-    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-      mobileMenu.classList.add('hidden');
-    }
-  };
-
-  document.getElementById('nav-chat-ai-btn')?.addEventListener('click', triggerChat);
-  document.getElementById('mobile-chat-ai-btn')?.addEventListener('click', triggerChat);
-
-  // Pasang pemutar audio
+  // Pasang pemutar audio (icon popup mengapung di pojok kanan)
   initBalineseAudio();
 
   // Hidrasi sesi user secara asinkron di latar belakang (tanpa menghalangi render utama)
@@ -225,14 +191,10 @@ export function renderNavbar(selector) {
                     <img id="navbar-user-avatar-img" src="${avatarUrl}" alt="${displayName}" class="w-full h-full object-contain" />
                   </div>
                   <span id="navbar-user-name" class="max-w-[100px] truncate">${displayName}</span>
-                  <span class="text-[11px] text-daun">✎</span>
+                  <i class="fa-solid fa-pen text-[10px] text-daun"></i>
                 </button>
                 <button class="w-8 h-8 rounded-full bg-pasir/30 hover:bg-red-50 hover:text-red-600 text-tanah/70 border border-pasir/60 flex items-center justify-center transition cursor-pointer" id="btn-keluar" title="Keluar Akun">
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                  </svg>
+                  <i class="fa-solid fa-right-from-bracket text-xs"></i>
                 </button>
               </div>
             `;
@@ -255,7 +217,7 @@ export function renderNavbar(selector) {
                   <img src="${avatarUrl}" class="w-5 h-5 rounded-full object-contain" />
                   <span>Sunting Profil (${displayName})</span>
                 </span>
-                <span>✎</span>
+                <i class="fa-solid fa-pen-to-square text-xs"></i>
               `;
               pBtn.addEventListener('click', () => {
                 mobileMenu?.classList.add('hidden');
@@ -270,9 +232,7 @@ export function renderNavbar(selector) {
             if (adminSlot && !adminSlot.innerHTML.trim()) {
               adminSlot.innerHTML = `
                 <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs">
-                  <svg class="w-3.5 h-3.5 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                  </svg>
+                  <i class="fa-solid fa-shield-halved text-amber-700 text-xs"></i>
                   <span>Admin</span>
                 </a>
               `;

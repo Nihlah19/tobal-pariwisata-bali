@@ -84,8 +84,9 @@ async function loadBadges() {
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="font-heading text-lg sm:text-xl font-bold text-tanah-gelap">${displayName}</h2>
-              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
-                ${prefRegion}
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-daun/10 text-daun border border-daun/20 inline-flex items-center gap-1">
+                <i class="fa-solid fa-location-dot text-[9px]"></i>
+                <span>${prefRegion}</span>
               </span>
             </div>
             <p class="text-xs text-tanah/70 font-body mt-0.5 max-w-md">${bioText}</p>
@@ -94,7 +95,7 @@ async function loadBadges() {
         </div>
 
         <button type="button" id="btn-edit-my-profile" class="shrink-0 px-4 py-2 rounded-2xl bg-pasir/40 hover:bg-daun hover:text-white text-tanah-gelap text-xs font-semibold border border-pasir transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs">
-          <span>✎</span>
+          <i class="fa-solid fa-pen-to-square text-xs"></i>
           <span>Sunting Profil</span>
         </button>
       </div>
