@@ -15,7 +15,7 @@ if (!session) {
   // redirect otomatis
 }
 
-await renderNavbar('#navbar');
+renderNavbar('#navbar');
 renderFooter('#footer');
 
 const userId = session.user.id;

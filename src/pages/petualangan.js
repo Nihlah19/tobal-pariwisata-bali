@@ -37,7 +37,7 @@ if (!session) {
   // redirect otomatis oleh requireAuth
 }
 
-await renderNavbar('#navbar');
+renderNavbar('#navbar');
 renderFooter('#footer');
 
 const userId = session.user.id;

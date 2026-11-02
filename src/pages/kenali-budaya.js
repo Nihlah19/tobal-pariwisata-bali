@@ -56,7 +56,7 @@ const state = {
  * Inisialisasi halaman Kenali Budaya
  */
 async function init() {
-  await renderNavbar('#navbar');
+  renderNavbar('#navbar');
   renderFooter('#footer');
 
   renderIcons();

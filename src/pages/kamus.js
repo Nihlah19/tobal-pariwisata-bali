@@ -45,7 +45,7 @@ const state = {
  * Inisialisasi halaman Kamus
  */
 async function init() {
-  await renderNavbar('#navbar');
+  renderNavbar('#navbar');
   renderFooter('#footer');
 
   // Render icon static header

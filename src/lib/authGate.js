@@ -4,7 +4,7 @@
  * tanpa akun terdaftar, dan menampilkan dialog ajakan daftar/masuk secara interaktif.
  */
 
-import { getSession } from './auth.js';
+import { getSession, hasCachedSession } from './auth.js';
 
 /**
  * Tampilkan modal ajakan mendaftar/masuk akun
@@ -31,51 +31,61 @@ export function promptAuthModal(featureName = 'Fitur Petualangan', targetUrl = '
       
       <!-- Tombol Tutup -->
       <button id="btn-close-auth-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-pasir/40 hover:bg-pasir text-tanah/70 hover:text-tanah-gelap flex items-center justify-center transition cursor-pointer" aria-label="Tutup Dialog">
-        <i class="fa-solid fa-xmark text-sm"></i>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
       </button>
 
-      <!-- Badge Icon Kunci Berhias Daun & Emas -->
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-100 via-orange-50 to-emerald-100 text-daun border border-amber-300/80 flex items-center justify-center mx-auto mb-4 shadow-sm">
-        <i class="fa-solid fa-compass text-2xl text-daun"></i>
+      <!-- Badge Icon Elegan Berhias Daun & Emas -->
+      <div class="w-14 h-14 rounded-2xl bg-daun/10 text-daun border border-daun/20 flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
       </div>
 
       <!-- Header Teks -->
       <span class="badge-padi text-[10px] py-0.5 px-3 uppercase font-bold tracking-wider inline-flex mb-2">
         Akses Khusus Anggota
       </span>
-      <h3 class="font-heading font-extrabold text-2xl text-tanah-gelap mb-2">
+      <h3 class="font-heading font-bold text-2xl text-tanah-gelap mb-2">
         Daftar Akun Terlebih Dahulu
       </h3>
       
       <p class="font-body text-xs sm:text-sm text-tanah/80 leading-relaxed mb-4">
-        Fitur <strong class="text-daun font-bold">${featureName}</strong> memerlukan akun penjelajah untuk menyimpan catatan perjalanan dan membuka fitur cerdas Bali.
+        Fitur <strong class="text-daun font-semibold">${featureName}</strong> memerlukan akun penjelajah untuk menyimpan catatan perjalanan dan membuka fitur cerdas Bali.
       </p>
 
       <!-- Keuntungan Mendaftar -->
-      <div class="bg-gradient-to-r from-emerald-50/70 to-amber-50/70 rounded-2xl p-3.5 mb-5 border border-pasir/60 text-left space-y-2 text-xs text-tanah-gelap">
+      <div class="bg-gradient-to-r from-emerald-50/70 to-amber-50/70 rounded-2xl p-3.5 mb-5 border border-pasir/60 text-left space-y-2 text-xs text-tanah-gelap font-medium">
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-circle-check text-daun text-xs shrink-0"></i>
-          <span>Rekomendasi paket petualangan 3+1 personal AI</span>
+          <svg class="w-4 h-4 text-daun shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Rekomendasi paket petualangan 3+1 personal</span>
         </div>
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-circle-check text-daun text-xs shrink-0"></i>
+          <svg class="w-4 h-4 text-daun shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
           <span>Buka lencana tradisi & rekam jejak petualangan</span>
         </div>
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-circle-check text-daun text-xs shrink-0"></i>
-          <span>AI Vision pendeteksi budaya, pura, & busana Bali</span>
+          <svg class="w-4 h-4 text-daun shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>AI Vision pendeteksi pura, sesaji, & busana Bali</span>
         </div>
       </div>
 
       <!-- Tombol Aksi Utama -->
       <div class="space-y-2.5">
-        <a href="${registerUrl}" class="w-full btn-primer !py-3.5 !rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:scale-102 transition-transform" id="btn-modal-go-register">
-          <i class="fa-solid fa-user-plus text-xs"></i>
-          <span>Daftar Akun Baru (Gratis 15 Detik)</span>
+        <a href="${registerUrl}" class="w-full btn-primer !py-3.5 !rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition" id="btn-modal-go-register">
+          <span>Daftar Akun Baru (Gratis)</span>
         </a>
 
         <a href="${loginUrl}" class="w-full btn-sekunder !py-3 !rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 border border-pasir hover:border-daun/40 transition" id="btn-modal-go-login">
-          <i class="fa-solid fa-arrow-right-to-bracket text-xs text-daun"></i>
           <span>Sudah Punya Akun? Masuk Di Sini</span>
         </a>
       </div>
@@ -148,7 +158,17 @@ export async function setupProtectedLinks() {
     const isProtected = Boolean(matchedFeature) || target.dataset.authRequired === 'true';
     if (!isProtected) return;
 
-    // Cek sesi autentikasi
+    const featureTitle = matchedFeature || 'Fitur Eksplorasi Bali';
+
+    // Cek cache lokal terlebih dahulu (0ms responsif)
+    if (!hasCachedSession()) {
+      e.preventDefault();
+      e.stopPropagation();
+      promptAuthModal(featureTitle, target.href || href);
+      return;
+    }
+
+    // Jika ada token di cache, validasi session
     const session = await getSession();
     if (session?.user) {
       // User sudah masuk akun, izinkan navigasi normal
@@ -158,8 +178,6 @@ export async function setupProtectedLinks() {
     // Belum masuk akun: cegah perpindahan halaman dan munculkan modal suruh daftar
     e.preventDefault();
     e.stopPropagation();
-
-    const featureTitle = matchedFeature || 'Fitur Eksplorasi Bali';
     promptAuthModal(featureTitle, target.href || href);
   }, true); // Use capture phase to intercept before default link navigation
 }

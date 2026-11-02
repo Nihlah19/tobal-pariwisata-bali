@@ -45,7 +45,7 @@ const state = {
  * Inisialisasi halaman Budaya
  */
 async function init() {
-  await renderNavbar('#navbar');
+  renderNavbar('#navbar');
   renderFooter('#footer');
 
   renderStaticIcons();

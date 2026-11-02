@@ -18,8 +18,8 @@ export default {
         teks: '#2B2B24',
       },
       fontFamily: {
-        heading: ['"Fraunces"', '"Lora"', 'Georgia', 'serif'],
-        body: ['"Nunito Sans"', '"Inter"', 'system-ui', 'sans-serif'],
+        heading: ['"Playfair Display"', '"Fraunces"', 'Georgia', 'serif'],
+        body: ['"Plus Jakarta Sans"', '"Nunito Sans"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       borderRadius: {
         '2xl': '1rem',

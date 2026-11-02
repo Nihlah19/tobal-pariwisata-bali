@@ -10,7 +10,7 @@ import { signInUser, signUpUser, getCurrentUser, getUserProfile } from '../lib/a
 import { showToast } from '../components/ui.js';
 
 // Inisialisasi layout
-await renderNavbar('#navbar');
+renderNavbar('#navbar');
 renderFooter('#footer');
 
 // Render ikon header

@@ -1,60 +1,56 @@
 /**
  * Main Entry — Tour Penjelajah Bali (Beranda)
+ * Eksekusi ultra-cepat tanpa blocking waterfall render.
  */
 import './styles/main.css';
 import { renderNavbar } from './components/navbar.js';
 import { renderFooter } from './components/footer.js';
-import { createElement, Sparkles, BookOpen, Volume2, ArrowRight } from 'lucide';
-import { getSession, getUserProfile } from './lib/auth.js';
+import { createElement, Sparkles, Volume2, ArrowRight } from 'lucide';
+import { getSession, getUserProfile, hasCachedSession } from './lib/auth.js';
 import { getWordOfTheDay, TINGKAT_STYLE_MAP, KELAS_KATA_MAP } from './lib/dictionary.js';
 import { showToast } from './components/ui.js';
 import { setupProtectedLinks } from './lib/authGate.js';
 
-// Render layout
-await renderNavbar('#navbar');
+// 1. Render layout secara sinkron (FCP < 0.3s)
+renderNavbar('#navbar');
 renderFooter('#footer');
 
-// Lindungi fitur pada landing page: jika belum login, tampilkan modal ajakan daftar
-await setupProtectedLinks(document);
+// 2. Lindungi fitur pada landing page
+setupProtectedLinks();
 
-// Hero badge icon
-const heroBadgeIcon = document.getElementById('hero-badge-icon');
-if (heroBadgeIcon) {
-  const svg = createElement(Sparkles);
-  svg.setAttribute('width', '14');
-  svg.setAttribute('height', '14');
-  heroBadgeIcon.appendChild(svg);
-}
-
-// Periksa status autentikasi untuk tombol CTA utama
-async function setupHeroCta() {
+// 3. Inisialisasi CTA tombol utama tanpa blocking
+function setupHeroCta() {
   const heroCta = document.getElementById('hero-cta');
   if (!heroCta) return;
 
-  const session = await getSession();
-  if (session?.user) {
-    const profile = await getUserProfile(session.user.id);
-    const hasOnboarded = profile?.interests && profile.interests.length > 0;
-    
-    heroCta.innerHTML = `
-      <i class="fa-solid fa-compass text-krem"></i>
-      <span>${hasOnboarded ? 'Lanjutkan Petualangan' : 'Atur Preferensi Minat'}</span>
-    `;
-    heroCta.href = hasOnboarded ? '/src/pages/petualangan.html' : '/src/pages/onboarding.html';
-  } else {
-    heroCta.innerHTML = `
-      <i class="fa-solid fa-compass text-krem"></i>
-      <span>Mulai Petualangan</span>
-    `;
-    heroCta.href = '/src/pages/petualangan.html';
-    heroCta.dataset.authRequired = 'true';
-    heroCta.dataset.featureName = 'Jalur Petualangan Cerdas';
+  // Jika ada token di cache, hidrasi di latar belakang
+  if (hasCachedSession()) {
+    setTimeout(async () => {
+      try {
+        const session = await getSession();
+        if (session?.user) {
+          const profile = await getUserProfile(session.user.id);
+          const hasOnboarded = profile?.interests && profile.interests.length > 0;
+          
+          heroCta.innerHTML = `
+            <svg class="w-4 h-4 text-krem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
+            </svg>
+            <span>${hasOnboarded ? 'Lanjutkan Petualangan' : 'Atur Preferensi Minat'}</span>
+          `;
+          heroCta.href = hasOnboarded ? '/src/pages/petualangan.html' : '/src/pages/onboarding.html';
+          heroCta.removeAttribute('data-auth-required');
+        }
+      } catch (err) {
+        console.warn('[Hero CTA] Sesi offline:', err);
+      }
+    }, 20);
   }
 }
 
 setupHeroCta();
 
-// Render 'Kata Bahasa Bali Hari Ini' (Kruna Rahina Mangkin)
+// 4. Render 'Kata Bahasa Bali Hari Ini' (Kruna Rahina Mangkin)
 function renderWordOfTheDay() {
   const container = document.getElementById('kata-hari-ini-container');
   if (!container) return;
@@ -64,11 +60,8 @@ function renderWordOfTheDay() {
   const kelasLabel = KELAS_KATA_MAP[word.kelas_kata] || word.kelas_kata;
 
   container.innerHTML = `
-    <div class="card-natural !p-6 sm:!p-8 bg-white/90 backdrop-blur-md shadow-lg border border-pasir/80 relative overflow-hidden group">
+    <div class="card-natural !p-6 sm:!p-8 bg-white/95 backdrop-blur-md shadow-sm border border-pasir/80 relative overflow-hidden group">
       
-      <!-- Ornamen latar belakang daun -->
-      <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-daun/5 rounded-full pointer-events-none transition-transform duration-700 group-hover:scale-125"></div>
-
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-pasir/60">
         <div>
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-daun/10 text-daun border border-daun/20 text-xs font-semibold uppercase tracking-wider mb-2">
@@ -80,7 +73,7 @@ function renderWordOfTheDay() {
           </h2>
         </div>
 
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border ${tingkatInfo.badgeClass} shadow-sm">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border ${tingkatInfo.badgeClass} shadow-xs">
           <span class="w-2 h-2 rounded-full ${tingkatInfo.dotClass}"></span>
           Tingkat: ${tingkatInfo.label}
         </span>
@@ -126,7 +119,11 @@ function renderWordOfTheDay() {
 
           ${word.catatan ? `
             <p class="text-xs text-tanah/80 bg-amber-50/70 p-3 rounded-xl border border-amber-200/50 flex items-start gap-2">
-              <i class="fa-solid fa-lightbulb text-amber-600 mt-0.5 shrink-0"></i>
+              <svg class="w-4 h-4 text-amber-600 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
               <span><strong class="text-amber-950 font-medium">Etika Tutur:</strong> ${word.catatan}</span>
             </p>
           ` : ''}
@@ -137,7 +134,7 @@ function renderWordOfTheDay() {
       <!-- Footer Card Actions -->
       <div class="mt-6 pt-5 border-t border-pasir/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2 w-full sm:w-auto">
-          <button id="btn-wotd-speak" class="btn-ghost !py-2 !px-3 text-xs flex items-center gap-1.5 border border-pasir">
+          <button id="btn-wotd-speak" class="btn-ghost !py-2 !px-3 text-xs flex items-center gap-1.5 border border-pasir cursor-pointer">
             <span id="wotd-audio-icon"></span>
             Dengarkan Lafal
           </button>
@@ -155,7 +152,7 @@ function renderWordOfTheDay() {
     </div>
   `;
 
-  // Render icons
+  // Render icons dengan Lucide
   const iconSparkle = document.getElementById('wotd-sparkle-icon');
   if (iconSparkle) {
     const svg = createElement(Sparkles);
@@ -180,7 +177,7 @@ function renderWordOfTheDay() {
     iconArrow.appendChild(svg);
   }
 
-  // Audio button
+  // Audio lafal kata
   document.getElementById('btn-wotd-speak')?.addEventListener('click', () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -195,12 +192,7 @@ function renderWordOfTheDay() {
 
 renderWordOfTheDay();
 
-// Scroll-triggered fade-in (Intersection Observer)
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -40px 0px',
-};
-
+// 5. Scroll-triggered fade-in cepat tanpa lag
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
@@ -209,11 +201,11 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, observerOptions);
+}, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 
 document.querySelectorAll('.card-organik, .animate-slide-up, #kata-hari-ini').forEach((el) => {
   el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
   observer.observe(el);
 });

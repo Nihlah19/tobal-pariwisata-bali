@@ -15,7 +15,7 @@ if (!session) {
   // requireAuth akan melakukan redirect otomatis
 }
 
-await renderNavbar('#navbar');
+renderNavbar('#navbar');
 renderFooter('#footer');
 
 // Pilihan Data
