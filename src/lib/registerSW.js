@@ -29,6 +29,66 @@ export function registerServiceWorker() {
 
   // Notifikasi offline banner jika koneksi terputus
   setupOfflineIndicator();
+
+  // PWA Install Prompt
+  setupPwaInstall();
+}
+
+let deferredPrompt = null;
+
+function setupPwaInstall() {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallPromptBanner();
+  });
+}
+
+function showInstallPromptBanner() {
+  // Hanya tampilkan jika belum pernah ditutup dalam sesi ini
+  if (sessionStorage.getItem('tobal_pwa_dismissed')) return;
+  if (document.getElementById('tobal-pwa-install-banner')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'tobal-pwa-install-banner';
+  banner.className = 'fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md bg-white/95 backdrop-blur-md border border-daun/30 rounded-2xl p-3 sm:p-3.5 shadow-organik-lg flex items-center justify-between gap-3 animate-slide-down';
+  banner.innerHTML = `
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div class="w-8 h-8 rounded-xl bg-daun/10 border border-daun/20 p-1 flex items-center justify-center shrink-0">
+        <img src="/images/mascot-barong-head.png" alt="Tobal" class="w-full h-full object-contain" />
+      </div>
+      <div class="min-w-0 text-left">
+        <p class="font-heading font-bold text-xs text-tanah-gelap truncate">Pasang Aplikasi Tobal</p>
+        <p class="text-[10px] text-tanah/70 truncate">Akses cepat, hemat data & rute offline</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button type="button" id="btn-pwa-install" class="px-3 py-1.5 rounded-xl bg-daun hover:bg-daun/90 text-krem text-[11px] font-bold shadow-xs cursor-pointer">
+        Pasang
+      </button>
+      <button type="button" id="btn-pwa-dismiss" class="w-7 h-7 rounded-lg hover:bg-pasir/40 text-tanah/60 hover:text-tanah flex items-center justify-center text-xs cursor-pointer" aria-label="Tutup">
+        ✕
+      </button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  document.getElementById('btn-pwa-install')?.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('[Tobal PWA] Pengguna memasang aplikasi Tobal');
+      }
+      deferredPrompt = null;
+    }
+    banner.remove();
+  });
+
+  document.getElementById('btn-pwa-dismiss')?.addEventListener('click', () => {
+    sessionStorage.setItem('tobal_pwa_dismissed', 'true');
+    banner.remove();
+  });
 }
 
 function setupOfflineIndicator() {
@@ -57,3 +117,4 @@ function setupOfflineIndicator() {
     updateOnlineStatus();
   }
 }
+

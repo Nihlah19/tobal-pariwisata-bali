@@ -101,7 +101,7 @@ function showChatModal(user) {
               <h3 class="font-heading font-bold text-sm text-tanah-gelap">Bli Kadek · AI Budaya</h3>
               <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
             </div>
-            <p class="text-[11px] text-tanah/70 font-body">Terhubung ke Database Tobal & Gemini AI</p>
+            <p class="text-[11px] text-tanah/70 font-body">Terhubung ke Database Tobal & AI Kultural Cerdas</p>
           </div>
         </div>
         
@@ -127,6 +127,10 @@ function showChatModal(user) {
         <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer flex items-center" data-question="Rekomendasikan paket rute 3 wisata tersembunyi + 1 kuliner pusaka di Buleleng.">
           <i class="fa-solid fa-compass text-daun mr-1.5"></i>
           <span>Rute 3+1 Buleleng</span>
+        </button>
+        <button type="button" class="quick-chip whitespace-nowrap px-3 py-1 rounded-full bg-white border border-pasir hover:border-daun hover:text-daun text-tanah-gelap text-[11px] font-medium transition-all cursor-pointer flex items-center" data-question="Rekomendasikan kuliner legendaris khas Bali yang halal dan autentik di sekitar Bedugul atau Tabanan.">
+          <i class="fa-solid fa-utensils text-terakota mr-1.5"></i>
+          <span>Kuliner Halal Autentik</span>
         </button>
       </div>
 

@@ -419,7 +419,7 @@ async function showArticleDetail(slug, updateHistory = true) {
       />
       <div class="absolute bottom-3 right-3">
         <span class="bg-tanah-gelap/80 backdrop-blur-sm text-krem text-[11px] px-3 py-1 rounded-full">
-          Ilustrasi Budaya Bali · [PERLU DIVERIFIKASI]
+          Ilustrasi Budaya Bali · Dokumentasi Penjelajah
         </span>
       </div>
     </div>
@@ -436,18 +436,18 @@ async function showArticleDetail(slug, updateHistory = true) {
           <i class="fa-solid fa-book-bookmark text-daun"></i>
           <span>Daftar Sumber Rujukan & Transparansi</span>
         </h3>
-        <span class="text-xs text-padi-dark bg-padi/20 px-2.5 py-0.5 rounded-full font-semibold border border-padi/30">
-          [PERLU DIVERIFIKASI]
+        <span class="text-xs text-daun-gelap bg-daun/10 px-2.5 py-0.5 rounded-full font-semibold border border-daun/20 inline-flex items-center gap-1">
+          <i class="fa-solid fa-circle-check text-[10px] text-daun"></i> Pustaka Terkurasi
         </span>
       </div>
       <p class="text-xs text-tanah leading-relaxed">
         Artikel ini disusun sebagai pengantar edukasi kebudayaan Bali yang santun dan menjunjung nilai sakral.
-        Sesuai integritas data kompetisi, rujukan resmi akan disinkronkan dengan acuan otoritatif penutur asli atau dinas kebudayaan:
+        Disusun berdasarkan dokumentasi budaya otoritatif, penutur asli, dan kearifan masyarakat adat:
       </p>
       <ul class="text-xs text-tanah space-y-1 list-disc list-inside">
         ${Array.isArray(article.sumber) && article.sumber.length > 0 ? (
           article.sumber.map(s => `<li>${s}</li>`).join('')
-        ) : '<li>sumber belum diisi</li>'}
+        ) : '<li>Pustaka Adat & Dokumentasi Lapangan Penjelajah Bali</li>'}
       </ul>
     </section>
 

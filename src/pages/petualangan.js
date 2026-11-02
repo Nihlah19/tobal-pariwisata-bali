@@ -140,7 +140,7 @@ function renderTripHeader() {
 
   headerArea.innerHTML = `
     <div class="card-organik !p-4 sm:!p-8 mb-6 bg-gradient-to-br from-white/95 to-pasir/20">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
         <div>
           <div class="flex items-center gap-2 mb-1 flex-wrap">
             <span class="badge-daun text-[11px] py-0.5 px-2">Paket Aktif</span>
@@ -150,19 +150,49 @@ function renderTripHeader() {
             Jalur Penjelajah Pulau Dewata
           </h1>
           <p class="font-body text-xs sm:text-sm text-tanah/70 mt-1 leading-relaxed">
-            Selesaikan 3 destinasi dan 1 santapan khas untuk meraih Lencana Eksklusif!
+            Selesaikan 3 destinasi alam/budaya tersembunyi dan 1 kuliner pusaka untuk meraih Lencana Eksklusif!
           </p>
         </div>
-        <div class="shrink-0 flex items-center gap-2">
-          <button id="btn-refresh-adventure" class="w-full sm:w-auto btn-sekunder text-xs sm:text-sm !py-2 sm:!py-2.5 !px-3.5 sm:!px-4 justify-center">
+        
+        <!-- Action Buttons: Share, Print, Ganti -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <button id="btn-share-adventure" class="flex-1 sm:flex-initial btn-sekunder text-xs sm:text-sm !py-2 !px-3 sm:!px-3.5 justify-center cursor-pointer shadow-xs" title="Bagikan rute ke WhatsApp atau salin tautan">
+            <i class="fa-solid fa-share-nodes text-daun"></i>
+            <span>Bagikan</span>
+          </button>
+          <button id="btn-print-adventure" class="flex-1 sm:flex-initial btn-sekunder text-xs sm:text-sm !py-2 !px-3 sm:!px-3.5 justify-center cursor-pointer shadow-xs" title="Cetak atau simpan sebagai dokumen PDF">
+            <i class="fa-solid fa-print text-tanah"></i>
+            <span>Cetak / PDF</span>
+          </button>
+          <button id="btn-refresh-adventure" class="w-full sm:w-auto btn-sekunder text-xs sm:text-sm !py-2 !px-3.5 sm:!px-4 justify-center cursor-pointer shadow-xs">
             <span id="btn-refresh-icon"></span>
-            <span>Ganti Paket</span>
+            <span>Ganti Rute</span>
           </button>
         </div>
       </div>
 
+      <!-- Smart Itinerary Advisory Card -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-2xl bg-pasir/30 border border-pasir/50 text-xs text-tanah mb-4">
+        <div class="p-2 rounded-xl bg-white/70">
+          <span class="block text-[10px] uppercase font-bold text-daun tracking-wider">Formula</span>
+          <span class="font-bold text-tanah-gelap text-xs sm:text-sm">3 Wisata + 1 Kuliner</span>
+        </div>
+        <div class="p-2 rounded-xl bg-white/70">
+          <span class="block text-[10px] uppercase font-bold text-amber-800 tracking-wider">Estimasi Waktu</span>
+          <span class="font-bold text-tanah-gelap text-xs sm:text-sm">~5–6 Jam Jelajah</span>
+        </div>
+        <div class="p-2 rounded-xl bg-white/70">
+          <span class="block text-[10px] uppercase font-bold text-emerald-800 tracking-wider">Waktu Mulai Ideal</span>
+          <span class="font-bold text-tanah-gelap text-xs sm:text-sm">07:30 WITA (Pagi)</span>
+        </div>
+        <div class="p-2 rounded-xl bg-white/70">
+          <span class="block text-[10px] uppercase font-bold text-terakota tracking-wider">Perlengkapan Adat</span>
+          <span class="font-bold text-tanah-gelap text-xs sm:text-sm truncate" title="Kain Kamen & Senteng">Kamen & Senteng</span>
+        </div>
+      </div>
+
       <!-- Progress Section -->
-      <div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-pasir/40">
+      <div class="pt-3 border-t border-pasir/40">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs sm:text-sm font-body mb-2 gap-1">
           <span class="font-semibold text-daun flex items-center gap-1.5">
             <span class="inline-block w-2.5 h-2.5 rounded-full ${completedCount === totalCount ? 'bg-daun' : 'bg-padi animate-pulse'}"></span>
@@ -183,6 +213,41 @@ function renderTripHeader() {
     svg.setAttribute('height', '16');
     refreshIcon.appendChild(svg);
   }
+
+  // Listener bagikan rute
+  document.getElementById('btn-share-adventure')?.addEventListener('click', async () => {
+    const placeNames = tripItems.map((item, idx) => `${idx + 1}. ${item.places?.name || 'Destinasi'} (${item.places?.region || 'Bali'})`).join('\n');
+    const shareText = `🌿 Rute Petualangan 3+1 Tour Penjelajah Bali:\n${placeNames}\n\nJelajahi keindahan autentik Bali bersama Tobal: ${window.location.origin}/src/pages/petualangan.html`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Rute Petualangan Tobal Bali',
+          text: shareText,
+          url: window.location.href
+        });
+        return;
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        showToast('Teks & tautan rute berhasil disalin!', 'success');
+      } catch (e) {
+        // Ignore
+      }
+    }
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(waUrl, '_blank');
+  });
+
+  // Listener cetak / unduh PDF
+  document.getElementById('btn-print-adventure')?.addEventListener('click', () => {
+    window.print();
+  });
 
   // Listener ganti paket
   document.getElementById('btn-refresh-adventure')?.addEventListener('click', () => {
@@ -369,12 +434,21 @@ function renderCheckpointCard(item, index) {
 
             <!-- Bagian Aksi / Status Selesai -->
             <div class="pt-3 border-t border-pasir/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <!-- Tombol Navigasi Google Maps Langsung -->
+                <a href="${place.lat && place.lng ? `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' ' + (place.region || 'Bali'))}`}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-pasir/50 hover:bg-daun hover:text-white text-tanah-gelap text-[11px] sm:text-xs font-semibold transition-all shadow-2xs group cursor-pointer"
+                   title="Buka petunjuk arah navigasi GPS di Google Maps">
+                  <i class="fa-solid fa-diamond-turn-right text-daun group-hover:text-white text-xs"></i>
+                  <span>Petunjuk Arah</span>
+                </a>
+
                 ${isCompleted
-                  ? `<span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-daun">
-                       <i class="fa-solid fa-check text-xs"></i> Selesai Dijelajahi
+                  ? `<span class="inline-flex items-center gap-1 text-xs font-semibold text-daun">
+                       <i class="fa-solid fa-check text-xs"></i> Selesai
                      </span>`
-                  : `<span class="text-[11px] sm:text-xs text-tanah/60 font-body">Kunjungi & catat ulasan Anda</span>`
+                  : `<span class="text-[11px] text-tanah/60 font-body hidden md:inline">Kunjungi & catat ulasan</span>`
                 }
               </div>
 

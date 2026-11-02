@@ -207,7 +207,24 @@ function setupEventListeners() {
     }
   });
 
-  // 6. Modal close on backdrop click & ESC
+  // 6. Shortcut Ungkapan Wisatawan Cepat
+  document.querySelectorAll('.phrase-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const term = chip.getAttribute('data-search') || '';
+      if (searchInput) searchInput.value = term;
+      state.query = term;
+      btnClear?.classList.remove('hidden');
+      performSearch();
+      document.getElementById('dictionary-entries-area')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // 7. Kuis Kilat Basa Bali & Etika
+  document.getElementById('btn-open-balinese-quiz')?.addEventListener('click', () => {
+    openBalineseQuizModal();
+  });
+
+  // 8. Modal close on backdrop click & ESC
   const modal = document.getElementById('word-detail-modal');
   modal?.addEventListener('click', (e) => {
     if (e.target === modal) {
@@ -942,5 +959,180 @@ function closeWordModal() {
   }
 }
 
+/**
+ * Modal Kuis Kilat Basa Bali & Etika Kultural (3 Soal Interaktif)
+ */
+function openBalineseQuizModal() {
+  let existing = document.getElementById('balinese-quiz-modal');
+  if (existing) existing.remove();
+
+  const quizData = [
+    {
+      question: 'Kata apa yang paling santun dan lazim diucapkan untuk berterima kasih kepada warga lokal di Bali?',
+      options: [
+        { text: 'Matur Suksma / Suksma', isCorrect: true, exp: 'Tepat! "Suksma" atau "Matur Suksma" (Alus Madya) adalah ungkapan terima kasih yang santun dan sangat dihargai warga Bali.' },
+        { text: 'Matur Nuwun', isCorrect: false, exp: '"Matur Nuwun" adalah bahasa Jawa. Di Bali, ucapkan "Matur Suksma".' },
+        { text: 'Ampura', isCorrect: false, exp: '"Ampura" berarti mohon maaf atau permisi.' },
+        { text: 'Rahajeng', isCorrect: false, exp: '"Rahajeng" berarti selamat (seperti Rahajeng Semeng = Selamat Pagi).' }
+      ]
+    },
+    {
+      question: 'Tingkatan bahasa (Anggah-Ungguhing) apa yang paling aman dan sopan digunakan wisatawan kepada masyarakat Bali?',
+      options: [
+        { text: 'Alus Madya (Sopan Netral)', isCorrect: true, exp: 'Benar! Alus Madya adalah bahasa sopan yang paling aman digunakan wisatawan karena santun dan tidak terikat kasta.' },
+        { text: 'Andap / Kasar (Akrab Sebaya)', isCorrect: false, exp: 'Andap hanya digunakan untuk teman sebaya yang sudah sangat akrab atau orang tua kepada anak muda.' },
+        { text: 'Alus Singgih (Penghormatan Sakral)', isCorrect: false, exp: 'Alus Singgih dikhususkan bagi pemuka agama (Pedanda/Pamangku) atau orang yang sangat dihormati.' },
+        { text: 'Basa Campuran Bebas', isCorrect: false, exp: 'Alus Madya tetap merupakan standar kesopanan terbaik dalam tata krama Bali.' }
+      ]
+    },
+    {
+      question: 'Saat mengunjungi pura sakral atau menghadiri upacara adat, perlengkapan busana apa yang wajib dikenakan?',
+      options: [
+        { text: 'Kain Kamen & Selendang / Senteng yang diikat rapi', isCorrect: true, exp: 'Tepat! Kamen menutup pinggang ke bawah, dan selendang/senteng diikat di pinggang sebagai simbol mengendalikan hawa nafsu sebelum memasuki mandala suci.' },
+        { text: 'Celana Pendek & Topi Pantai', isCorrect: false, exp: 'Celana pendek tidak diperkenankan di area pura karena memperlihatkan bagian kaki yang tidak sopan menurut tradisi.' },
+        { text: 'Pakaian renang dengan sarung transparan', isCorrect: false, exp: 'Sangat dilarang karena menodai kesucian kawasan suci pura.' },
+        { text: 'Bebas tanpa aturan asalkan nyaman', isCorrect: false, exp: 'Setiap pura memiliki aturan sakral (*dresta*) yang wajib dihormati setiap pengunjung.' }
+      ]
+    }
+  ];
+
+  let currentIdx = 0;
+  let score = 0;
+
+  const modalEl = document.createElement('div');
+  modalEl.id = 'balinese-quiz-modal';
+  modalEl.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-tanah-gelap/60 backdrop-blur-xs animate-fade-in';
+
+  function renderQuestion() {
+    if (currentIdx >= quizData.length) {
+      // Tampilan Selesai
+      modalEl.innerHTML = `
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border border-pasir shadow-2xl text-center space-y-5 animate-scale-up">
+          <div class="w-16 h-16 rounded-full bg-daun/10 text-daun flex items-center justify-center mx-auto text-3xl shadow-sm">
+            🏆
+          </div>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-daun block mb-1">Hasil Kuis Budaya</span>
+            <h3 class="font-heading text-2xl font-bold text-tanah-gelap">
+              ${score === 3 ? 'Sempurna! Penjelajah Sejati' : score >= 2 ? 'Hebat! Anda Siap Menjelajah' : 'Terus Belajar Budaya Bali'}
+            </h3>
+            <p class="text-xs sm:text-sm text-tanah/80 mt-2 leading-relaxed">
+              Anda menjawab <strong>${score} dari 3</strong> pertanyaan dengan tepat. Pemahaman etika Anda akan membuat perjalanan di Bali lebih bermakna dan dihormati warga setempat.
+            </p>
+          </div>
+          <div class="p-3 rounded-2xl bg-pasir/30 border border-pasir/60 text-xs text-tanah-gelap">
+            <span class="font-semibold text-daun">Tips:</span> Anda dapat mendengarkan audio lafal asli di setiap kartu kosakata kamus di bawah!
+          </div>
+          <div class="flex gap-2 justify-center pt-2">
+            <button type="button" id="btn-quiz-retry" class="btn-sekunder text-xs !py-2.5 !px-4">Ulangi Kuis</button>
+            <button type="button" id="btn-quiz-close" class="btn-primer text-xs !py-2.5 !px-5">Tutup</button>
+          </div>
+        </div>
+      `;
+
+      modalEl.querySelector('#btn-quiz-retry')?.addEventListener('click', () => {
+        currentIdx = 0;
+        score = 0;
+        renderQuestion();
+      });
+      modalEl.querySelector('#btn-quiz-close')?.addEventListener('click', () => {
+        modalEl.remove();
+        document.body.style.overflow = '';
+      });
+      return;
+    }
+
+    const q = quizData[currentIdx];
+    modalEl.innerHTML = `
+      <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 border border-pasir shadow-2xl space-y-4 animate-scale-up">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-pasir/50 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-padi/20 text-amber-900 flex items-center justify-center text-xs font-bold">
+              ${currentIdx + 1}
+            </span>
+            <span class="font-heading font-bold text-xs uppercase tracking-wider text-tanah">
+              Pertanyaan ${currentIdx + 1} dari ${quizData.length}
+            </span>
+          </div>
+          <button type="button" id="btn-close-quiz-x" class="text-tanah/50 hover:text-tanah text-lg p-1">✕</button>
+        </div>
+
+        <!-- Question -->
+        <div>
+          <h3 class="font-heading text-base sm:text-lg font-bold text-tanah-gelap leading-snug">
+            ${q.question}
+          </h3>
+        </div>
+
+        <!-- Options -->
+        <div class="space-y-2 pt-1" id="quiz-options-container">
+          ${q.options.map((opt, i) => `
+            <button type="button" data-idx="${i}" class="quiz-opt-btn w-full text-left p-3 rounded-2xl bg-krem/40 hover:bg-daun/10 border border-pasir hover:border-daun/40 text-xs sm:text-sm text-tanah-gelap transition-all flex items-start gap-2.5 cursor-pointer">
+              <span class="w-5 h-5 rounded-full bg-white border border-pasir text-[10px] font-bold text-tanah/70 flex items-center justify-center shrink-0 mt-0.5">
+                ${['A', 'B', 'C', 'D'][i]}
+              </span>
+              <span class="flex-1">${opt.text}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <!-- Explanation area (hidden until answered) -->
+        <div id="quiz-explanation" class="hidden p-3 rounded-2xl text-xs space-y-1"></div>
+
+        <!-- Next button -->
+        <div class="pt-2 flex justify-end">
+          <button type="button" id="btn-quiz-next" class="hidden btn-primer text-xs !py-2 !px-4">
+            ${currentIdx === quizData.length - 1 ? 'Lihat Hasil' : 'Lanjut →'}
+          </button>
+        </div>
+
+      </div>
+    `;
+
+    modalEl.querySelector('#btn-close-quiz-x')?.addEventListener('click', () => {
+      modalEl.remove();
+      document.body.style.overflow = '';
+    });
+
+    const optButtons = modalEl.querySelectorAll('.quiz-opt-btn');
+    const expBox = modalEl.querySelector('#quiz-explanation');
+    const nextBtn = modalEl.querySelector('#btn-quiz-next');
+
+    optButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Disable all buttons once selected
+        optButtons.forEach(b => b.disabled = true);
+        const selIdx = parseInt(btn.getAttribute('data-idx'), 10);
+        const selOpt = q.options[selIdx];
+
+        if (selOpt.isCorrect) {
+          score++;
+          btn.className = 'quiz-opt-btn w-full text-left p-3 rounded-2xl bg-emerald-50 border border-emerald-400 text-xs sm:text-sm text-emerald-950 flex items-start gap-2.5';
+          expBox.className = 'p-3 rounded-2xl text-xs space-y-1 bg-emerald-50 text-emerald-900 border border-emerald-200 block animate-fade-in';
+          expBox.innerHTML = `<strong>Jawaban Benar!</strong> ${selOpt.exp}`;
+        } else {
+          btn.className = 'quiz-opt-btn w-full text-left p-3 rounded-2xl bg-amber-50 border border-amber-400 text-xs sm:text-sm text-amber-950 flex items-start gap-2.5';
+          expBox.className = 'p-3 rounded-2xl text-xs space-y-1 bg-amber-50 text-amber-900 border border-amber-200 block animate-fade-in';
+          expBox.innerHTML = `<strong>Kurang Tepat.</strong> ${selOpt.exp}`;
+        }
+
+        nextBtn.classList.remove('hidden');
+      });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIdx++;
+      renderQuestion();
+    });
+  }
+
+  document.body.appendChild(modalEl);
+  document.body.style.overflow = 'hidden';
+  renderQuestion();
+}
+
 // Jalankan inisialisasi saat DOM siap
 document.addEventListener('DOMContentLoaded', init);
+

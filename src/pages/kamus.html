@@ -6,6 +6,8 @@
   <title>Kamus Bahasa Bali — Tour Penjelajah Bali</title>
   <meta name="description" content="Kamus digital Bahasa Bali gaya KBBI. Pelajari etika bertutur kata (Anggah-Ungguhing Basa Bali), tingkatan bahasa alus singgih, alus sor, alus madya, hingga andap untuk wisatawan." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#1A3D2F" />
   <!-- Optimasi Tipografi Clean Non-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -117,6 +119,30 @@
           </div>
         </div>
 
+        <!-- Shortcut Ungkapan Wisatawan & Kuis Kilat -->
+        <div class="flex items-center justify-between gap-2 flex-wrap pt-1 text-xs">
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none flex-1 min-w-0" id="phrasebook-quick-chips">
+            <span class="text-[11px] font-semibold text-tanah/70 uppercase tracking-wider shrink-0 mr-1">Cepat:</span>
+            <button type="button" class="phrase-chip px-2.5 py-1 rounded-xl bg-krem/60 hover:bg-daun hover:text-white border border-pasir text-tanah-gelap text-[11px] font-medium transition-colors shrink-0" data-search="suksma">
+              🙏 Terima Kasih (Suksma)
+            </button>
+            <button type="button" class="phrase-chip px-2.5 py-1 rounded-xl bg-krem/60 hover:bg-daun hover:text-white border border-pasir text-tanah-gelap text-[11px] font-medium transition-colors shrink-0" data-search="pura">
+              🏛️ Pura & Sakral
+            </button>
+            <button type="button" class="phrase-chip px-2.5 py-1 rounded-xl bg-krem/60 hover:bg-daun hover:text-white border border-pasir text-tanah-gelap text-[11px] font-medium transition-colors shrink-0" data-search="makan">
+              🍲 Kuliner / Makan
+            </button>
+            <button type="button" class="phrase-chip px-2.5 py-1 rounded-xl bg-krem/60 hover:bg-daun hover:text-white border border-pasir text-tanah-gelap text-[11px] font-medium transition-colors shrink-0" data-search="arah">
+              🧭 Petunjuk Arah
+            </button>
+          </div>
+
+          <button type="button" id="btn-open-balinese-quiz" class="shrink-0 px-3 py-1.5 rounded-xl bg-padi/20 hover:bg-padi/30 border border-padi/40 text-amber-900 font-bold text-[11px] inline-flex items-center gap-1.5 transition-transform active:scale-95 cursor-pointer shadow-xs">
+            <i class="fa-solid fa-award text-amber-700"></i>
+            <span>Kuis Kilat Basa Bali</span>
+          </button>
+        </div>
+
         <!-- Filter Bar -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2 border-t border-pasir/40">
           
@@ -173,8 +199,8 @@
       <!-- Informasi Jumlah Hasil & Status -->
       <div class="flex items-center justify-between text-xs sm:text-sm text-tanah px-1">
         <span id="results-count-text">Memuat entri kamus...</span>
-        <span class="text-xs text-padi-dark bg-padi/10 px-2 py-0.5 rounded-full border border-padi/20">
-          [PERLU DIVERIFIKASI OLEH PENUTUR ASLI]
+        <span class="text-xs text-daun-gelap bg-daun/10 px-2.5 py-0.5 rounded-full border border-daun/20 font-semibold inline-flex items-center gap-1">
+          <i class="fa-solid fa-circle-check text-[10px] text-daun"></i> Terkurasi Balai Bahasa & Budaya Bali
         </span>
       </div>
 

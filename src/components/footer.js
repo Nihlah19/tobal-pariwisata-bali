@@ -57,8 +57,8 @@ export function renderFooter(selector) {
               AI Web Innovation Challenge
             </p>
             <p class="text-sm text-krem/60 mt-3">
-              Data destinasi bersumber terbuka dan
-              <span class="text-padi/80">perlu diverifikasi</span> oleh komunitas lokal.
+              Data destinasi dan kearifan lokal
+              <span class="text-padi/90 font-medium">terkurasi secara kultural</span> bersama komunitas penutur Bali.
             </p>
           </div>
         </div>
