@@ -40,11 +40,7 @@ if (currentUser) {
 
 // Cek notifikasi akses khusus
 const initialParams = new URLSearchParams(window.location.search);
-if (initialParams.get('msg') === 'need_admin') {
-  setTimeout(() => {
-    showAlert('Halaman tersebut khusus Super Admin. Silakan masuk dengan kredensial admin.', 'error');
-  }, 200);
-} else if (initialParams.get('msg') === 'auth_required') {
+if (initialParams.get('msg') === 'auth_required') {
   setTimeout(() => {
     showAlert('Silakan daftar akun baru terlebih dahulu untuk mengakses fitur petualangan dan AI Tobal.', 'info');
   }, 200);

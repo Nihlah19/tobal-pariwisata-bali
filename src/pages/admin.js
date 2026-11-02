@@ -90,12 +90,12 @@ function initAdminGate() {
       } else {
         sessionStorage.removeItem('tobal_admin_key');
         adminState.passkey = '';
-        window.location.href = '/src/pages/masuk.html?msg=need_admin&returnTo=' + encodeURIComponent('/src/pages/admin.html');
+        window.location.href = '/src/pages/masuk.html?returnTo=' + encodeURIComponent('/src/pages/admin.html');
       }
     });
   } else {
     // Pengunjung belum login sebagai admin -> arahkan ke pintu login utama
-    window.location.href = '/src/pages/masuk.html?msg=need_admin&returnTo=' + encodeURIComponent('/src/pages/admin.html');
+    window.location.href = '/src/pages/masuk.html?returnTo=' + encodeURIComponent('/src/pages/admin.html');
     return;
   }
 
