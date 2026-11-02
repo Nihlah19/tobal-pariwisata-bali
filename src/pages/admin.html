@@ -568,6 +568,56 @@
         </form>
       </div>
 
+      <!-- 3. OPENAI (CHATGPT) API CONFIGURATION -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-pasir space-y-6 shadow-xs">
+        <div class="flex items-center gap-3 border-b border-pasir/60 pb-4">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-tanah-gelap">Konfigurasi OpenAI (ChatGPT)</h3>
+            <p class="text-xs text-tanah/70">Gunakan kuota token OpenAI aktif Anda agar Chatbot Bli Kadek semakin cerdas, responsif, dan hemat kuota.</p>
+          </div>
+        </div>
+
+        <form id="form-openai-config" class="space-y-4 max-w-2xl">
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              OpenAI API Key
+            </label>
+            <div class="relative">
+              <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-tanah/40 text-xs"></i>
+              <input type="password" id="cfg-openai-key" required class="w-full pl-9 pr-4 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs font-mono text-tanah-gelap focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-hidden" placeholder="sk-proj-..." />
+            </div>
+            <p class="text-[11px] text-tanah/60 mt-1">Dapatkan key dari dashboard akun OpenAI Anda (platform.openai.com/api-keys).</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-tanah-gelap uppercase tracking-wider mb-1">
+              Model OpenAI yang Digunakan
+            </label>
+            <select id="cfg-openai-model" class="w-full px-3 py-2.5 bg-krem/30 rounded-xl border border-pasir text-xs text-tanah-gelap font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-hidden">
+              <option value="gpt-4o-mini">gpt-4o-mini (Sangat Cepat, Cerdas, dan Paling Hemat Token)</option>
+              <option value="gpt-4o">gpt-4o (Kemampuan Penalaran Budaya & Analisis Maksimal)</option>
+              <option value="gpt-3.5-turbo">gpt-3.5-turbo (Model Standar)</option>
+            </select>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="button" id="btn-test-openai" class="px-4 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition-colors flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-bolt text-xs"></i>
+              <span>Uji API Key OpenAI</span>
+            </button>
+            <button type="submit" id="btn-save-openai" class="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-floppy-disk text-xs"></i>
+              <span>Simpan Konfigurasi OpenAI</span>
+            </button>
+          </div>
+          <div id="test-openai-feedback" class="text-xs p-3 rounded-xl hidden"></div>
+        </form>
+      </div>
+
     </section>
 
   </main>

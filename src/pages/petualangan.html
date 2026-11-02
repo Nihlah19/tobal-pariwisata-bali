@@ -12,12 +12,12 @@
   <!-- Stylesheet Utama & Offline Fallback -->
   <link rel="stylesheet" href="/src/styles/main.css" />
   <style>
-    /* Jalur setapak bergelombang ala Duolingo */
+    /* Jalur setapak bergelombang ala Duolingo presisi di mobile & desktop */
     .path-connector {
       position: absolute;
-      left: 28px;
-      top: 50px;
-      bottom: -30px;
+      left: 18px;
+      top: 36px;
+      bottom: -24px;
       width: 4px;
       background: repeating-linear-gradient(
         to bottom,
@@ -29,7 +29,11 @@
       z-index: 0;
     }
     @media (min-width: 640px) {
-      .path-connector { left: 36px; }
+      .path-connector {
+        left: 26px;
+        top: 50px;
+        bottom: -30px;
+      }
     }
   </style>
 </head>
@@ -37,7 +41,7 @@
 
   <div id="navbar"></div>
 
-  <main class="flex-1 py-10 px-4 sm:px-6">
+  <main class="flex-1 py-6 sm:py-10 px-3 sm:px-6">
     <div class="max-w-4xl mx-auto">
       
       <!-- Area Header & Status Petualangan -->

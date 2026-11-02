@@ -24,20 +24,20 @@ let isSending = false;
 export function initChatbot() {
   if (document.getElementById('tobal-chat-launcher')) return;
 
-  // 1. Buat Tombol Launcher Mengambang
+  // 1. Buat Tombol Launcher Mengambang (Diangkat agar tidak tertutup nav Android & lega di atas musik)
   chatLauncherEl = document.createElement('div');
   chatLauncherEl.id = 'tobal-chat-launcher';
-  chatLauncherEl.className = 'fixed bottom-20 right-5 z-40 flex items-center group';
+  chatLauncherEl.className = 'fixed bottom-22 right-3.5 sm:bottom-25 sm:right-6 z-40 flex items-center group';
   chatLauncherEl.innerHTML = `
-    <button type="button" id="btn-open-tobal-chat" class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-daun hover:bg-daun/90 text-krem shadow-organik-lg border border-padi/40 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer">
-      <div class="w-6 h-6 rounded-full bg-white/20 p-0.5 overflow-hidden flex items-center justify-center shrink-0">
+    <button type="button" id="btn-open-tobal-chat" class="flex items-center gap-2 sm:gap-2.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-daun hover:bg-daun/90 text-krem shadow-organik-lg border border-padi/40 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer">
+      <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 p-0.5 overflow-hidden flex items-center justify-center shrink-0">
         <img src="/images/mascot-barong-head.png" alt="Bara" class="w-full h-full object-contain" />
       </div>
-      <span class="relative flex h-2.5 w-2.5">
+      <span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-padi opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-padi"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-padi"></span>
       </span>
-      <span class="font-body text-xs font-bold tracking-wide">Tanya AI Budaya</span>
+      <span class="font-body text-[11px] sm:text-xs font-bold tracking-wide">Tanya AI Budaya</span>
     </button>
   `;
   document.body.appendChild(chatLauncherEl);

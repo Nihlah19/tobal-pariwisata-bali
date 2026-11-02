@@ -139,31 +139,31 @@ function renderTripHeader() {
   const progressPercent = Math.round((completedCount / totalCount) * 100);
 
   headerArea.innerHTML = `
-    <div class="card-organik !p-6 sm:!p-8 mb-6 bg-gradient-to-br from-white/95 to-pasir/20">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+    <div class="card-organik !p-4 sm:!p-8 mb-6 bg-gradient-to-br from-white/95 to-pasir/20">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="badge-daun">Paket Aktif</span>
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <span class="badge-daun text-[11px] py-0.5 px-2">Paket Aktif</span>
             <span class="text-xs text-tanah/60 font-body">Dibuat ${new Date(activeTrip.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
-          <h1 class="font-heading text-2xl sm:text-3xl font-bold text-tanah-gelap">
+          <h1 class="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-tanah-gelap leading-tight">
             Jalur Penjelajah Pulau Dewata
           </h1>
-          <p class="font-body text-sm text-tanah/70 mt-0.5">
+          <p class="font-body text-xs sm:text-sm text-tanah/70 mt-1 leading-relaxed">
             Selesaikan 3 destinasi dan 1 santapan khas untuk meraih Lencana Eksklusif!
           </p>
         </div>
         <div class="shrink-0 flex items-center gap-2">
-          <button id="btn-refresh-adventure" class="btn-sekunder text-xs sm:text-sm !py-2.5 !px-4">
+          <button id="btn-refresh-adventure" class="w-full sm:w-auto btn-sekunder text-xs sm:text-sm !py-2 sm:!py-2.5 !px-3.5 sm:!px-4 justify-center">
             <span id="btn-refresh-icon"></span>
-            Ganti Paket
+            <span>Ganti Paket</span>
           </button>
         </div>
       </div>
 
       <!-- Progress Section -->
-      <div class="mt-4 pt-4 border-t border-pasir/40">
-        <div class="flex justify-between items-center text-sm font-body mb-2">
+      <div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-pasir/40">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs sm:text-sm font-body mb-2 gap-1">
           <span class="font-semibold text-daun flex items-center gap-1.5">
             <span class="inline-block w-2.5 h-2.5 rounded-full ${completedCount === totalCount ? 'bg-daun' : 'bg-padi animate-pulse'}"></span>
             Progres Petualangan
@@ -208,13 +208,13 @@ function renderActiveTrip() {
   renderTripHeader();
 
   contentArea.innerHTML = `
-    <div class="relative py-4 pl-4 sm:pl-8">
+    <div class="relative py-2 sm:py-4 pl-0 sm:pl-2">
       
       <!-- Garis Jalur Setapak Terhubung -->
       <div class="path-connector"></div>
 
       <!-- Daftar 4 Destinasi / Checkpoint -->
-      <div class="space-y-10 relative z-10" id="checkpoints-list">
+      <div class="space-y-6 sm:space-y-10 relative z-10" id="checkpoints-list">
         ${tripItems.map((item, idx) => renderCheckpointCard(item, idx)).join('')}
       </div>
 
@@ -243,12 +243,12 @@ function renderCheckpointCard(item, index) {
 
   // Status tampilan node
   const nodeIcon = isCompleted
-    ? '<i class="fa-solid fa-check"></i>'
-    : (isKuliner ? '<i class="fa-solid fa-utensils text-base"></i>' : position);
+    ? '<i class="fa-solid fa-check text-xs sm:text-base"></i>'
+    : (isKuliner ? '<i class="fa-solid fa-utensils text-xs sm:text-sm"></i>' : position);
 
   const nodeColorClass = isCompleted
-    ? 'bg-daun text-krem border-daun ring-4 ring-daun/20 shadow-md'
-    : 'bg-white text-tanah-gelap border-2 border-lumut shadow-md';
+    ? 'bg-daun text-krem border-daun ring-3 sm:ring-4 ring-daun/20 shadow-sm'
+    : 'bg-white text-tanah-gelap border-2 border-lumut shadow-sm';
 
   const defaultImg = isKuliner
     ? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'
@@ -259,33 +259,33 @@ function renderCheckpointCard(item, index) {
   const relatedCulture = getRelatedCultureForPlaceSync(place);
 
   return `
-    <div class="flex items-start gap-4 sm:gap-6 animate-slide-up" style="animation-delay: ${index * 0.1}s">
+    <div class="flex items-start gap-2.5 sm:gap-5 animate-slide-up" style="animation-delay: ${index * 0.1}s">
       
       <!-- Node Checkpoint Bulat Ala Duolingo -->
-      <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-heading font-bold text-lg sm:text-xl shrink-0 transition-all duration-300 ${nodeColorClass}">
+      <div class="w-9 h-9 sm:w-13 sm:h-13 rounded-full flex items-center justify-center font-heading font-bold text-xs sm:text-lg shrink-0 transition-all duration-300 ${nodeColorClass} z-10 mt-1 sm:mt-0">
         ${nodeIcon}
       </div>
 
       <!-- Kartu Konten Destinasi -->
-      <div class="flex-1 card-organik !p-5 sm:!p-6 transition-all duration-300 ${isCompleted ? '!bg-white/60 border-daun/30' : 'hover:border-daun/50'}">
+      <div class="flex-1 min-w-0 card-organik !p-3.5 sm:!p-6 transition-all duration-300 ${isCompleted ? '!bg-white/60 border-daun/30' : 'hover:border-daun/50'} shadow-xs">
         
-        <div class="flex flex-col md:flex-row gap-5">
+        <div class="flex flex-col md:flex-row gap-3.5 sm:gap-5">
           <!-- Foto Destinasi -->
           <div class="md:w-5/12 shrink-0">
-            <div class="relative overflow-hidden rounded-2xl h-44 sm:h-48 w-full group">
+            <div class="relative overflow-hidden rounded-xl sm:rounded-2xl h-40 sm:h-48 w-full group">
               <img src="${place.image_url || defaultImg}"
                 alt="${place.name}"
                 loading="lazy"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 onerror="this.onerror=null; this.src='${defaultImg}';" />
               <div class="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
-                <span class="${isKuliner ? 'badge-padi' : 'badge-daun'} text-xs font-semibold shadow-sm">
+                <span class="${isKuliner ? 'badge-padi' : 'badge-daun'} text-[10px] sm:text-xs font-semibold shadow-xs">
                   ${isKuliner ? 'Kuliner Pilihan' : `Tujuan ${position}`}
                 </span>
-                ${!place.is_viral ? '<span class="badge-laut text-xs font-semibold shadow-sm">Hidden Gem</span>' : ''}
+                ${!place.is_viral ? '<span class="badge-laut text-[10px] sm:text-xs font-semibold shadow-xs">Hidden Gem</span>' : ''}
               </div>
               <div class="absolute bottom-2.5 right-2.5">
-                <span class="badge bg-tanah-gelap/80 backdrop-blur-sm text-krem text-xs">
+                <span class="badge bg-tanah-gelap/85 backdrop-blur-sm text-krem text-[10px] sm:text-xs">
                   ${place.region}
                 </span>
               </div>
@@ -293,53 +293,53 @@ function renderCheckpointCard(item, index) {
           </div>
 
           <!-- Keterangan Destinasi -->
-          <div class="flex-1 flex flex-col justify-between">
+          <div class="flex-1 min-w-0 flex flex-col justify-between">
             <div>
               <div class="flex items-start justify-between gap-2 mb-2">
                 <div>
-                  <h3 class="font-heading text-xl sm:text-2xl font-bold text-tanah-gelap leading-snug">
+                  <h3 class="font-heading text-base sm:text-xl md:text-2xl font-bold text-tanah-gelap leading-snug">
                     ${place.name}
                   </h3>
-                  <div class="flex items-center gap-2 mt-1">
-                    <span class="badge-tanah text-xs">${place.category}</span>
-                    <span class="text-xs text-tanah/70 font-body flex items-center gap-1">
+                  <div class="flex items-center gap-2 mt-1 flex-wrap">
+                    <span class="badge-tanah text-[10px] sm:text-xs">${place.category}</span>
+                    <span class="text-[11px] sm:text-xs text-tanah/70 font-body flex items-center gap-1">
                       <span>Anggaran:</span>
-                      <span class="inline-flex text-amber-600 gap-0.5">${'<i class="fa-solid fa-coins text-[10px]"></i>'.repeat(place.price_level || 1)}</span>
+                      <span class="inline-flex text-amber-600 gap-0.5">${'<i class="fa-solid fa-coins text-[9px]"></i>'.repeat(place.price_level || 1)}</span>
                     </span>
                   </div>
                 </div>
               </div>
 
-              <p class="font-body text-sm text-tanah/80 leading-relaxed mb-3">
+              <p class="font-body text-xs sm:text-sm text-tanah/80 leading-relaxed mb-3">
                 ${place.description || 'Destinasi autentik di Bali yang sarat keindahan dan nilai tradisi.'}
               </p>
 
               <!-- Catatan Kearifan Budaya -->
               ${place.cultural_note ? `
-                <div class="bg-pasir/40 rounded-2xl p-3 border border-pasir text-xs font-body text-tanah-gelap/90 mb-3 flex items-start gap-2.5">
+                <div class="bg-pasir/40 rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-pasir text-[11px] sm:text-xs font-body text-tanah-gelap/90 mb-2.5 sm:mb-3 flex items-start gap-2">
                   <span class="text-amber-600 shrink-0 mt-0.5"><i class="fa-solid fa-lightbulb"></i></span>
                   <div>
                     <strong class="font-semibold text-tanah">Kearifan Lokal:</strong>
-                    <span class="italic">${place.cultural_note}</span>
+                    <span class="italic ml-0.5">${place.cultural_note}</span>
                   </div>
                 </div>
               ` : ''}
 
               <!-- Kosakata Bahasa Bali Terkait Destinasi -->
-              <div class="bg-daun/5 rounded-2xl p-3 border border-daun/20 text-xs font-body text-tanah-gelap mb-3 flex items-start gap-2.5">
+              <div class="bg-daun/5 rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-daun/20 text-[11px] sm:text-xs font-body text-tanah-gelap mb-2.5 sm:mb-3 flex items-start gap-2">
                 <span class="text-daun shrink-0 mt-0.5"><i class="fa-solid fa-book-open"></i></span>
-                <div class="flex-1">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <strong class="font-heading text-sm font-bold text-daun-gelap">${relatedWord.kata}</strong>
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold border ${tingkatStyle.badgeClass}">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <strong class="font-heading text-xs sm:text-sm font-bold text-daun-gelap">${relatedWord.kata}</strong>
+                    <span class="px-1.5 py-0.2 rounded-full text-[9px] sm:text-[10px] font-semibold border ${tingkatStyle.badgeClass}">
                       ${tingkatStyle.short}
                     </span>
-                    <span class="text-[10px] font-mono text-tanah/60">${relatedWord.kelas_kata}</span>
+                    <span class="text-[9px] sm:text-[10px] font-mono text-tanah/60">${relatedWord.kelas_kata}</span>
                   </div>
-                  <p class="text-tanah text-xs mt-0.5 leading-snug">
+                  <p class="text-tanah text-[11px] sm:text-xs mt-0.5 leading-snug">
                     ${relatedWord.arti_indonesia}
                   </p>
-                  <a href="/src/pages/kamus.html?kata=${encodeURIComponent(relatedWord.kata)}" class="inline-flex items-center gap-1 text-[11px] font-semibold text-daun hover:text-daun-gelap hover:underline mt-1">
+                  <a href="/src/pages/kamus.html?kata=${encodeURIComponent(relatedWord.kata)}" class="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-daun hover:text-daun-gelap hover:underline mt-1">
                     Buka di Kamus Bahasa Bali →
                   </a>
                 </div>
@@ -347,7 +347,7 @@ function renderCheckpointCard(item, index) {
 
               <!-- Tautan Kenali Budayanya (Ensiklopedia Budaya) -->
               ${relatedCulture ? `
-                <div class="bg-amber-50/70 rounded-2xl p-3 border border-amber-200/60 text-xs font-body text-amber-950 mb-3 flex items-center justify-between gap-2">
+                <div class="bg-amber-50/70 rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-amber-200/60 text-[11px] sm:text-xs font-body text-amber-950 mb-3 flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 truncate">
                     <span class="text-amber-800 shrink-0"><i class="fa-solid fa-landmark"></i></span>
                     <span class="truncate">
@@ -368,23 +368,23 @@ function renderCheckpointCard(item, index) {
             </div>
 
             <!-- Bagian Aksi / Status Selesai -->
-            <div class="pt-3 border-t border-pasir/40 flex items-center justify-between">
+            <div class="pt-3 border-t border-pasir/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
               <div>
                 ${isCompleted
-                  ? `<span class="inline-flex items-center gap-1.5 text-sm font-semibold text-daun">
-                       <span>✓</span> Selesai Dijelajahi
+                  ? `<span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-daun">
+                       <i class="fa-solid fa-check text-xs"></i> Selesai Dijelajahi
                      </span>`
-                  : `<span class="text-xs text-tanah/60 font-body">Kunjungi & catat ulasan Anda</span>`
+                  : `<span class="text-[11px] sm:text-xs text-tanah/60 font-body">Kunjungi & catat ulasan Anda</span>`
                 }
               </div>
 
               ${!isCompleted ? `
                 <button id="btn-finish-${item.id}"
-                  class="btn-primer text-xs sm:text-sm !py-2.5 !px-5 shadow-sm">
+                  class="w-full sm:w-auto btn-primer text-xs sm:text-sm !py-2 sm:!py-2.5 !px-5 shadow-xs justify-center cursor-pointer">
                   Selesai Jelajah
                 </button>
               ` : `
-                <span class="text-xs text-tanah/50 font-body">
+                <span class="text-[11px] sm:text-xs text-tanah/50 font-body">
                   ${item.completed_at ? new Date(item.completed_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : ''}
                 </span>
               `}

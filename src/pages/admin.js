@@ -187,6 +187,9 @@ async function loadConfig() {
     const modelSelect = document.getElementById('cfg-gemini-model');
     if (modelSelect) modelSelect.value = json.config.gemini_model || 'gemini-2.5-flash';
 
+    const openAiSelect = document.getElementById('cfg-openai-model');
+    if (openAiSelect) openAiSelect.value = json.config.openai_model || 'gpt-4o-mini';
+
     // Stat counts
     document.getElementById('stat-places-count').textContent = json.config.stats?.places || 1328;
     document.getElementById('stat-culture-count').textContent = json.config.stats?.culture_articles || adminState.articles.length;
@@ -1117,6 +1120,77 @@ function setupSettingsHandlers() {
       if (!res.ok) throw new Error(json.error || 'Gagal menyimpan');
 
       showToast(json.message || 'Konfigurasi Gemini AI berhasil disimpan!', 'success');
+      await loadConfig();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  });
+
+  // OPENAI CONFIG
+  const btnTestOpenAi = document.getElementById('btn-test-openai');
+  const formOpenAi = document.getElementById('form-openai-config');
+  const openAiFeedback = document.getElementById('test-openai-feedback');
+
+  btnTestOpenAi?.addEventListener('click', async () => {
+    const apiKey = document.getElementById('cfg-openai-key').value.trim();
+    const model = document.getElementById('cfg-openai-model').value;
+    if (!apiKey) {
+      showToast('Masukkan API Key OpenAI untuk menguji!', 'warning');
+      return;
+    }
+
+    btnTestOpenAi.disabled = true;
+    btnTestOpenAi.innerHTML = '<span class="inline-block animate-spin mr-1">◌</span> Menguji OpenAI...';
+    openAiFeedback.classList.remove('hidden', 'bg-emerald-50', 'bg-red-50');
+
+    try {
+      const res = await fetch('/api/admin-config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': adminState.passkey
+        },
+        body: JSON.stringify({ action: 'test_openai', apiKey, model })
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.success) throw new Error(json.error || 'Pengujian OpenAI gagal');
+
+      openAiFeedback.className = 'text-xs p-3 rounded-xl bg-emerald-50 text-emerald-900 border border-emerald-200';
+      openAiFeedback.innerHTML = `
+        <span class="text-emerald-600 font-bold mr-1.5">✓</span>
+        <strong>${json.message}</strong> Respon Model: <em>"${json.sampleReply}"</em>
+      `;
+      showToast('API Key OpenAI valid dan siap digunakan!', 'success');
+    } catch (err) {
+      openAiFeedback.className = 'text-xs p-3 rounded-xl bg-red-50 text-red-800 border border-red-200';
+      openAiFeedback.innerHTML = `<span class="text-red-600 font-bold mr-1.5">✕</span> ${err.message}`;
+      showToast(err.message, 'error');
+    } finally {
+      btnTestOpenAi.disabled = false;
+      btnTestOpenAi.innerHTML = '<i class="fa-solid fa-bolt text-xs"></i> Uji API Key OpenAI';
+    }
+  });
+
+  formOpenAi?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const apiKey = document.getElementById('cfg-openai-key').value.trim();
+    const model = document.getElementById('cfg-openai-model').value;
+
+    try {
+      const res = await fetch('/api/admin-config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': adminState.passkey
+        },
+        body: JSON.stringify({ action: 'save_openai', apiKey, model })
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Gagal menyimpan');
+
+      showToast(json.message || 'Konfigurasi OpenAI berhasil disimpan!', 'success');
       await loadConfig();
     } catch (err) {
       showToast(err.message, 'error');

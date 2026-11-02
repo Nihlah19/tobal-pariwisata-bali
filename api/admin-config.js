@@ -153,6 +153,9 @@ export default async function handler(req, res) {
       } catch {}
     }
 
+    const openAiKey = process.env.OPENAI_API_KEY || '';
+    const openAiModel = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+
     return res.status(200).json({
       success: true,
       config: {
@@ -162,6 +165,9 @@ export default async function handler(req, res) {
         gemini_api_key_configured: Boolean(geminiKey),
         gemini_api_key_masked: maskSecret(geminiKey),
         gemini_model: geminiModel,
+        openai_api_key_configured: Boolean(openAiKey),
+        openai_api_key_masked: maskSecret(openAiKey),
+        openai_model: openAiModel,
         stats
       }
     });
@@ -292,6 +298,67 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: true,
         message: 'Konfigurasi Gemini AI API berhasil diperbarui dan disimpan!'
+      });
+    }
+
+    // 5. UJI OPENAI API KEY (GPT-4o-mini / GPT-4o)
+    if (action === 'test_openai') {
+      const { apiKey, model = 'gpt-4o-mini' } = body;
+      const keyToUse = apiKey || process.env.OPENAI_API_KEY;
+
+      if (!keyToUse) {
+        return res.status(400).json({ error: 'API Key OpenAI wajib diisi untuk pengujian.' });
+      }
+
+      try {
+        const aiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${keyToUse}`
+          },
+          body: JSON.stringify({
+            model: model || 'gpt-4o-mini',
+            messages: [{ role: 'user', content: 'Berikan salam singkat khas Bali dalam 1 kalimat: Om Swastyastu.' }],
+            max_tokens: 40,
+            temperature: 0.5
+          })
+        });
+
+        const aiJson = await aiRes.json();
+        if (!aiRes.ok) {
+          throw new Error(aiJson.error?.message || `HTTP ${aiRes.status}`);
+        }
+
+        const reply = aiJson.choices?.[0]?.message?.content?.trim() || 'Koneksi OpenAI sukses!';
+        return res.status(200).json({
+          success: true,
+          message: `Koneksi OpenAI (${model}) berhasil! Model merespons dengan normal.`,
+          sampleReply: reply
+        });
+      } catch (err) {
+        return res.status(400).json({
+          success: false,
+          error: `Pengujian OpenAI API gagal: ${err.message}`
+        });
+      }
+    }
+
+    // 6. SIMPAN OPENAI CONFIG
+    if (action === 'save_openai') {
+      const { apiKey, model = 'gpt-4o-mini' } = body;
+      if (!apiKey) {
+        return res.status(400).json({ error: 'API Key OpenAI tidak boleh kosong.' });
+      }
+
+      updateEnvFile({
+        OPENAI_API_KEY: apiKey.trim(),
+        OPENAI_MODEL: model.trim()
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Konfigurasi OpenAI (ChatGPT) berhasil diperbarui dan disimpan!'
       });
     }
 

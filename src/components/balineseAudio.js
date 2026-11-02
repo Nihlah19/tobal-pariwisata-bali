@@ -174,7 +174,7 @@ class BalineseAudioManager {
 
     const container = document.createElement('div');
     container.id = 'tobal-ambient-player';
-    container.className = 'fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none';
+    container.className = 'fixed bottom-7 right-3.5 sm:bottom-9 sm:right-6 z-40 select-none';
 
     const currentTrack = this.getCurrentTrack();
 

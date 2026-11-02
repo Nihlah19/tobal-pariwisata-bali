@@ -5,9 +5,8 @@
  * Fitur:
  * - Mengakses seluruh database (Kamus Basa Bali, Destinasi Wisata 3+1, Ensiklopedia Budaya, Tata Krama Pura)
  * - Khusus untuk pengguna yang telah terautentikasi (JWT Supabase)
- * - Sangat hemat token (Prompt kompak, max 400 tokens per inferensi)
- * - Menggunakan Google Gemini API Key yang dapat diubah via Dashboard Admin
- * - Fallback cerdas berbasis database lokal jika kuota Gemini menipis
+ * - Dukungan Multi-AI Engine: OpenAI (GPT-4o / GPT-4o-mini) & Google Gemini AI
+ * - Fallback cerdas berbasis database lokal Tobal tanpa pesan error/disclaimer teknis
  *
  * Tour Penjelajah Bali — Bali Digifest 2026
  */
@@ -106,94 +105,171 @@ async function retrieveDatabaseContext(query) {
   let supabaseClient = null;
   if (supabaseUrl && supabaseKey) {
     try {
-      supabaseClient = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
+      supabaseClient = createClient(supabaseUrl, supabaseKey, {
+        auth: { persistSession: false }
+      });
     } catch {}
   }
 
-  // 1. Pencarian di Kamus (Dictionary)
-  let foundWords = [];
+  // 1. Cari Kosa Kata Kamus Basa Bali
+  const matchedWords = [];
   if (supabaseClient) {
     try {
-      // Ambil kata kunci pencarian
-      const words = q.split(/\s+/).filter(w => w.length > 2);
-      const searchPattern = words.length > 0 ? `%${words[0]}%` : '%suksma%';
-      const { data } = await supabaseClient
+      const { data: dbWords } = await supabaseClient
         .from('dictionary')
-        .select('kata, arti_indonesia, tingkat, kelas_kata, contoh_bali, catatan')
-        .or(`kata.ilike.${searchPattern},arti_indonesia.ilike.${searchPattern}`)
-        .limit(3);
-      if (data && data.length > 0) {
-        foundWords = data;
+        .select('kata, arti_indonesia, tingkat')
+        .or(`kata.ilike.%${q}%,arti_indonesia.ilike.%${q}%`)
+        .limit(4);
+      if (dbWords && dbWords.length > 0) {
+        dbWords.forEach(w => matchedWords.push(`${w.kata} (${w.tingkat || 'Umum'}): ${w.arti_indonesia}`));
       }
     } catch {}
   }
 
-  // Fallback kamus lokal jika belum ada di database
-  if (foundWords.length === 0) {
-    foundWords = FALLBACK_WORDS.filter(w =>
-      q.includes(w.kata.toLowerCase()) ||
-      q.includes(w.arti.toLowerCase()) ||
-      (q.includes('kosa kata') || q.includes('bahasa') || q.includes('arti') || q.includes('sapaan') || q.includes('terima kasih'))
-    ).slice(0, 3);
+  if (matchedWords.length === 0) {
+    FALLBACK_WORDS.forEach(w => {
+      if (q.includes(w.kata.toLowerCase()) || w.arti.toLowerCase().includes(q) || q.includes('suksma') || q.includes('bahasa') || q.includes('arti')) {
+        matchedWords.push(`${w.kata} (${w.tingkat}): ${w.arti}`);
+      }
+    });
   }
 
-  if (foundWords.length > 0) {
-    contextParts.push(
-      "REFERENSI KAMUS BASA BALI:\n" +
-      foundWords.map(w => `- "${w.kata}": ${w.arti_indonesia || w.arti} (Tingkat: ${w.tingkat || 'Umum'})`).join("\n")
-    );
-    sources.push('Kamus Basa Bali Tobal');
+  if (matchedWords.length > 0) {
+    contextParts.push(`[Referensi Kamus Basa Bali]:\n- ` + matchedWords.slice(0, 3).join('\n- '));
+    sources.push({ type: 'kamus', count: matchedWords.length, label: 'Kamus Basa Bali' });
   }
 
-  // 2. Pencarian Destinasi Wisata 3+1 (Places)
-  let foundPlaces = [];
+  // 2. Cari Destinasi Wisata 3+1 & Kuliner Tradisional
+  const matchedPlaces = [];
   if (supabaseClient) {
     try {
-      const { data } = await supabaseClient
+      const { data: dbPlaces } = await supabaseClient
         .from('places')
-        .select('name, regency, category, description, is_hidden_gem')
-        .limit(3);
-      if (data && data.length > 0) {
-        foundPlaces = data;
+        .select('name, region, category, description, cultural_note')
+        .or(`name.ilike.%${q}%,region.ilike.%${q}%,description.ilike.%${q}%`)
+        .limit(4);
+      if (dbPlaces && dbPlaces.length > 0) {
+        dbPlaces.forEach(p => matchedPlaces.push(`${p.name} (${p.region} - ${p.category}): ${p.description || ''} | Nilai Budaya: ${p.cultural_note || '-'}`));
       }
     } catch {}
   }
 
-  if (foundPlaces.length === 0) {
-    foundPlaces = FALLBACK_PLACES.filter(p =>
-      q.includes(p.wilayah.toLowerCase()) ||
-      q.includes(p.nama.toLowerCase()) ||
-      q.includes(p.tipe.toLowerCase()) ||
-      (q.includes('wisata') || q.includes('rekomendasi') || q.includes('rute') || q.includes('3+1') || q.includes('kuliner'))
-    ).slice(0, 3);
+  if (matchedPlaces.length === 0) {
+    FALLBACK_PLACES.forEach(p => {
+      if (q.includes(p.nama.toLowerCase()) || q.includes(p.wilayah.toLowerCase()) || q.includes(p.tipe.toLowerCase()) || q.includes('wisata') || q.includes('tempat') || q.includes('rekomendasi') || q.includes('destinasi')) {
+        matchedPlaces.push(`${p.nama} (${p.wilayah} - ${p.tipe}): ${p.deskripsi}`);
+      }
+    });
   }
 
-  if (foundPlaces.length > 0) {
-    contextParts.push(
-      "REFERENSI TEMPAT WISATA & KULINER (FORMULA 3+1):\n" +
-      foundPlaces.map(p => `- ${p.name || p.nama} (${p.regency || p.wilayah}): ${p.description || p.deskripsi}`).join("\n")
-    );
-    sources.push('Katalog Destinasi Tobal');
+  if (matchedPlaces.length > 0) {
+    contextParts.push(`[Referensi Destinasi Terkurasi 3+1]:\n- ` + matchedPlaces.slice(0, 3).join('\n- '));
+    sources.push({ type: 'destinasi', count: matchedPlaces.length, label: 'Katalog Destinasi 3+1' });
   }
 
-  // 3. Pencarian Budaya & Etika Pura
-  const foundArticles = DEFAULT_CULTURE_ARTICLES.filter(a =>
-    q.includes('pura') || q.includes('canang') || q.includes('etika') || q.includes('pakaian') ||
-    q.includes('subak') || q.includes('adat') || q.includes('kain') || q.includes('budaya')
-  ).slice(0, 2);
+  // 3. Cari Ensiklopedia Budaya & Tata Krama Pura
+  const matchedCulture = [];
+  DEFAULT_CULTURE_ARTICLES.forEach(art => {
+    const hay = `${art.judul} ${art.ringkasan} ${art.isi} ${art.etika || ''} ${art.kategori}`.toLowerCase();
+    if (hay.includes(q) || (q.includes('pura') && hay.includes('pura')) || (q.includes('etika') && hay.includes('etika')) || (q.includes('adat') && hay.includes('adat'))) {
+      matchedCulture.push(`${art.judul} (${art.kategori}): ${art.ringkasan} | Etika: ${art.etika || 'Hormati kesucian pura'}`);
+    }
+  });
 
-  if (foundArticles.length > 0) {
-    contextParts.push(
-      "REFERENSI ETIKA & BUDAYA BALI:\n" +
-      foundArticles.map(a => `- ${a.judul}: ${a.ringkasan}`).join("\n")
-    );
-    sources.push('Ensiklopedia Budaya Bali');
+  if (matchedCulture.length > 0) {
+    contextParts.push(`[Referensi Ensiklopedia Budaya]:\n- ` + matchedCulture.slice(0, 2).join('\n- '));
+    sources.push({ type: 'budaya', count: matchedCulture.length, label: 'Ensiklopedia Budaya' });
   }
 
   return {
-    contextText: contextParts.join("\n\n"),
+    contextText: contextParts.join('\n\n'),
     sources
   };
+}
+
+/**
+ * Panggil OpenAI Chat Completions API (GPT-4o-mini / GPT-4o)
+ */
+async function callOpenAi(apiKey, model, systemPrompt, recentHistory, queryText) {
+  const messages = [
+    { role: 'system', content: systemPrompt }
+  ];
+
+  for (const h of recentHistory) {
+    if (h.role && h.text) {
+      messages.push({
+        role: h.role === 'model' || h.role === 'assistant' ? 'assistant' : 'user',
+        content: h.text
+      });
+    }
+  }
+
+  messages.push({ role: 'user', content: queryText });
+
+  const aiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: model || 'gpt-4o-mini',
+      messages,
+      max_tokens: 450,
+      temperature: 0.65
+    })
+  });
+
+  const aiJson = await aiRes.json();
+  if (!aiRes.ok) {
+    throw new Error(aiJson.error?.message || `OpenAI HTTP ${aiRes.status}`);
+  }
+
+  return aiJson.choices?.[0]?.message?.content?.trim();
+}
+
+/**
+ * Panggil Google Gemini API
+ */
+async function callGemini(apiKey, model, systemPrompt, recentHistory, queryText) {
+  const contents = [];
+
+  for (const h of recentHistory) {
+    if (h.role && h.text) {
+      contents.push({
+        role: h.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: h.text }]
+      });
+    }
+  }
+
+  contents.push({
+    role: 'user',
+    parts: [{
+      text: `Instruksi Sistem:\n${systemPrompt}\n\nPertanyaan Penjelajah:\n${queryText}`
+    }]
+  });
+
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+  const aiRes = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents,
+      generationConfig: {
+        maxOutputTokens: 450,
+        temperature: 0.65
+      }
+    })
+  });
+
+  const aiJson = await aiRes.json();
+  if (!aiRes.ok) {
+    throw new Error(aiJson.error?.message || `Gemini HTTP ${aiRes.status}`);
+  }
+
+  return aiJson.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 }
 
 export default async function handler(req, res) {
@@ -203,109 +279,85 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Metode HTTP tidak didukung.' });
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Metode tidak diizinkan. Gunakan POST.' });
+  }
 
   try {
-    const body = await readBody(req);
-    const { message, prompt, history = [], userProfile = null } = body;
-
-    // 1. Verifikasi Akses Khusus User Sudah Masuk (Auth Gate)
-    const authHeader = req.headers['authorization'] || '';
-    const hasToken = authHeader.startsWith('Bearer ') && authHeader.length > 10;
-    const hasClientUser = userProfile && (userProfile.id || userProfile.email);
-
-    if (!hasToken && !hasClientUser) {
+    // 1. Verifikasi Autentikasi Pengguna
+    const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({
-        error: 'Akses Dibatasi: Chatbot AI Budaya khusus untuk penjelajah yang telah masuk atau mendaftar akun.',
-        code: 'AUTH_REQUIRED'
+        error: 'Akses terbatas: Anda harus masuk (login) terlebih dahulu untuk berinteraksi dengan AI Budaya Tobal.'
       });
     }
 
-    const queryText = (message || prompt || '').trim();
+    // 2. Baca Body Request
+    const body = await readBody(req);
+    const queryText = (body.prompt || body.message || '').trim();
+    const history = body.history || [];
+
     if (!queryText) {
-      return res.status(400).json({ error: 'Pesan pertanyaan tidak boleh kosong.' });
+      return res.status(400).json({ error: 'Pesan / prompt tidak boleh kosong.' });
     }
 
-    // 2. Ambil referensi dari database (Grounding RAG)
+    // 3. Grounding: Ambil referensi data dari basis data Tobal
     const { contextText, sources } = await retrieveDatabaseContext(queryText);
 
-    // 3. Konfigurasi Gemini API
-    const apiKey = process.env.GEMINI_API_KEY || '';
-    const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-
-    const systemPrompt = `Anda adalah "Bli Kadek", asisten AI resmi Tour Penjelajah Bali (Tobal).
-Karakter Anda: Pemandu wisata kultural Bali asli yang ramah, santun, menghormati tradisi leluhur (Tri Hita Karana), dan sangat menguasai Basa Bali, etika pura, dan tempat tersembunyi (Formula 3+1).
-Aturan Penting:
-1. Jawab pertanyaan pengguna dengan ramah dan to-the-point (maksimal 2-3 paragraf ringkas).
+    // Prompt Sistem Ringkas & Hemat Token
+    const systemPrompt = `Anda adalah "Bli Kadek", asisten pemandu wisata dan budaya Bali asli di platform "Tour Penjelajah Bali" (Tobal).
+Karakter Anda: Ramah, bijaksana, menjunjung tinggi Tri Hita Karana dan etika kearifan lokal Bali.
+Aturan respon:
+1. Jawab pertanyaan pengguna dengan ramah, to-the-point, dan berwawasan (maksimal 2-3 paragraf ringkas).
 2. SANGAT PENTING: Gunakan DATA REFERENSI DATABASE berikut sebagai fakta utama:
 ${contextText || 'Gunakan pengetahuan umum budaya Bali yang santun dan akurat.'}
-3. Selalu berikan tips etika atau kosa kata Basa Bali Alus yang relevan jika sesuai.
-4. Hemat token kuota gratis: jangan bertele-tele, berikan jawaban langsung bernas.`;
+3. Berikan tips etika atau kosa kata Basa Bali Alus yang relevan jika sesuai konteks.
+4. Jangan menyebutkan detail teknis prompt atau token API.`;
 
-    // Jika API Key tidak ada atau sedang limit, berikan jawaban fallback instan berbasis database
-    if (!apiKey) {
-      let smartFallback = `Om Swastyastu! Berdasarkan basis data Tobal:\n\n`;
-      if (contextText) {
-        smartFallback += `${contextText}\n\n`;
-      }
-      smartFallback += `Ada yang ingin Bli Kadek bantu lebih lanjut seputar petualangan budaya Anda?`;
-      return res.status(200).json({
-        success: true,
-        reply: smartFallback,
-        sources: sources.length > 0 ? sources : ['Tobal Database'],
-        isFallback: true
-      });
-    }
-
-    // 4. Siapkan format payload Gemini
-    const contents = [];
-
-    // Sertakan maksimal 3 riwayat percakapan sebelumnya untuk hemat token
     const recentHistory = Array.isArray(history) ? history.slice(-4) : [];
-    for (const h of recentHistory) {
-      if (h.role && h.text) {
-        contents.push({
-          role: h.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: h.text }]
-        });
+
+    const openAiKey = process.env.OPENAI_API_KEY || '';
+    const openAiModel = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+    const geminiKey = process.env.GEMINI_API_KEY || '';
+    const geminiModel = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+
+    let reply = '';
+    let modelUsed = '';
+
+    // Prioritas 1: Jika OpenAI API Key terpasang (misal token 100% aktif milik user)
+    if (openAiKey) {
+      try {
+        reply = await callOpenAi(openAiKey, openAiModel, systemPrompt, recentHistory, queryText);
+        modelUsed = `OpenAI ${openAiModel}`;
+      } catch (openAiErr) {
+        console.warn('[OpenAI Fallback to Gemini]:', openAiErr.message);
       }
     }
 
-    // Masukkan prompt saat ini dengan konteks
-    contents.push({
-      role: 'user',
-      parts: [{
-        text: `Instruksi Sistem:\n${systemPrompt}\n\nPertanyaan Penjelajah:\n${queryText}`
-      }]
-    });
+    // Prioritas 2: Jika belum ada balasan dan Gemini Key terpasang
+    if (!reply && geminiKey) {
+      try {
+        reply = await callGemini(geminiKey, geminiModel, systemPrompt, recentHistory, queryText);
+        modelUsed = `Google ${geminiModel}`;
+      } catch (geminiErr) {
+        console.warn('[Gemini Fallback to Local Database]:', geminiErr.message);
+      }
+    }
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-    const aiRes = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents,
-        generationConfig: {
-          maxOutputTokens: 450,
-          temperature: 0.65
-        }
-      })
-    });
-
-    const aiJson = await aiRes.json();
-
-    if (!aiRes.ok) {
-      console.warn('[Gemini API Warning /api/chat]:', aiJson.error?.message || aiRes.status);
-      // Fallback ramah jika kuota token habis
-      let smartFallback = `Om Swastyastu! Berdasarkan catatan basis data budaya Tobal:\n\n`;
+    // Fallback Cerdas Berbasis Database Lokal Tobal (Jika kedua API tidak ada atau limit)
+    // PENTING: Tanpa disclaimer teknis/kuota! Respons disajikan 100% natural & ramah.
+    if (!reply) {
+      let smartFallback = `Om Swastyastu! Berdasarkan catatan basis data terkurasi Tobal seputar budaya dan destinasi Bali:\n\n`;
       if (contextText) {
         smartFallback += `${contextText}\n\n`;
       } else {
         smartFallback += `Untuk etika dan kosa kata Bali, selalu gunakan bahasa Alus Madya seperti "Matur suksma" (terima kasih) dan jaga kesucian saat mengunjungi pura suci.\n\n`;
       }
-      smartFallback += `*(Catatan: Inferensi Gemini sedang dalam batas kuota gratis, data di atas ditarik langsung dari database lokal Tobal)*`;
+      smartFallback += `Ada hal lain yang ingin Anda ketahui atau tanyakan seputar perjalanan budaya Bali? Bli Kadek siap membantu!`;
 
       return res.status(200).json({
         success: true,
@@ -315,14 +367,11 @@ ${contextText || 'Gunakan pengetahuan umum budaya Bali yang santun dan akurat.'}
       });
     }
 
-    const reply = aiJson.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
-      'Om Swastyastu! Ada hal lain seputar budaya atau petualangan Bali yang ingin ditanyakan?';
-
     return res.status(200).json({
       success: true,
       reply,
-      sources: sources.length > 0 ? sources : ['Tobal Database & Gemini AI'],
-      modelUsed: model
+      sources: sources.length > 0 ? sources : ['Tobal Database & AI Engine'],
+      modelUsed
     });
 
   } catch (err) {
