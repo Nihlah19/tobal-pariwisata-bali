@@ -124,3 +124,63 @@ export async function signOutUser() {
   if (error) throw error;
   window.location.href = '/';
 }
+
+/**
+ * Perbarui profil penjelajah (nama, avatar, bio, wilayah favorit).
+ */
+export async function updateUserProfile({ fullName, avatarUrl, bio, preferredRegion, interests }) {
+  if (!isSupabaseConfigured) {
+    // Offline / Demo Local Fallback
+    const localUser = JSON.parse(localStorage.getItem('tobal_demo_user') || '{}');
+    const updated = {
+      ...localUser,
+      user_metadata: {
+        ...(localUser.user_metadata || {}),
+        full_name: fullName || localUser.user_metadata?.full_name,
+        display_name: fullName || localUser.user_metadata?.display_name,
+        avatar_url: avatarUrl || localUser.user_metadata?.avatar_url,
+        bio: bio !== undefined ? bio : localUser.user_metadata?.bio,
+        preferred_region: preferredRegion || localUser.user_metadata?.preferred_region,
+        interests: interests || localUser.user_metadata?.interests
+      }
+    };
+    localStorage.setItem('tobal_demo_user', JSON.stringify(updated));
+    return { data: { user: updated }, error: null };
+  }
+
+  // 1. Update Supabase Auth User Metadata
+  const updateData = {};
+  if (fullName) {
+    updateData.full_name = fullName;
+    updateData.display_name = fullName;
+  }
+  if (avatarUrl) updateData.avatar_url = avatarUrl;
+  if (bio !== undefined) updateData.bio = bio;
+  if (preferredRegion) updateData.preferred_region = preferredRegion;
+  if (interests) updateData.interests = interests;
+
+  const { data, error } = await supabase.auth.updateUser({
+    data: updateData
+  });
+
+  if (error) throw error;
+
+  // 2. Sinkronkan juga ke tabel profiles di Supabase jika ada
+  try {
+    if (data?.user?.id) {
+      await supabase.from('profiles').upsert({
+        id: data.user.id,
+        display_name: fullName,
+        avatar_url: avatarUrl,
+        bio: bio,
+        preferred_region: preferredRegion,
+        updated_at: new Date().toISOString()
+      });
+    }
+  } catch (err) {
+    console.warn('[Auth] Catatan sinkronisasi tabel profiles:', err.message);
+  }
+
+  return data;
+}
+

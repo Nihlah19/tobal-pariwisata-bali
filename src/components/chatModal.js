@@ -30,13 +30,13 @@ export function initChatbot() {
   chatLauncherEl.className = 'fixed bottom-20 right-5 z-40 flex items-center group';
   chatLauncherEl.innerHTML = `
     <button type="button" id="btn-open-tobal-chat" class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-daun hover:bg-daun/90 text-krem shadow-organik-lg border border-padi/40 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer">
-      <span class="relative flex h-3 w-3">
+      <div class="w-6 h-6 rounded-full bg-white/20 p-0.5 overflow-hidden flex items-center justify-center shrink-0">
+        <img src="/images/mascot-barong-head.png" alt="Bara" class="w-full h-full object-contain" />
+      </div>
+      <span class="relative flex h-2.5 w-2.5">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-padi opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-padi"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-padi"></span>
       </span>
-      <svg class="w-4 h-4 text-padi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
       <span class="font-body text-xs font-bold tracking-wide">Tanya AI Budaya</span>
     </button>
   `;
@@ -93,8 +93,8 @@ function showChatModal(user) {
       <!-- Header Chat -->
       <div class="px-5 py-4 bg-white border-b border-pasir flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-daun text-krem flex items-center justify-center font-heading font-bold text-sm shadow-xs border border-padi/40">
-            BK
+          <div class="w-10 h-10 rounded-2xl bg-daun/10 border border-daun/20 p-1 flex items-center justify-center overflow-hidden shrink-0 shadow-xs">
+            <img src="/images/mascot-barong-head.png" alt="Bli Kadek" class="w-full h-full object-contain filter drop-shadow-xs" />
           </div>
           <div>
             <div class="flex items-center gap-1.5">
@@ -320,8 +320,8 @@ function appendMessage(role, text, sources = []) {
     }
 
     msgDiv.innerHTML = `
-      <div class="w-7 h-7 rounded-full bg-daun text-krem flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 shadow-xs">
-        BK
+      <div class="w-7 h-7 rounded-full bg-daun/15 border border-daun/30 p-0.5 flex items-center justify-center shrink-0 mt-0.5 shadow-xs overflow-hidden">
+        <img src="/images/mascot-barong-head.png" alt="Bli Kadek" class="w-full h-full object-contain" />
       </div>
       <div class="p-3.5 rounded-2xl rounded-tl-xs bg-white border border-pasir text-tanah-gelap shadow-xs space-y-1.5 leading-relaxed text-xs">
         <div>${formattedHtml}</div>

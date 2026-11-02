@@ -8,6 +8,7 @@ import { initBalineseAudio } from './balineseAudio.js';
 import { setupProtectedLinks } from '../lib/authGate.js';
 import { registerServiceWorker } from '../lib/registerSW.js';
 import { initChatbot } from './chatModal.js';
+import { openProfileEditModal } from './profileEditModal.js';
 
 function getActivePage() {
   const path = window.location.pathname;
@@ -44,10 +45,10 @@ export function renderNavbar(selector) {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-18">
           
-          <!-- Logo Brand Elegan & Bersih -->
+          <!-- Logo Brand dengan Maskot Bara Asli -->
           <a href="/" class="flex items-center gap-2.5 group shrink-0" aria-label="Beranda Tobal">
-            <div class="w-9 h-9 rounded-xl bg-daun/10 text-daun border border-daun/20 flex items-center justify-center font-heading font-black text-sm transition-transform group-hover:scale-105">
-              <span>TB</span>
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-daun/15 via-krem to-amber-100 border border-daun/25 p-1 flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs overflow-hidden">
+              <img src="/images/mascot-barong-head.png" alt="Bara Si Barong" class="w-full h-full object-contain filter drop-shadow-xs" />
             </div>
             <div class="flex flex-col">
               <span class="font-heading font-bold text-lg text-tanah-gelap tracking-tight leading-none group-hover:text-daun transition-colors">
@@ -211,6 +212,7 @@ export function renderNavbar(selector) {
         const user = await getCurrentUser();
         if (user) {
           const profile = await getUserProfile(user.id);
+          const avatarUrl = profile?.avatar_url || user.user_metadata?.avatar_url || '/images/mascot-barong-head.png';
           const displayName = profile?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Penjelajah';
           const isAdmin = user.email === 'admin@tobal.id' || user.email?.startsWith('admin@') || profile?.role === 'admin' || sessionStorage.getItem('tobal_admin_key') === 'tobal2026';
 
@@ -218,12 +220,13 @@ export function renderNavbar(selector) {
           if (authSlot) {
             authSlot.innerHTML = `
               <div class="flex items-center gap-2">
-                <div class="hidden sm:flex items-center gap-2 bg-pasir/30 px-3 py-1.5 rounded-full border border-pasir/60 text-xs font-semibold text-tanah-gelap">
-                  <span class="w-5 h-5 rounded-full bg-daun text-white flex items-center justify-center text-[10px] font-bold">
-                    ${displayName.charAt(0).toUpperCase()}
-                  </span>
-                  <span class="max-w-[100px] truncate">${displayName}</span>
-                </div>
+                <button type="button" id="btn-open-profile-edit" class="flex items-center gap-2 bg-pasir/30 hover:bg-pasir/60 px-3 py-1.5 rounded-full border border-pasir/60 text-xs font-semibold text-tanah-gelap transition cursor-pointer" title="Sunting Profil Penjelajah">
+                  <div class="w-6 h-6 rounded-full overflow-hidden bg-white border border-pasir/80 flex items-center justify-center shrink-0">
+                    <img id="navbar-user-avatar-img" src="${avatarUrl}" alt="${displayName}" class="w-full h-full object-contain" />
+                  </div>
+                  <span id="navbar-user-name" class="max-w-[100px] truncate">${displayName}</span>
+                  <span class="text-[11px] text-daun">✎</span>
+                </button>
                 <button class="w-8 h-8 rounded-full bg-pasir/30 hover:bg-red-50 hover:text-red-600 text-tanah/70 border border-pasir/60 flex items-center justify-center transition cursor-pointer" id="btn-keluar" title="Keluar Akun">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -233,9 +236,33 @@ export function renderNavbar(selector) {
                 </button>
               </div>
             `;
+            document.getElementById('btn-open-profile-edit')?.addEventListener('click', () => {
+              openProfileEditModal();
+            });
             document.getElementById('btn-keluar')?.addEventListener('click', async () => {
               await signOutUser();
             });
+
+            // Mobile drawer profile edit
+            const mobileAdminSlot = document.getElementById('mobile-admin-slot');
+            if (mobileAdminSlot && !document.getElementById('mobile-btn-profile-edit')) {
+              const pBtn = document.createElement('button');
+              pBtn.type = 'button';
+              pBtn.id = 'mobile-btn-profile-edit';
+              pBtn.className = 'w-full mt-2 px-3.5 py-2.5 rounded-xl bg-daun/10 hover:bg-daun/20 text-daun border border-daun/30 text-xs font-semibold flex items-center justify-between cursor-pointer transition';
+              pBtn.innerHTML = `
+                <span class="flex items-center gap-2">
+                  <img src="${avatarUrl}" class="w-5 h-5 rounded-full object-contain" />
+                  <span>Sunting Profil (${displayName})</span>
+                </span>
+                <span>✎</span>
+              `;
+              pBtn.addEventListener('click', () => {
+                mobileMenu?.classList.add('hidden');
+                openProfileEditModal();
+              });
+              mobileAdminSlot.appendChild(pBtn);
+            }
           }
 
           if (isAdmin) {

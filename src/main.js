@@ -11,6 +11,7 @@ import { getWordOfTheDay, TINGKAT_STYLE_MAP, KELAS_KATA_MAP } from './lib/dictio
 import { showToast } from './components/ui.js';
 import { setupProtectedLinks } from './lib/authGate.js';
 import { registerServiceWorker } from './lib/registerSW.js';
+import { initReviewsSection } from './components/reviewsSection.js';
 
 // 1. Registrasi Service Worker untuk Caching Offline & Jaringan Lambat
 registerServiceWorker();
@@ -19,7 +20,10 @@ registerServiceWorker();
 renderNavbar('#navbar');
 renderFooter('#footer');
 
-// 3. Lindungi fitur pada landing page
+// 3. Inisialisasi Ulasan Terkurasi Penjelajah
+initReviewsSection('#ulasan-penjelajah-container');
+
+// 4. Lindungi fitur pada landing page
 setupProtectedLinks();
 
 // 3. Inisialisasi CTA tombol utama tanpa blocking

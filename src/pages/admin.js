@@ -17,8 +17,19 @@ const adminState = {
   config: null,
   articles: [],
   dictionary: [],
-  grammar: []
+  grammar: [],
+  loadedTabs: new Set(['overview']),
+  dictLimit: 35
 };
+
+// Helper debounce untuk menghindari freezing saat mengetik pencarian
+function debounce(fn, delay = 150) {
+  let timer = null;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
 
 // ==============================================================================
 // 1. TOAST NOTIFICATION HELPER
@@ -106,9 +117,9 @@ async function verifyPasskey(key) {
 }
 
 // ==============================================================================
-// 3. TAB CONTROLLER
+// 3. TAB CONTROLLER (LAZY LOADING UNTUK PERFORMA TINGGI)
 // ==============================================================================
-window.switchTab = function(tabName) {
+window.switchTab = async function(tabName) {
   adminState.activeTab = tabName;
 
   // Update button styles
@@ -125,10 +136,17 @@ window.switchTab = function(tabName) {
     activeSec.classList.remove('hidden');
   }
 
-  // Refresh data according to tab
-  if (tabName === 'culture') renderCultureList();
-  if (tabName === 'dictionary') renderDictionaryTable();
-  if (tabName === 'grammar') renderGrammarList();
+  // Lazy load data saat tab pertama kali dibuka
+  if (!adminState.loadedTabs.has(tabName)) {
+    adminState.loadedTabs.add(tabName);
+    if (tabName === 'culture') await loadCultureArticles();
+    if (tabName === 'dictionary') await loadDictionary();
+    if (tabName === 'grammar') await loadGrammar();
+  } else {
+    if (tabName === 'culture') renderCultureList();
+    if (tabName === 'dictionary') renderDictionaryTable();
+    if (tabName === 'grammar') renderGrammarList();
+  }
 };
 
 function setupTabButtons() {
@@ -417,7 +435,10 @@ function renderDictionaryTable() {
     return;
   }
 
-  tbody.innerHTML = filtered.map(w => `
+  const displayItems = filtered.slice(0, adminState.dictLimit);
+  const hasMore = filtered.length > adminState.dictLimit;
+
+  tbody.innerHTML = displayItems.map(w => `
     <tr class="hover:bg-krem/30 transition-colors">
       <td class="py-3 px-4 font-bold text-tanah-gelap text-sm">${w.kata}</td>
       <td class="py-3 px-4 text-tanah max-w-xs truncate">${w.arti_indonesia}</td>
@@ -430,14 +451,22 @@ function renderDictionaryTable() {
       <td class="py-3 px-4 text-tanah/70 italic text-[11px] max-w-xs truncate">${w.contoh_bali || '-'}</td>
       <td class="py-3 px-4 text-right whitespace-nowrap">
         <button class="btn-edit-word px-2 py-1 rounded-lg bg-pasir/40 hover:bg-amber-600 hover:text-white text-tanah font-semibold text-xs transition-colors cursor-pointer mr-1" data-id="${w.id}">
-          <i class="fa-solid fa-pen text-[10px]"></i> Edit
+          ✎ Edit
         </button>
         <button class="btn-delete-word px-2 py-1 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 font-semibold text-xs transition-colors cursor-pointer" data-id="${w.id}" data-kata="${w.kata}">
-          <i class="fa-solid fa-trash text-[10px]"></i>
+          ✕
         </button>
       </td>
     </tr>
-  `).join('');
+  `).join('') + (hasMore ? `
+    <tr>
+      <td colspan="6" class="py-4 text-center bg-pasir/20">
+        <button type="button" id="btn-load-more-dict" class="px-5 py-2 rounded-xl bg-daun text-white text-xs font-bold hover:bg-daun/90 shadow-xs cursor-pointer transition">
+          Muat Lebih Banyak (${displayItems.length} dari ${filtered.length} Kosakata)
+        </button>
+      </td>
+    </tr>
+  ` : '');
 
   // Event handlers
   tbody.querySelectorAll('.btn-edit-word').forEach(btn => {
@@ -445,6 +474,10 @@ function renderDictionaryTable() {
   });
   tbody.querySelectorAll('.btn-delete-word').forEach(btn => {
     btn.addEventListener('click', () => deleteWord(btn.dataset.id, btn.dataset.kata));
+  });
+  tbody.querySelector('#btn-load-more-dict')?.addEventListener('click', () => {
+    adminState.dictLimit += 40;
+    renderDictionaryTable();
   });
 }
 
@@ -966,12 +999,18 @@ Tuliskan sejarah, latar belakang, dan filosofi sakral dari warisan budaya ini se
 3. **Kesucian:** Hormati sesaji canang sari yang diletakkan di lantai.`;
   });
 
-  // Filter input listeners
-  document.getElementById('filter-culture-search')?.addEventListener('input', renderCultureList);
+  // Filter input listeners dengan debouncing
+  document.getElementById('filter-culture-search')?.addEventListener('input', debounce(renderCultureList, 150));
   document.getElementById('filter-culture-category')?.addEventListener('change', renderCultureList);
-  document.getElementById('filter-dict-search')?.addEventListener('input', renderDictionaryTable);
-  document.getElementById('filter-dict-level')?.addEventListener('change', renderDictionaryTable);
-  document.getElementById('filter-grammar-search')?.addEventListener('input', renderGrammarList);
+  document.getElementById('filter-dict-search')?.addEventListener('input', debounce(() => {
+    adminState.dictLimit = 35;
+    renderDictionaryTable();
+  }, 150));
+  document.getElementById('filter-dict-level')?.addEventListener('change', () => {
+    adminState.dictLimit = 35;
+    renderDictionaryTable();
+  });
+  document.getElementById('filter-grammar-search')?.addEventListener('input', debounce(renderGrammarList, 150));
   document.getElementById('filter-grammar-category')?.addEventListener('change', renderGrammarList);
 
   // Forms submit
@@ -981,15 +1020,17 @@ Tuliskan sejarah, latar belakang, dan filosofi sakral dari warisan budaya ini se
 }
 
 // ==============================================================================
-// 10. BOOTSTRAPPER
+// 10. BOOTSTRAPPER (STARTUP RINGAN & ASINKRON)
 // ==============================================================================
 async function loadAllData() {
-  await Promise.allSettled([
-    loadConfig(),
-    loadCultureArticles(),
-    loadDictionary(),
-    loadGrammar()
-  ]);
+  // Hanya memuat konfigurasi overview awal (0ms blocking)
+  await loadConfig();
+  // Pre-fetch artikel budaya di latar belakang setelah idle
+  setTimeout(() => {
+    if (!adminState.loadedTabs.has('culture')) {
+      loadCultureArticles().then(() => adminState.loadedTabs.add('culture'));
+    }
+  }, 350);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

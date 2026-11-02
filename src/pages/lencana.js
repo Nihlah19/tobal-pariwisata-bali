@@ -5,9 +5,10 @@
 import '../styles/main.css';
 import { renderNavbar } from '../components/navbar.js';
 import { renderFooter } from '../components/footer.js';
-import { requireAuth } from '../lib/auth.js';
+import { requireAuth, getUserProfile, getCurrentUser } from '../lib/auth.js';
 import { supabase } from '../lib/supabaseClient.js';
 import { progressBarHTML, skeletonCardsHTML } from '../components/ui.js';
+import { openProfileEditModal } from '../components/profileEditModal.js';
 
 // Lindungi halaman
 const session = await requireAuth();
@@ -39,6 +40,14 @@ async function loadBadges() {
   `;
 
   try {
+    const user = await getCurrentUser() || session.user;
+    const profile = await getUserProfile(userId);
+    const meta = user.user_metadata || {};
+    const displayName = profile?.display_name || meta.full_name || user.email?.split('@')[0] || 'Penjelajah Dewata';
+    const avatarUrl = profile?.avatar_url || meta.avatar_url || '/images/mascot-barong-head.png';
+    const bioText = profile?.bio || meta.bio || 'Penjelajah budaya dan pencinta alam asri Pulau Dewata.';
+    const prefRegion = profile?.preferred_region || meta.preferred_region || 'Buleleng (Bali Utara)';
+
     // 1. Ambil seluruh master data lencana
     const { data: allBadges, error: bErr } = await supabase
       .from('badges')
@@ -64,8 +73,33 @@ async function loadBadges() {
     const earnedCount = earnedMap.size;
     const progressPercent = Math.round((earnedCount / totalBadges) * 100);
 
-    // Render Header
+    // Render Profil & Header Lencana
     headerArea.innerHTML = `
+      <!-- Kartu Profil Penjelajah -->
+      <div class="card-organik !p-6 mb-6 bg-white border border-pasir shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+        <div class="flex items-center gap-4">
+          <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-tr from-daun/10 via-krem to-amber-100 p-1 border-2 border-daun/30 overflow-hidden shrink-0 shadow-xs">
+            <img src="${avatarUrl}" alt="${displayName}" class="w-full h-full object-contain filter drop-shadow-xs" />
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="font-heading text-lg sm:text-xl font-bold text-tanah-gelap">${displayName}</h2>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-daun/10 text-daun border border-daun/20">
+                ${prefRegion}
+              </span>
+            </div>
+            <p class="text-xs text-tanah/70 font-body mt-0.5 max-w-md">${bioText}</p>
+            <span class="text-[11px] text-tanah/50 font-mono mt-1 block">${user.email}</span>
+          </div>
+        </div>
+
+        <button type="button" id="btn-edit-my-profile" class="shrink-0 px-4 py-2 rounded-2xl bg-pasir/40 hover:bg-daun hover:text-white text-tanah-gelap text-xs font-semibold border border-pasir transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs">
+          <span>✎</span>
+          <span>Sunting Profil</span>
+        </button>
+      </div>
+
+      <!-- Kartu Statistik Lencana -->
       <div class="card-organik !p-6 sm:!p-8 bg-gradient-to-br from-white/95 to-padi/10">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div>
@@ -77,7 +111,7 @@ async function loadBadges() {
               Setiap paket petualangan yang Anda selesaikan membuka apresiasi atas kelestarian budaya Bali.
             </p>
           </div>
-          <div class="shrink-0 text-right sm:text-right">
+          <div class="shrink-0 text-left sm:text-right">
             <span class="font-heading text-3xl sm:text-4xl font-bold text-padi">${earnedCount}</span>
             <span class="text-sm font-body text-tanah/60"> / ${totalBadges} Terbuka</span>
           </div>
@@ -92,6 +126,10 @@ async function loadBadges() {
         </div>
       </div>
     `;
+
+    document.getElementById('btn-edit-my-profile')?.addEventListener('click', () => {
+      openProfileEditModal(() => loadBadges());
+    });
 
     // Render Grid Lencana
     if (!allBadges || allBadges.length === 0) {

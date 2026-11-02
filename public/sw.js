@@ -4,12 +4,17 @@
  * Memastikan tampilan CSS & halaman dapat diakses dalam keadaan offline dan jaringan lemot.
  */
 
-const CACHE_NAME = 'tobal-pariwisata-v2';
+const CACHE_NAME = 'tobal-pariwisata-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/src/styles/main.css',
   '/favicon.svg',
+  '/images/mascot-barong-head.png',
+  '/images/mascot-barong-head.webp',
+  '/images/mascot-barong.png',
+  '/images/mascot-barong.webp',
+  '/src/pages/admin.html',
   '/src/pages/kamus.html',
   '/src/pages/budaya.html',
   '/src/pages/kenali-budaya.html',
