@@ -64,43 +64,32 @@ function initAdminGate() {
   const errBox = document.getElementById('admin-gate-error');
   const logoutBtn = document.getElementById('btn-admin-logout');
 
-  // Periksa apakah sudah ada passkey tersimpan di sesi browser
+  // Periksa apakah sudah ada passkey / sesi admin dari jalur masuk utama
   if (adminState.passkey) {
     verifyPasskey(adminState.passkey).then(valid => {
       if (valid) {
-        overlay.classList.add('hidden');
+        overlay?.classList.add('hidden');
         loadAllData();
       } else {
         sessionStorage.removeItem('tobal_admin_key');
         adminState.passkey = '';
-        overlay.classList.remove('hidden');
+        window.location.href = '/src/pages/masuk.html?msg=need_admin&returnTo=' + encodeURIComponent('/src/pages/admin.html');
       }
     });
+  } else {
+    // Pengunjung belum login sebagai admin -> arahkan ke pintu login utama
+    window.location.href = '/src/pages/masuk.html?msg=need_admin&returnTo=' + encodeURIComponent('/src/pages/admin.html');
+    return;
   }
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errBox.classList.add('hidden');
-    const entered = passInput.value.trim();
-
-    const valid = await verifyPasskey(entered);
-    if (valid) {
-      adminState.passkey = entered;
-      sessionStorage.setItem('tobal_admin_key', entered);
-      overlay.classList.add('hidden');
-      showToast('Autentikasi Super Admin berhasil! Selamat datang.', 'success');
-      loadAllData();
-    } else {
-      errBox.textContent = 'Passkey salah. Masukkan passkey default "tobal2026" atau sesuai .env';
-      errBox.classList.remove('hidden');
-    }
-  });
 
   logoutBtn?.addEventListener('click', () => {
     sessionStorage.removeItem('tobal_admin_key');
+    localStorage.removeItem('tobal_user_role');
     adminState.passkey = '';
-    overlay.classList.remove('hidden');
-    showToast('Sesi Super Admin dikunci.', 'info');
+    showToast('Sesi Super Admin telah ditutup.', 'info');
+    setTimeout(() => {
+      window.location.href = '/src/pages/masuk.html';
+    }, 600);
   });
 }
 

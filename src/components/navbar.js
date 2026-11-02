@@ -6,6 +6,7 @@
 
 import { getCurrentUser, getUserProfile, signOutUser } from '../lib/auth.js';
 import { initBalineseAudio } from './balineseAudio.js';
+import { setupProtectedLinks } from '../lib/authGate.js';
 
 /**
  * Menentukan halaman aktif dari URL.
@@ -34,10 +35,14 @@ export async function renderNavbar(selector) {
   const active = getActivePage();
   const user = await getCurrentUser();
   let displayName = '';
+  let isAdmin = false;
 
   if (user) {
     const profile = await getUserProfile(user.id);
     displayName = profile?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Penjelajah';
+    isAdmin = user.email === 'admin@tobal.id' || user.email?.startsWith('admin@') || profile?.role === 'admin' || sessionStorage.getItem('tobal_admin_key') === 'tobal2026';
+  } else {
+    isAdmin = sessionStorage.getItem('tobal_admin_key') === 'tobal2026';
   }
 
   // Helper kelas tombol kapsul menu desktop
@@ -54,7 +59,7 @@ export async function renderNavbar(selector) {
           <!-- Logo Brand dengan Maskot Bara -->
           <a href="/" class="flex items-center gap-3 group shrink-0" aria-label="Beranda Tobal">
             <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-300 via-orange-200 to-emerald-100 border-2 border-amber-300 shadow-sm flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:rotate-3">
-              <img src="/images/mascot-barong-head.png" alt="Bara Maskot" class="w-8 h-8 sm:w-9 sm:h-9 object-contain">
+              <img src="/images/mascot-barong-head.webp" width="36" height="36" alt="Bara Maskot" loading="lazy" decoding="async" class="w-8 h-8 sm:w-9 sm:h-9 object-contain">
               <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-daun rounded-full border-2 border-white"></span>
             </div>
             
@@ -126,10 +131,13 @@ export async function renderNavbar(selector) {
               </span>
             </button>
 
-            <!-- Super Admin Link -->
-            <a href="/src/pages/admin.html" class="w-9 h-9 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 flex items-center justify-center transition shadow-xs" title="Super Admin Dashboard">
-              <i class="fa-solid fa-crown text-xs"></i>
-            </a>
+            <!-- Super Admin Link (Hanya tampil jika masuk sebagai Admin) -->
+            ${isAdmin ? `
+              <a href="/src/pages/admin.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs" title="Panel Kendali Admin">
+                <i class="fa-solid fa-shield-halved text-xs text-amber-700"></i>
+                <span class="hidden sm:inline">Admin</span>
+              </a>
+            ` : ''}
 
             <!-- Akun / Masuk -->
             ${user
@@ -201,10 +209,14 @@ export async function renderNavbar(selector) {
               <i class="fa-solid fa-sparkles text-[9px]"></i>
               <span>Baru</span>
             </span>
-          <a href="/src/pages/admin.html" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition">
-            <i class="fa-solid fa-crown text-amber-600 w-5 text-center text-xs"></i>
-            <span>Super Admin Dashboard</span>
           </a>
+
+          ${isAdmin ? `
+            <a href="/src/pages/admin.html" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition">
+              <i class="fa-solid fa-shield-halved text-amber-700 w-5 text-center text-xs"></i>
+              <span>Panel Kendali Admin</span>
+            </a>
+          ` : ''}
 
           ${user ? `
             <div class="border-t border-pasir/50 pt-2 mt-3">
@@ -252,4 +264,7 @@ export async function renderNavbar(selector) {
 
   // Pasang pemutar audio Bali & maskot Bara di seluruh halaman
   initBalineseAudio();
+
+  // Lindungi tautan navbar untuk pengunjung yang belum login
+  await setupProtectedLinks(el);
 }

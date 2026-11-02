@@ -31,11 +31,17 @@ class BalineseAudioManager {
     if (this.initialized) return;
     this.initialized = true;
 
-    // Siapkan elemen Audio HTML5
-    this.audio = new Audio('/audio/balinese-rindik.wav');
+    // Pasang UI Floating Companion ke DOM jika belum ada (Audio di-load on-demand saat tombol diklik demi performa)
+    this.mountFloatingCompanion();
+    this.bindGlobalTriggers();
+  }
+
+  ensureAudioLoaded() {
+    if (this.audio) return;
+    this.audio = new Audio();
     this.audio.loop = true;
     this.audio.volume = this.volume;
-    this.audio.preload = 'metadata';
+    this.audio.preload = 'none';
 
     this.audio.addEventListener('play', () => {
       this.isPlaying = true;
@@ -53,13 +59,11 @@ class BalineseAudioManager {
       this.notifyState();
     });
 
-    // Pasang UI Floating Companion ke DOM jika belum ada
-    this.mountFloatingCompanion();
-    this.bindGlobalTriggers();
+    this.audio.src = '/audio/balinese-rindik.mp3';
   }
 
   async togglePlay() {
-    if (!this.audio) this.init();
+    this.ensureAudioLoaded();
 
     try {
       if (this.isPlaying) {
@@ -116,7 +120,7 @@ class BalineseAudioManager {
         <div class="bg-gradient-to-r from-daun to-daun/90 text-krem p-4 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-              <img src="/images/mascot-barong-head.png" alt="Bara" class="w-8 h-8 object-contain">
+              <img src="/images/mascot-barong-head.webp" width="32" height="32" alt="Bara" loading="lazy" decoding="async" class="w-8 h-8 object-contain">
             </div>
             <div>
               <h4 class="font-heading font-bold text-sm text-krem leading-tight">Bara Penjelajah</h4>
@@ -212,7 +216,7 @@ class BalineseAudioManager {
         <button id="bara-companion-btn" class="relative group w-14 h-14 rounded-full bg-gradient-to-tr from-amber-300 via-orange-200 to-emerald-100 border-2 border-terakota/40 shadow-xl hover:shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none" title="Buka Pemandu Bara & Musik Tradisional Bali">
           
           <!-- Maskot Headshot -->
-          <img src="/images/mascot-barong-head.png" alt="Bara Maskot" class="w-11 h-11 object-contain transition-transform group-hover:rotate-6">
+          <img src="/images/mascot-barong-head.webp" width="44" height="44" alt="Bara Maskot" loading="lazy" decoding="async" class="w-11 h-11 object-contain transition-transform group-hover:rotate-6">
 
           <!-- Equalizer Mini Melayang Saat Bermusik -->
           <div id="btn-mini-equalizer" class="hidden absolute -top-1 -right-1 bg-daun text-white w-6 h-6 rounded-full border border-white shadow-md flex items-center justify-center">

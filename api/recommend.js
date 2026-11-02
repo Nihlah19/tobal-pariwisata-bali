@@ -191,14 +191,30 @@ export default async function handler(req, res) {
     }
     const highRatedPlaceIds = (highReviews || []).map(r => r.place_id);
 
-    // 5. AMBIL SELURUH KATALOG DESTINASI DARI DATABASE
-    const { data: places, error: placesError } = await supabase
+    // 5. AMBIL SELURUH KATALOG DESTINASI DARI DATABASE (DENGAN FALLBACK LOKAL)
+    let places = [];
+    const { data: dbPlaces, error: placesError } = await supabase
       .from('places')
       .select('*');
 
-    if (placesError || !places || places.length === 0) {
+    if (!placesError && dbPlaces && dbPlaces.length > 0) {
+      places = dbPlaces;
+    } else {
+      console.warn('[Recommend API] Tabel places kosong atau belum di-seed di Supabase, memuat cadangan lokal destinations_cbf.json...');
+      try {
+        const jsonPath = path.resolve(process.cwd(), 'public', 'data', 'destinations_cbf.json');
+        if (fs.existsSync(jsonPath)) {
+          const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          places = raw.destinations || [];
+        }
+      } catch (err) {
+        console.error('[Recommend API] Gagal memuat cadangan JSON:', err);
+      }
+    }
+
+    if (!places || places.length === 0) {
       return res.status(500).json({
-        error: 'Gagal mengambil data destinasi tempat dari database.'
+        error: 'Gagal mengambil data destinasi tempat dari database maupun cadangan lokal.'
       });
     }
 

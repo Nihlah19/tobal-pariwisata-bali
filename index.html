@@ -6,7 +6,19 @@
   <title>Tour Penjelajah Bali — Jelajahi Bali Seutuhnya</title>
   <meta name="description" content="Website pemandu wisata bergamifikasi. AI merekomendasikan paket petualangan unik agar Anda menjelajahi Bali melampaui tempat viral." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="stylesheet" href="/src/styles/main.css?direct" />
+  
+  <!-- Optimasi Performa Web: Preconnect, DNS-Prefetch & Asynchronous Non-blocking Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" /></noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
 </head>
 <body class="flex flex-col min-h-screen">
 
@@ -61,7 +73,7 @@
             <!-- Avatar Maskot Bara Full Body -->
             <div class="relative shrink-0 flex items-center justify-center">
               <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-amber-200 via-orange-100 to-emerald-100 border-2 border-terakota/40 p-1.5 shadow-md flex items-center justify-center overflow-hidden animate-float-bara">
-                <img src="/images/mascot-barong.png" alt="Bara si Barong Penjelajah" class="w-full h-full object-contain filter drop-shadow">
+                <img src="/images/mascot-barong.webp" width="112" height="112" alt="Bara si Barong Penjelajah" fetchpriority="high" decoding="async" class="w-full h-full object-contain filter drop-shadow">
               </div>
               <span class="absolute -bottom-2 bg-daun text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
                 Maskot Resmi
@@ -97,11 +109,11 @@
 
           <!-- Tombol CTA Utama -->
           <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
-            <a href="/src/pages/masuk.html" class="w-full sm:w-auto btn-primer text-base !py-3.5 !px-8 flex items-center justify-center gap-2.5 shadow-organik-lg" id="hero-cta">
+            <a href="/src/pages/petualangan.html" class="w-full sm:w-auto btn-primer text-base !py-3.5 !px-8 flex items-center justify-center gap-2.5 shadow-organik-lg cursor-pointer" id="hero-cta" data-auth-required="true" data-feature-name="Jalur Petualangan Cerdas">
               <i class="fa-solid fa-compass text-krem"></i>
               <span>Mulai Petualangan</span>
             </a>
-            <a href="/src/pages/kenali-budaya.html" class="w-full sm:w-auto btn-sekunder text-base !py-3.5 !px-7 flex items-center justify-center gap-2.5 shadow-sm">
+            <a href="/src/pages/kenali-budaya.html" class="w-full sm:w-auto btn-sekunder text-base !py-3.5 !px-7 flex items-center justify-center gap-2.5 shadow-sm cursor-pointer" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
               <i class="fa-solid fa-camera-retro text-daun"></i>
               <span>Kenali Budaya (AI)</span>
             </a>
@@ -115,34 +127,34 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-left">
               
               <!-- Preview 1 -->
-              <div class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-daun/40 transition-all">
+              <a href="/src/pages/petualangan.html" class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-daun/40 transition-all block cursor-pointer group" data-auth-required="true" data-feature-name="Rute Wisata 3+1 (Sekumpul)">
                 <div class="flex items-center justify-between text-xs mb-2">
                   <span class="badge-daun text-[11px] py-0.5 px-2">Wisata 1 · Alam</span>
                   <span class="text-tanah/60 font-medium">Buleleng</span>
                 </div>
-                <h4 class="font-heading font-bold text-tanah-gelap text-sm sm:text-base leading-snug">Air Terjun Sekumpul</h4>
+                <h4 class="font-heading font-bold text-tanah-gelap group-hover:text-daun transition-colors text-sm sm:text-base leading-snug">Air Terjun Sekumpul</h4>
                 <p class="text-xs text-tanah/70 mt-1 line-clamp-2">Tujuh air terjun tersembunyi di lembah asri Bali Utara yang megah dan tenang.</p>
-              </div>
+              </a>
 
               <!-- Preview 2 -->
-              <div class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-daun/40 transition-all">
+              <a href="/src/pages/petualangan.html" class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-daun/40 transition-all block cursor-pointer group" data-auth-required="true" data-feature-name="Rute Wisata 3+1 (Pedawa)">
                 <div class="flex items-center justify-between text-xs mb-2">
                   <span class="badge-daun text-[11px] py-0.5 px-2">Wisata 2 · Budaya</span>
                   <span class="text-tanah/60 font-medium">Buleleng</span>
                 </div>
-                <h4 class="font-heading font-bold text-tanah-gelap text-sm sm:text-base leading-snug">Desa Adat Pedawa</h4>
+                <h4 class="font-heading font-bold text-tanah-gelap group-hover:text-daun transition-colors text-sm sm:text-base leading-snug">Desa Adat Pedawa</h4>
                 <p class="text-xs text-tanah/70 mt-1 line-clamp-2">Desa purba Bali Aga dengan arsitektur rumah tradisional Bandung Rangki.</p>
-              </div>
+              </a>
 
               <!-- Preview 3 -->
-              <div class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-padi/60 transition-all">
+              <a href="/src/pages/petualangan.html" class="bg-white/90 p-4 rounded-2xl border border-pasir shadow-sm hover:shadow-md hover:border-padi/60 transition-all block cursor-pointer group" data-auth-required="true" data-feature-name="Rute Wisata 3+1 (Warung Entil)">
                 <div class="flex items-center justify-between text-xs mb-2">
                   <span class="badge-padi text-[11px] py-0.5 px-2">Kuliner · Tradisi</span>
                   <span class="text-tanah/60 font-medium">Tabanan</span>
                 </div>
-                <h4 class="font-heading font-bold text-tanah-gelap text-sm sm:text-base leading-snug">Warung Entil Pupuan</h4>
+                <h4 class="font-heading font-bold text-tanah-gelap group-hover:text-daun transition-colors text-sm sm:text-base leading-snug">Warung Entil Pupuan</h4>
                 <p class="text-xs text-tanah/70 mt-1 line-clamp-2">Lontong khas berbalut daun entil alami dengan bumbu rempah warisan leluhur.</p>
-              </div>
+              </a>
 
             </div>
 
@@ -156,7 +168,7 @@
                 <i class="fa-solid fa-book-open text-xs"></i>
                 <span>Kamus Basa Bali</span>
               </a>
-              <a href="/src/pages/lencana.html" class="badge-padi hover:bg-padi hover:text-tanah-gelap transition-all text-xs py-1.5 px-3 flex items-center gap-1.5">
+              <a href="/src/pages/lencana.html" class="badge-padi hover:bg-padi hover:text-tanah-gelap transition-all text-xs py-1.5 px-3 flex items-center gap-1.5 cursor-pointer" data-auth-required="true" data-feature-name="Koleksi Lencana Budaya">
                 <i class="fa-solid fa-award text-xs"></i>
                 <span>Galeri Lencana</span>
               </a>
@@ -246,7 +258,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           
           <!-- Fitur 1 -->
-          <a href="/src/pages/kenali-budaya.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group">
+          <a href="/src/pages/kenali-budaya.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group cursor-pointer" data-auth-required="true" data-feature-name="Kenali Budaya (AI Vision)">
             <div class="space-y-3">
               <div class="w-12 h-12 rounded-2xl bg-daun/10 text-daun flex items-center justify-center group-hover:scale-110 transition-transform">
                 <i class="fa-solid fa-camera-retro text-xl"></i>
@@ -265,7 +277,7 @@
           </a>
 
           <!-- Fitur 2 -->
-          <a href="/src/pages/petualangan.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group">
+          <a href="/src/pages/petualangan.html" class="p-6 rounded-3xl bg-krem/40 border border-pasir hover:border-daun/50 hover:shadow-lg transition-all flex flex-col justify-between group cursor-pointer" data-auth-required="true" data-feature-name="Jalur Gamifikasi Petualangan">
             <div class="space-y-3">
               <div class="w-12 h-12 rounded-2xl bg-lumut/10 text-lumut flex items-center justify-center group-hover:scale-110 transition-transform">
                 <i class="fa-solid fa-route text-xl"></i>

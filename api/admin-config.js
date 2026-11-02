@@ -132,7 +132,7 @@ export default async function handler(req, res) {
     const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
     const supabaseAnon = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
     const geminiKey = process.env.GEMINI_API_KEY || '';
-    const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+    const geminiModel = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
 
     // Periksa jumlah tabel jika supabase aktif
     const stats = { places: 0, culture_articles: 0, dictionary: 0, balinese_grammar: 0 };
@@ -241,7 +241,7 @@ export default async function handler(req, res) {
 
     // 3. UJI GEMINI API KEY
     if (action === 'test_gemini') {
-      const { apiKey, model = 'gemini-2.5-flash' } = body;
+      const { apiKey, model = 'gemini-3.1-flash-lite' } = body;
       const keyToUse = apiKey || process.env.GEMINI_API_KEY;
 
       if (!keyToUse) {
@@ -279,7 +279,7 @@ export default async function handler(req, res) {
 
     // 4. SIMPAN GEMINI CONFIG
     if (action === 'save_gemini') {
-      const { apiKey, model = 'gemini-2.5-flash' } = body;
+      const { apiKey, model = 'gemini-3.1-flash-lite' } = body;
       if (!apiKey) {
         return res.status(400).json({ error: 'API Key Gemini tidak boleh kosong.' });
       }

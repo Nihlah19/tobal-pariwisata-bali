@@ -61,7 +61,7 @@ export async function requireAuth() {
   const session = await getSession();
   if (!session) {
     const currentPath = encodeURIComponent(window.location.pathname + window.location.search);
-    window.location.href = `/src/pages/masuk.html?returnTo=${currentPath}`;
+    window.location.href = `/src/pages/masuk.html?tab=register&msg=auth_required&returnTo=${currentPath}`;
     return null;
   }
   return session;

@@ -8,10 +8,14 @@ import { createElement, Sparkles, BookOpen, Volume2, ArrowRight } from 'lucide';
 import { getSession, getUserProfile } from './lib/auth.js';
 import { getWordOfTheDay, TINGKAT_STYLE_MAP, KELAS_KATA_MAP } from './lib/dictionary.js';
 import { showToast } from './components/ui.js';
+import { setupProtectedLinks } from './lib/authGate.js';
 
 // Render layout
 await renderNavbar('#navbar');
 renderFooter('#footer');
+
+// Lindungi fitur pada landing page: jika belum login, tampilkan modal ajakan daftar
+await setupProtectedLinks(document);
 
 // Hero badge icon
 const heroBadgeIcon = document.getElementById('hero-badge-icon');
@@ -32,11 +36,19 @@ async function setupHeroCta() {
     const profile = await getUserProfile(session.user.id);
     const hasOnboarded = profile?.interests && profile.interests.length > 0;
     
-    heroCta.textContent = hasOnboarded ? 'Lanjutkan Petualangan' : 'Atur Preferensi Minat';
+    heroCta.innerHTML = `
+      <i class="fa-solid fa-compass text-krem"></i>
+      <span>${hasOnboarded ? 'Lanjutkan Petualangan' : 'Atur Preferensi Minat'}</span>
+    `;
     heroCta.href = hasOnboarded ? '/src/pages/petualangan.html' : '/src/pages/onboarding.html';
   } else {
-    heroCta.textContent = 'Mulai Jelajah';
-    heroCta.href = '/src/pages/masuk.html';
+    heroCta.innerHTML = `
+      <i class="fa-solid fa-compass text-krem"></i>
+      <span>Mulai Petualangan</span>
+    `;
+    heroCta.href = '/src/pages/petualangan.html';
+    heroCta.dataset.authRequired = 'true';
+    heroCta.dataset.featureName = 'Jalur Petualangan Cerdas';
   }
 }
 

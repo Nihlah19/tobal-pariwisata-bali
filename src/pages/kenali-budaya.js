@@ -26,7 +26,13 @@ import {
 import { renderNavbar } from '../components/navbar.js';
 import { renderFooter } from '../components/footer.js';
 import { showToast } from '../components/ui.js';
-import { getCurrentUser, getSession } from '../lib/auth.js';
+import { getCurrentUser, getSession, requireAuth } from '../lib/auth.js';
+
+// Lindungi halaman — wajib login/daftar
+const session = await requireAuth();
+if (!session) {
+  // redirect otomatis oleh requireAuth ke /src/pages/masuk.html
+}
 
 // Konfigurasi Klien
 const MAX_FILE_SIZE_BYTES = 4 * 1024 * 1024; // 4 MB (Persyaratan 1)

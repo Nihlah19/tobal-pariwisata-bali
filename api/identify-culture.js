@@ -332,7 +332,7 @@ export default async function handler(req, res) {
     // F. PANGGIL GOOGLE GEMINI VISION API
     // --------------------------------------------------------------------------
     const geminiApiKey = process.env.GEMINI_API_KEY;
-    const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+    const geminiModel = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
 
     if (!geminiApiKey || geminiApiKey === 'your-gemini-ai-studio-api-key') {
       return res.status(503).json({
@@ -342,7 +342,7 @@ export default async function handler(req, res) {
 
     const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(geminiModel)}:generateContent?key=${geminiApiKey}`;
 
-    // Siapkan payload Gemini Vision
+    // Siapkan payload Gemini Vision dengan konfigurasi hemat token
     const geminiPayload = {
       contents: [
         {
@@ -361,7 +361,7 @@ export default async function handler(req, res) {
       generationConfig: {
         response_mime_type: 'application/json',
         temperature: 0.1,
-        maxOutputTokens: 800
+        maxOutputTokens: 250 // Hemat token: batas jawaban JSON ringkas
       }
     };
 

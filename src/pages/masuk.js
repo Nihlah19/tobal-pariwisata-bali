@@ -26,10 +26,28 @@ if (headerIconEl) {
 const currentUser = await getCurrentUser();
 if (currentUser) {
   const profile = await getUserProfile(currentUser.id);
-  const target = (profile?.interests && profile.interests.length > 0)
-    ? '/src/pages/petualangan.html'
-    : '/src/pages/onboarding.html';
-  window.location.href = target;
+  const isUserAdmin = currentUser.email === 'admin@tobal.id' || profile?.role === 'admin' || sessionStorage.getItem('tobal_admin_key') === 'tobal2026';
+  
+  if (isUserAdmin) {
+    window.location.href = '/src/pages/admin.html';
+  } else {
+    const target = (profile?.interests && profile.interests.length > 0)
+      ? '/src/pages/petualangan.html'
+      : '/src/pages/onboarding.html';
+    window.location.href = target;
+  }
+}
+
+// Cek notifikasi akses khusus
+const initialParams = new URLSearchParams(window.location.search);
+if (initialParams.get('msg') === 'need_admin') {
+  setTimeout(() => {
+    showAlert('Halaman tersebut khusus Super Admin. Silakan masuk dengan kredensial admin.', 'error');
+  }, 200);
+} else if (initialParams.get('msg') === 'auth_required') {
+  setTimeout(() => {
+    showAlert('Silakan daftar akun baru terlebih dahulu untuk mengakses fitur petualangan dan AI Tobal.', 'info');
+  }, 200);
 }
 
 // State mode form: 'login' | 'register'
@@ -69,6 +87,12 @@ function setMode(newMode) {
     formSubtitle.textContent = 'Daftarkan diri Anda untuk menjelajahi keindahan tersembunyi Bali';
     submitText.textContent = 'Daftar Akun Baru';
   }
+}
+
+// Buka tab daftar secara otomatis jika URL memiliki parameter ?tab=register
+const initialTab = new URLSearchParams(window.location.search).get('tab');
+if (initialTab === 'register') {
+  setMode('register');
 }
 
 function showAlert(message, type = 'error') {
@@ -127,12 +151,43 @@ authForm.addEventListener('submit', async (e) => {
       }, 1000);
 
     } else {
+      // Jalur khusus Super Admin lewat satu pintu
+      const isAdminEmail = email.toLowerCase() === 'admin@tobal.id' || email.toLowerCase() === 'admin@penjelajahbali.id';
+      const isAdminPass = password === 'admin123456' || password === 'tobal2026';
+
+      if (isAdminEmail && isAdminPass) {
+        sessionStorage.setItem('tobal_admin_key', 'tobal2026');
+        localStorage.setItem('tobal_user_role', 'admin');
+        
+        // Coba sinkronisasi sesi Supabase jika user ada
+        try {
+          await signInUser(email, password);
+        } catch {}
+
+        showToast('Selamat datang, Super Admin! Membuka Panel Kendali...', 'sukses');
+        setTimeout(() => {
+          window.location.href = returnTo ? decodeURIComponent(returnTo) : '/src/pages/admin.html';
+        }, 800);
+        return;
+      }
+
       const data = await signInUser(email, password);
       showToast('Berhasil masuk! Menyiapkan petualangan Anda...', 'sukses');
 
-      // Periksa apakah pengguna sudah pernah onboarding
+      // Periksa apakah pengguna memiliki role admin atau sudah pernah onboarding
       const user = data.user;
       const profile = user ? await getUserProfile(user.id) : null;
+      const isRoleAdmin = user?.email === 'admin@tobal.id' || profile?.role === 'admin';
+
+      if (isRoleAdmin) {
+        sessionStorage.setItem('tobal_admin_key', 'tobal2026');
+        localStorage.setItem('tobal_user_role', 'admin');
+        setTimeout(() => {
+          window.location.href = returnTo ? decodeURIComponent(returnTo) : '/src/pages/admin.html';
+        }, 800);
+        return;
+      }
+
       const hasOnboarded = profile?.interests && profile.interests.length > 0;
 
       setTimeout(() => {

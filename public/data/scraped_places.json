@@ -1,0 +1,747 @@
+{
+  "total": 39,
+  "places": [
+    {
+      "name": "Pura Luhur Uluwatu",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "pura tebing",
+        "sunset uluwatu",
+        "tari kecak"
+      ],
+      "region": "Badung",
+      "price_level": 2,
+      "popularity": 98,
+      "is_viral": true,
+      "description": "Pura megah di ujung tebing karang setinggi 70 meter menghadap Samudra Hindia dengan atraksi Tari Kecak legendaris.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.8291,
+      "lng": 115.0849
+    },
+    {
+      "name": "Pantai Melasti Ungasan",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "pantai tebing",
+        "pasir putih",
+        "sunset",
+        "beach club"
+      ],
+      "region": "Badung",
+      "price_level": 2,
+      "popularity": 95,
+      "is_viral": true,
+      "description": "Pantai berpasir putih bersih yang dikelilingi dinding tebing kapur berliku spektakuler.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.8475,
+      "lng": 115.1587
+    },
+    {
+      "name": "Pantai Padang Padang",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "ombak selancar",
+        "gua karang",
+        "pantai tersembunyi"
+      ],
+      "region": "Badung",
+      "price_level": 2,
+      "popularity": 90,
+      "is_viral": true,
+      "description": "Pantai eksotis dengan akses melewati celah gua batu karang sempit, terkenal sebagai lokasi syuting film Eat Pray Love.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1512100356356-de1b84283e18?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.8112,
+      "lng": 115.1037
+    },
+    {
+      "name": "Garuda Wisnu Kencana (GWK)",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "patung raksasa",
+        "taman budaya",
+        "pertunjukan tari"
+      ],
+      "region": "Badung",
+      "price_level": 3,
+      "popularity": 94,
+      "is_viral": true,
+      "description": "Taman budaya dengan patung tembaga Dewa Wisnu dan Garuda setinggi 121 meter, karya maestro Nyoman Nuarta.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.8105,
+      "lng": 115.1668
+    },
+    {
+      "name": "Warung Menega Cafe Jimbaran",
+      "type": "kuliner",
+      "category": "kuliner-tradisional",
+      "tags": [
+        "seafood bakar",
+        "pantai jimbaran",
+        "sunset dinner"
+      ],
+      "region": "Badung",
+      "price_level": 2,
+      "popularity": 96,
+      "is_viral": true,
+      "description": "Kuliner hidangan laut bakar bumbu khas Jimbaran di tepi pantai berpasir saat matahari terbenam.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.7758,
+      "lng": 115.1662
+    },
+    {
+      "name": "Bebek Tepi Sawah Tuban",
+      "type": "kuliner",
+      "category": "kuliner-tradisional",
+      "tags": [
+        "bebek betutu",
+        "bebek goreng krispi",
+        "sambal matah"
+      ],
+      "region": "Badung",
+      "price_level": 2,
+      "popularity": 88,
+      "is_viral": true,
+      "description": "Sajian bebek goreng renyah bumbu rempah khas Bali lengkap dengan tiga varian sambal autentik.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.7451,
+      "lng": 115.1812
+    },
+    {
+      "name": "Sacred Monkey Forest Sanctuary Ubud",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "hutan kera",
+        "pura kuno",
+        "lumut sakral"
+      ],
+      "region": "Gianyar",
+      "price_level": 2,
+      "popularity": 97,
+      "is_viral": true,
+      "description": "Cagar alam dan kompleks pura suci dihuni ratusan monyet ekor panjang di jantung Ubud.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.5194,
+      "lng": 115.2632
+    },
+    {
+      "name": "Sawah Terasering Tegallalang",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "terasering sawah",
+        "subak",
+        "ayunan bali"
+      ],
+      "region": "Gianyar",
+      "price_level": 2,
+      "popularity": 96,
+      "is_viral": true,
+      "description": "Pemandangan lembah sawah berundak bertingkat hijau dengan panorama sistem irigasi Subak tradisional.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4328,
+      "lng": 115.279
+    },
+    {
+      "name": "Pura Tirta Empul Tampaksiring",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "melukat",
+        "mata air suci",
+        "penyucian diri"
+      ],
+      "region": "Gianyar",
+      "price_level": 2,
+      "popularity": 94,
+      "is_viral": true,
+      "description": "Pura mata air suci kuno peninggalan Dinasti Warmadewa abad ke-10 untuk ritual penyucian diri (melukat).",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.415,
+      "lng": 115.3152
+    },
+    {
+      "name": "Campuhan Ridge Walk",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "jogging track",
+        "bukit hijau",
+        "sunset ubud"
+      ],
+      "region": "Gianyar",
+      "price_level": 1,
+      "popularity": 91,
+      "is_viral": true,
+      "description": "Jalur setapak di punggung bukit antara dua aliran sungai yang memamerkan keindahan alam Ubud.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.5042,
+      "lng": 115.2536
+    },
+    {
+      "name": "Seniman Coffee Studio Ubud",
+      "type": "kuliner",
+      "category": "kopi-kebun",
+      "tags": [
+        "specialty coffee",
+        "kopi nusantara",
+        "kafe etnik"
+      ],
+      "region": "Gianyar",
+      "price_level": 2,
+      "popularity": 90,
+      "is_viral": true,
+      "description": "Pelopor specialty coffee di Ubud dengan metode seduh manual dan olahan biji kopi petani lokal.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.5065,
+      "lng": 115.2644
+    },
+    {
+      "name": "Nasi Ayam Kedewatan Bu Mangku",
+      "type": "kuliner",
+      "category": "kuliner-tradisional",
+      "tags": [
+        "ayam kedewatan",
+        "sate lilit",
+        "bumbu rajang"
+      ],
+      "region": "Gianyar",
+      "price_level": 1,
+      "popularity": 93,
+      "is_viral": true,
+      "description": "Nasi ayam legendaris dengan olahan suwir ayam pedas, kacang tanah goreng, dan urap sayur bumbu Bali.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4891,
+      "lng": 115.2492
+    },
+    {
+      "name": "Pura Tanah Lot",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "pura laut",
+        "sunset megah",
+        "ikon bali"
+      ],
+      "region": "Tabanan",
+      "price_level": 2,
+      "popularity": 99,
+      "is_viral": true,
+      "description": "Pura suci peninggalan Dang Hyang Nirartha yang bertengger di atas bongkahan batu karang di tengah samudra.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.6212,
+      "lng": 115.0868
+    },
+    {
+      "name": "Pura Ulun Danu Beratan Bedugul",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "pura danau",
+        "pegunungan sejuk",
+        "ikon uang 50 ribu"
+      ],
+      "region": "Tabanan",
+      "price_level": 2,
+      "popularity": 97,
+      "is_viral": true,
+      "description": "Pura terapung di tepian Danau Beratan dengan latar kabut pegunungan Bedugul yang syahdu.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.2751,
+      "lng": 115.1663
+    },
+    {
+      "name": "Jatiluwih Rice Terraces UNESCO",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "warisan dunia unesco",
+        "subak purba",
+        "hamparan padi"
+      ],
+      "region": "Tabanan",
+      "price_level": 2,
+      "popularity": 93,
+      "is_viral": true,
+      "description": "Hamparan sawah terasering seluas 600 hektar di lereng Gunung Batukaru yang diakui UNESCO.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.3705,
+      "lng": 115.1311
+    },
+    {
+      "name": "Air Panas Alami Penatahan",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "kolam air panas",
+        "relaksasi",
+        "tepi sungai"
+      ],
+      "region": "Tabanan",
+      "price_level": 1,
+      "popularity": 78,
+      "is_viral": false,
+      "description": "Pemandian air panas alami belerang di tepi Sungai Yeh Ho yang menyegarkan tubuh.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4682,
+      "lng": 115.1124
+    },
+    {
+      "name": "Desa Wisata Penglipuran",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "desa terbersih dunia",
+        "arsitektur bambu",
+        "hutan bambu"
+      ],
+      "region": "Bangli",
+      "price_level": 2,
+      "popularity": 95,
+      "is_viral": true,
+      "description": "Desa adat tradisional dengan tata ruang tri mandala yang asri dan dinobatkan salah satu desa terbersih dunia.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4532,
+      "lng": 115.3562
+    },
+    {
+      "name": "Gunung Batur & Danau Batur",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "sunrise trekking",
+        "kaldera batur",
+        "danau bulan sabit"
+      ],
+      "region": "Bangli",
+      "price_level": 2,
+      "popularity": 96,
+      "is_viral": true,
+      "description": "Gunung berapi aktif dengan jalur pendakian sunrise populer serta kaldera danau terbesar di Bali.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.2422,
+      "lng": 115.3756
+    },
+    {
+      "name": "Akasa Specialty Coffee Kintamani",
+      "type": "kuliner",
+      "category": "kopi-kebun",
+      "tags": [
+        "kopi kintamani",
+        "lautan awan",
+        "view gunung batur"
+      ],
+      "region": "Bangli",
+      "price_level": 2,
+      "popularity": 92,
+      "is_viral": true,
+      "description": "Kafe estetik di tebing Kintamani dengan pemandangan lautan awan dan kemegahan kaldera Batur.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.2562,
+      "lng": 115.3341
+    },
+    {
+      "name": "Warung Mujair Nyat-Nyat Pak Bagong",
+      "type": "kuliner",
+      "category": "kuliner-tradisional",
+      "tags": [
+        "ikan mujair",
+        "bumbu nyat nyat",
+        "kuliner danau"
+      ],
+      "region": "Bangli",
+      "price_level": 1,
+      "popularity": 89,
+      "is_viral": true,
+      "description": "Olahan ikan mujair segar hasil tangkapan Danau Batur dengan lumuran bumbu genep nyat-nyat gurih pedas.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.2612,
+      "lng": 115.3411
+    },
+    {
+      "name": "Air Terjun Sekumpul",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "tujuh air terjun",
+        "trekking lembah",
+        "alam perawan"
+      ],
+      "region": "Buleleng",
+      "price_level": 2,
+      "popularity": 88,
+      "is_viral": true,
+      "description": "Gugusan tujuh aliran air terjun alami tersembunyi di lembah rimbun Buleleng.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.1724,
+      "lng": 115.1812
+    },
+    {
+      "name": "Pantai Lovina Dolphin Watching",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "lumba-lumba liar",
+        "perahu jukung",
+        "pasir hitam"
+      ],
+      "region": "Buleleng",
+      "price_level": 2,
+      "popularity": 90,
+      "is_viral": true,
+      "description": "Atraksi melihat lumba-lumba liar berenang di perairan tenang saat fajar menggunakan perahu tradisional jukung.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1512100356356-de1b84283e18?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.1612,
+      "lng": 115.0245
+    },
+    {
+      "name": "Air Terjun Gitgit",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "air terjun tinggi",
+        "udara sejuk",
+        "perkebunan cengkeh"
+      ],
+      "region": "Buleleng",
+      "price_level": 1,
+      "popularity": 84,
+      "is_viral": false,
+      "description": "Air terjun legendaris setinggi 35 meter yang dikelilingi rimbunnya pohon cengkeh dan kopi.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.2012,
+      "lng": 115.1387
+    },
+    {
+      "name": "Pura Ulun Danu Buyan",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "danau kembar",
+        "hutan asri",
+        "pelinggih suci"
+      ],
+      "region": "Buleleng",
+      "price_level": 1,
+      "popularity": 80,
+      "is_viral": false,
+      "description": "Pura di tepi Danau Buyan dengan panorama hutan lindung yang damai dan asri.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.2512,
+      "lng": 115.1298
+    },
+    {
+      "name": "Pura Agung Besakih",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "mother temple",
+        "pura terbesar bali",
+        "lereng agung"
+      ],
+      "region": "Karangasem",
+      "price_level": 2,
+      "popularity": 99,
+      "is_viral": true,
+      "description": "Kompleks pura induk terbesar dan paling sakral di Bali yang berdiri megah di lereng Gunung Agung.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.3739,
+      "lng": 115.4525
+    },
+    {
+      "name": "Tirta Gangga Water Palace",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "taman air kerajaan",
+        "kolam ikan koi",
+        "patung artistik"
+      ],
+      "region": "Karangasem",
+      "price_level": 2,
+      "popularity": 94,
+      "is_viral": true,
+      "description": "Taman air peninggalan Raja Karangasem dengan kolam batu pijak di antara ratusan ikan koi berwarna-warni.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4121,
+      "lng": 115.5873
+    },
+    {
+      "name": "Pura Lempuyang Luhur",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "gerbang surga",
+        "gunung agung",
+        "pura sakral"
+      ],
+      "region": "Karangasem",
+      "price_level": 2,
+      "popularity": 96,
+      "is_viral": true,
+      "description": "Gapura candi bentar yang membingkai Gunung Agung, dijuluki 'The Gate of Heaven'.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.3917,
+      "lng": 115.6312
+    },
+    {
+      "name": "Pantai Amed Diving & Snorkeling",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "terumbu karang",
+        "sunrise",
+        "snorkeling pantai"
+      ],
+      "region": "Karangasem",
+      "price_level": 2,
+      "popularity": 87,
+      "is_viral": false,
+      "description": "Kawasan pesisir timur berpasir hitam dengan keindahan bawah laut terumbu karang alami yang spektakuler.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.3412,
+      "lng": 115.6512
+    },
+    {
+      "name": "Pantai Kelingking (T-Rex Cliff)",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "tebing dinosaurus",
+        "pantai nusa penida",
+        "air toska"
+      ],
+      "region": "Klungkung",
+      "price_level": 2,
+      "popularity": 99,
+      "is_viral": true,
+      "description": "Formasi tebing karang raksasa ikonik menyerupai kepala T-Rex di Nusa Penida.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.7505,
+      "lng": 115.4746
+    },
+    {
+      "name": "Broken Beach & Angel's Billabong",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "terowongan laut",
+        "kolam bidadari",
+        "tebing alami"
+      ],
+      "region": "Klungkung",
+      "price_level": 2,
+      "popularity": 95,
+      "is_viral": true,
+      "description": "Tebing melingkar dengan terowongan laut alami dan kolam infinity alami kristal bening.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1512100356356-de1b84283e18?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.7332,
+      "lng": 115.4501
+    },
+    {
+      "name": "Kerta Gosa Klungkung",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "bale kerta gosa",
+        "lukisan wayang kamasan",
+        "sejarah peradilan"
+      ],
+      "region": "Klungkung",
+      "price_level": 1,
+      "popularity": 85,
+      "is_viral": false,
+      "description": "Balai pengadilan kuno kerajaan Klungkung dengan langit-langit berlukiskan cerita klasik wayang Kamasan.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.5352,
+      "lng": 115.4041
+    },
+    {
+      "name": "Warung Mak Beng Sanur",
+      "type": "kuliner",
+      "category": "kuliner-tradisional",
+      "tags": [
+        "sup kepala ikan",
+        "ikan goreng",
+        "sambal legendaris"
+      ],
+      "region": "Denpasar",
+      "price_level": 2,
+      "popularity": 96,
+      "is_viral": true,
+      "description": "Sajian sup kepala ikan bumbu kuning asam pedas dan ikan laut goreng gurih legendaris sejak 1941.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.6752,
+      "lng": 115.2635
+    },
+    {
+      "name": "Pantai Sanur Sunrise Walk",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "matahari terbit",
+        "ombak tenang",
+        "jogging pesisir"
+      ],
+      "region": "Denpasar",
+      "price_level": 1,
+      "popularity": 92,
+      "is_viral": true,
+      "description": "Garis pantai dengan ombak tenang terlindung terumbu karang, tempat terbaik menikmati matahari terbit.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1512100356356-de1b84283e18?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.6852,
+      "lng": 115.2641
+    },
+    {
+      "name": "Bajra Sandhi Renon Monument",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "monumen perjuangan",
+        "museum diorama",
+        "taman kota"
+      ],
+      "region": "Denpasar",
+      "price_level": 1,
+      "popularity": 88,
+      "is_viral": false,
+      "description": "Monumen megah berbentuk genta pendeta Hindu (bajra) di tengah lapangan hijau Renon.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.6717,
+      "lng": 115.2339
+    },
+    {
+      "name": "Pasar Badung & Kumbasari",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "pasar tradisional bali",
+        "kerajinan tangan",
+        "tepi tukad badung"
+      ],
+      "region": "Denpasar",
+      "price_level": 1,
+      "popularity": 83,
+      "is_viral": false,
+      "description": "Pusat denyut nadi perdagangan tradisional dan pasar seni kerajinan tangan terbesar di Bali.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.6578,
+      "lng": 115.2155
+    },
+    {
+      "name": "Pantai Medewi Surfing Point",
+      "type": "wisata",
+      "category": "pantai",
+      "tags": [
+        "ombak kiri panjang",
+        "peselancar dunia",
+        "pantai tenang"
+      ],
+      "region": "Jembrana",
+      "price_level": 1,
+      "popularity": 82,
+      "is_viral": false,
+      "description": "Pantai berbatu dengan gulungan ombak kiri (left-hander) terpanjang di Bali favorit peselancar.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4178,
+      "lng": 114.8052
+    },
+    {
+      "name": "Pura Rambut Siwi",
+      "type": "wisata",
+      "category": "budaya",
+      "tags": [
+        "pura tebing barat",
+        "sunset samudra",
+        "sejarah dang hyang"
+      ],
+      "region": "Jembrana",
+      "price_level": 1,
+      "popularity": 84,
+      "is_viral": false,
+      "description": "Pura di tebing pantai selatan Jembrana dengan sejarah petilasan Dang Hyang Dwijendra.",
+      "cultural_note": "Wajib mengenakan kamen (kain sarung) dan senteng (selendang pinggang). Jaga kesucian dan hormati umat yang sedang bersembahyang.",
+      "image_url": "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.4082,
+      "lng": 114.7612
+    },
+    {
+      "name": "Taman Nasional Bali Barat (Menjangan)",
+      "type": "wisata",
+      "category": "alam",
+      "tags": [
+        "jalak bali",
+        "terumbu karang menjangan",
+        "hutan bakau"
+      ],
+      "region": "Jembrana",
+      "price_level": 3,
+      "popularity": 89,
+      "is_viral": true,
+      "description": "Kawasan konservasi hutan lindung, habitat asli burung endemik Jalak Bali dan pulau karang Menjangan.",
+      "cultural_note": "Dihormati sebagai perwujudan Palemahan (harmoni manusia dengan alam). Jaga kebersihan dan bawa kembali sampah Anda.",
+      "image_url": "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.1412,
+      "lng": 114.4712
+    },
+    {
+      "name": "Warung Betutu Men Tempeh Gilimanuk",
+      "type": "kuliner",
+      "category": "kuliner-tradisional",
+      "tags": [
+        "ayam betutu pedas",
+        "legendaris gilimanuk",
+        "rempah pekat"
+      ],
+      "region": "Jembrana",
+      "price_level": 1,
+      "popularity": 91,
+      "is_viral": true,
+      "description": "Pelopor ayam betutu dengan bumbu kuah rempah pekat super pedas khas Gilimanuk.",
+      "cultural_note": "Hormati norma adat desa setempat (awig-awig) dan jaga kesopanan selama berkunjung.",
+      "image_url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      "lat": -8.1612,
+      "lng": 114.4412
+    }
+  ]
+}
